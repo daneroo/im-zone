@@ -10,6 +10,11 @@ import (
 
 func main() {
 	fmt.Println("Hello Zone")
+	var markRect = image.Rect(0, 0, 64, 128)
+	// m := image.NewRGBA(markRect)
+	m := image.NewRGBA(markRect)
+	// m.Set(x, y, color)
+	writePng("black.png", m)
 }
 
 func writePng(filename string, img image.Image) {
