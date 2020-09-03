@@ -40,6 +40,10 @@ export default function ZonePlate () {
   return (
     <div>
       <h3>Canvas Experiment</h3>
+      <div style={{ padding: 10 }}>
+        Invokes the drawing function (either in JavaScript or Rust/WASM),
+        and reports the render time (ms) for each render.
+      </div>
       <div>
         <button onClick={() => drawJS()}>DrawJS</button>
         <button onClick={() => drawRust()}>Draw Rust</button>
