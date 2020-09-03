@@ -10,6 +10,7 @@ import (
 	"log"
 	"math"
 	"os"
+	"time"
 )
 
 var (
@@ -49,7 +50,9 @@ func main() {
 	for t := 0; t < frames; t++ {
 		t01 := (float64(t)/float64(frames) - .5)
 
+		start := time.Now()
 		render(img, t01, frames, phi)
+		log.Printf("Render %d x %d took %s", *wFlag, *hFlag, time.Since(start))
 		if *jpegFlag {
 			writePng(fmt.Sprintf("./images/zone-%03d.jpg", t), img)
 
