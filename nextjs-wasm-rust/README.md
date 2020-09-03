@@ -19,6 +19,12 @@ Start the dev server and visit <http://localhost:8080>
 npm run dev
 ```
 
+For production (creates an `./out/` directory):
+
+```bash
+npm run build
+```
+
 ## Setup
 
 We added a[custom webpack config for next.js][nxdoc]
@@ -31,6 +37,10 @@ The initial next.js scaffolding was [created with][nxeg]:
 
 [nxeg]: https://github.com/vercel/next.js/tree/canary/examples/with-webassembly
 
+You need a working rust installation with target for WASM,
+and `wasm-pack` npm module must be available on path (so `-g`)
+
 ```bash
+npm i -g wasm-pack
 npx create-next-app --example with-webassembly with-webassembly-app
 ```

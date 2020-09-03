@@ -5,7 +5,7 @@ use web_sys::{CanvasRenderingContext2d, ImageData};
 
 #[wasm_bindgen]
 pub fn add_rust(x: i32, y: i32) -> i32 {
-    x - y
+    x + y
 }
 
 #[wasm_bindgen]

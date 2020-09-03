@@ -9,10 +9,8 @@ async function importWasm () {
 
 function Adder () {
   const [number, setNumber] = useState(42)
-  console.log({ number })
   async function add (a, b) {
     const { add_rust: addRust } = await importWasm()
-    console.log(`adding numbers ${a},${b}`)
     return addRust(a, b)
   }
   return (
