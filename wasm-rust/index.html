@@ -9,17 +9,10 @@
 
 <body>
   <main>
+    <h3>Zone Plate</h3>
     <div class="controls">
-      <h1>C =</h1>
-      <div>
-        <label for="real">real</label>
-        <input type="number" name="real" id="real" value="-0.14" step="0.001">
-      </div>
-      <div>
-        <label for="imaginary">imaginary</label>
-        <input type="number" name="imaginary" id="imaginary" value="0.65" step="0.001">
-      </div>
       <button class="button-primary" id="render">render</button>
+      <div id="renderms"></div>
     </div>
     <canvas id="drawing" width="600" height="600"></canvas>
   </main>
