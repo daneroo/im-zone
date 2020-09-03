@@ -1,0 +1,36 @@
+# Zone Plate -  Next.js WASM and Rust
+
+In dev mode, this has continuous recompilation enabled, including the rust wasm.
+
+However if`next.config.js::webpack.WasmPackPlugin.forceMode = 'production`, we need to reload the page for the wasm import to be refreshed.
+
+## TODO
+
+- Get a production build in dev mode (development is too slow)
+- Deploy to vercel
+- Styling
+- History (with scans and pictures)
+
+## Usage
+
+Start the dev server and visit <http://localhost:8080>
+
+```bash
+npm run dev
+```
+
+## Setup
+
+We added a[custom webpack config for next.js][nxdoc]
+to replicate [the JuliaSet wasm-bindgen example configuration][wsmdoc]
+
+[nxdoc]: https://nextjs.org/docs/api-reference/next.config.js/custom-webpack-config
+[wsmdoc]: https://rustwasm.github.io/docs/wasm-bindgen/examples/julia.html
+
+The initial next.js scaffolding was [created with][nxeg]:
+
+[nxeg]: https://github.com/vercel/next.js/tree/canary/examples/with-webassembly
+
+```bash
+npx create-next-app --example with-webassembly with-webassembly-app
+```
