@@ -1,5 +1,11 @@
 # Zone plate generation
 
+## TODO
+
+- Add example for next.js - wasm/rust + js
+- Add example for dev setup wasm/rust
+- Add js only version for next.js
+
 ## Operating
 
 ```bash
@@ -16,7 +22,6 @@ docker run -v $(pwd)/images:/images jrottenberg/ffmpeg \
   -i /images/zone-%03d.png \
   -preset slow -crf 0 -stats \
   /images/zone.mp4
-
 ```
 
 ## Gif
