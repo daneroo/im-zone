@@ -1,13 +1,14 @@
 # Zone Plate -  Next.js WASM and Rust
 
+Deployed to <https://zone.v.imetrical.com/>
+
 In dev mode, this has continuous recompilation enabled, including the rust wasm.
 
 However if`next.config.js::webpack.WasmPackPlugin.forceMode = 'production`, we need to reload the page for the wasm import to be refreshed.
 
 ## TODO
 
-- Get a production build in dev mode (development is too slow)
-- Deploy to vercel
+- Better static deploy to vercel from `out/`
 - Styling
 - History (with scans and pictures)
 
@@ -22,7 +23,7 @@ npm run dev
 For production (creates an `./out/` directory):
 
 ```bash
-npm run build
+npm run deploy:vercel
 ```
 
 ## Setup

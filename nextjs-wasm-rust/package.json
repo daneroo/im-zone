@@ -7,7 +7,10 @@
   "scripts": {
     "dev": "next",
     "build": "next build && next export",
-    "start": "next start"
+    "start": "next start",
+    "deploy:vercel": "npm run build && npm run static-push && npm run clean:vercel",
+    "static-push": "ls -l out && cp -r .vercel out/ && cd out && vercel",
+    "clean:vercel": "vercel rm --safe --yes zone"
   },
   "license": "MIT",
   "devDependencies": {
