@@ -1,10 +1,12 @@
 # Zone plate generation
 
+- [Deployed as a next.js (w/Rust/WASM)](https://zone.v.imetrical.com/)
+
 ## TODO
 
-- Add example for next.js - wasm/rust + js
-- Add example for dev setup wasm/rust
-- Add js only version for next.js
+- Move Go code (and this README) to own directory
+- Styling
+- History (with scans and pictures)
 
 ## Operating
 
