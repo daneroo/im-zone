@@ -6,12 +6,6 @@ In dev mode, this has continuous recompilation enabled, including the rust wasm.
 
 However if`next.config.js::webpack.WasmPackPlugin.forceMode = 'production`, we need to reload the page for the wasm import to be refreshed.
 
-## TODO
-
-- Better static deploy to vercel from `out/`
-- Styling
-- History (with scans and pictures)
-
 ## Usage
 
 Start the dev server and visit <http://localhost:8080>
