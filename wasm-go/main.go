@@ -166,6 +166,7 @@ func (z *zone) render(t float64, frames int, phiFunc func(w, h, frames int, x, y
 	cy := z.height / 2
 
 	index := 0
+
 	for j := 0; j < z.height; j++ {
 		y := float64(j-cy) / float64(z.height)
 		for i := 0; i < z.width; i++ {
@@ -184,8 +185,8 @@ func (z *zone) render(t float64, frames int, phiFunc func(w, h, frames int, x, y
 			z.bitmap[index+1] = c
 			z.bitmap[index+2] = c
 			z.bitmap[index+3] = 255
-			index += 4
 
+			index += 4
 		}
 	}
 }
