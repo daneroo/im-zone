@@ -1,6 +1,6 @@
 # Go WASM Experiments
 
-This was modified from `hexy` example in 
+This was modified from `hexy` example in
 [Go WASM Experiments](https://github.com/stdiopt/gowasm-experiments)
 
 ## TODO
@@ -34,4 +34,5 @@ open http://localhost:6543/
 ```
 
 ## References
+
 - [Go WASM Experiments](https://github.com/stdiopt/gowasm-experiments)
