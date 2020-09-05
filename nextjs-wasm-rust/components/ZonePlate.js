@@ -75,18 +75,6 @@ export default function ZonePlate () {
   )
 }
 
-const Q = 1024
-const cosineLookup = Array.from({ length: Q }, (_, iPhi) => {
-  const phi = iPhi * 2 * Math.PI / Q
-  return Math.cos(phi) * 126.0 + 127.0
-})
-
-function Cosine (phi) {
-  phi = (phi < 0) ? -phi : phi
-  const iPhi = Math.floor(Q * phi / (2 * Math.PI)) % Q
-  return cosineLookup[iPhi]
-}
-
 async function renderJS (ctx, width, height, offset) {
   const imageData = ctx.getImageData(0, 0, width, height)
   // data is a width*height*4 array
@@ -103,8 +91,16 @@ async function renderJS (ctx, width, height, offset) {
 
       const phi = (x * x * width + y * y * height + offset) * Math.PI
 
+      // Inline trig calculation - Math.cos
       // const c = Math.floor(Math.cos(phi) * 126 + 127)
-      const c = Cosine(phi)
+
+      // Use the Cosine lookup table
+      // const c = Cosine(phi)
+
+      // Use the Cosine lookup table - with inlined index calc
+      const absPhi = (phi < 0) ? -phi : phi
+      const iPhi = Math.floor(Q * absPhi / (2 * Math.PI)) % Q
+      const c = cosineLookup[iPhi]
 
       const index = (j * width + i) * 4
       data[index + 0] = c // red
@@ -114,4 +110,17 @@ async function renderJS (ctx, width, height, offset) {
     }
   }
   ctx.putImageData(imageData, 0, 0)
+}
+
+const Q = 1024
+const cosineLookup = Array.from({ length: Q }, (_, iPhi) => {
+  const phi = iPhi * 2 * Math.PI / Q
+  return Math.cos(phi) * 126.0 + 127.0
+})
+
+// This index calculation was inlined
+function Cosine (phi) {
+  const absPhi = (phi < 0) ? -phi : phi
+  const iPhi = Math.floor(Q * absPhi / (2 * Math.PI)) % Q
+  return cosineLookup[iPhi]
 }

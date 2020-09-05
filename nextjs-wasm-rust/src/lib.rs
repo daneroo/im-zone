@@ -38,13 +38,13 @@ fn get_zoneplate(width: u32, height: u32, offset: f64) -> Vec<u8> {
             // let phi: f64 = x * x * width as f64 + y * y * height as f64;
             let phi: f64 = (x2 + y2 + offset) * PI;
 
-            let c = phi.sin() * 126.0 + 127.0;
+            // Inline trig calculation - <f64>.cos()
+            // let c = phi.cos() * 126.0 + 127.0;
 
-            // if phi < 0.0 {
-            //     phi = -phi
-            // }
-            // let i_phi = ((Q as f64 * phi / (2.0 * PI)).floor()) as usize % Q;
-            // let c = COSINE_LOOKUP[i_phi];
+            // Use the COSINE_LOOKUP table
+            let abs_phi = if phi < 0.0 { -phi } else { phi };
+            let i_phi = ((Q as f64 * abs_phi / (2.0 * PI)).floor()) as usize % Q;
+            let c = COSINE_LOOKUP[i_phi];
 
             data[index + 0] = c as u8;
             data[index + 1] = c as u8;

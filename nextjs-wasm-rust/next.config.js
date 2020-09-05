@@ -9,10 +9,10 @@ module.exports = {
       // copied from wasm-rust dev setup
       // docs: https://github.com/wasm-tool/wasm-pack-plugin
       new WasmPackPlugin({
-        crateDirectory: path.resolve(__dirname, '.')
+        crateDirectory: path.resolve(__dirname, '.'),
         // disable forceMode for hot reload to work for the wasm
         // recompilation is triggered, module is not replaced
-        // forceMode: 'production'
+        forceMode: 'production'
       })
     ]
     return config
