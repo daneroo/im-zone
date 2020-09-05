@@ -12,7 +12,6 @@
 
 ## TODO
 
-- Sin lookup table
-- exploit symmetry in zone plates
-- Styling
+- Styling & Control (size/params)
+- Exploit symmetry in zone plates
 - History (with scans and pictures)
