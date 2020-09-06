@@ -6,7 +6,7 @@ play:
 	ffplay -loop 0 zone.mp4
 
 run:
-	go run zone.go -vxt
+	go run zone.go -vh
 
 mp4: clean run
 	# ffmpeg -loop 1 -i images/zone-%03d.png -preset slow -crf 22 -t 10 zone.mp4
