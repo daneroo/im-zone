@@ -1,10 +1,11 @@
 # Zone plate generation
 
-- [Deployed as a next.js (w/Rust/WASM)](https://zone.v.imetrical.com/)
-
-- next.js - WASM - Rust: `./nextjs-wasm-rust/`
-- static image/video generation in Go: `./static-go/`
+- [Deployed as a Next.js (w/Rust/WASM) site](https://zone.v.imetrical.com/)
+- Next.js - WASM - Rust: `./nextjs-wasm-rust/`
+- Go version, ststic cli, and WASM, working, not yet integrated into next app.
+- Static image/video generation in Go: `./static-go/`
 - Original `C++` code from CRC in `./legacy-CRC/` *circa 1996*
+- Original `Fortran` version: *lost*, but if I had it, I would dockerize it!
 
 
 | VT Zone Plate | VH Zone Plate |
@@ -17,6 +18,7 @@
 - Allocate mem in Rust (@gcouprie): <https://www.hellorust.com/demos/canvas/index.html>
 - Styling & Control (size/params)
 - Exploit symmetry in zone plates
+- Add performance comparative benchmarks (lik in WASM Go README)
 - History (with scans and pictures)
 
 ## History
