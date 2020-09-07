@@ -12,7 +12,7 @@ export default function ZonePlate () {
   const canvasRef = useRef(null)
   const [renderTime, setRenderTime] = useState('0.00')
   const [timePosition, setTimePosition] = useState('0.00')
-  const [params, setParams] = useState({ cx2: 1, cy2: 1, ct: 1 })
+  const [params, setParams] = useState({ cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 })
   const sizes = {
     64: { width: 64, height: 64 },
     200: { width: 200, height: 200 },
@@ -50,8 +50,8 @@ export default function ZonePlate () {
       const t = (loop - frames / 2) / frames
       const start = +new Date()
 
-      const { cx2, cy2, ct } = params
-      renderer(ctx, width, height, frames, t / 15, cx2, cy2, ct)
+      const { cx2, cy2, cxt, cyt, ct } = params
+      renderer(ctx, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
 
       const elapsed = +new Date() - start
 
@@ -79,7 +79,7 @@ export default function ZonePlate () {
         and reports the average render time (ms) for the last {renderTimeAverageLength} frames.
       </Box>
       <Flex>
-        {['cx2', 'cy2', 'ct'].map((k) => {
+        {['cx2', 'cy2', 'cxt', 'cyt', 'ct'].map((k) => {
           return (
             <>
               <Label sx={{ flex: 1 }} htmlFor={k}>{k} ({params[k]})</Label>
@@ -138,7 +138,7 @@ export default function ZonePlate () {
   )
 }
 
-async function renderJS (ctx, width, height, frames, t, cx2, cy2, ct) {
+async function renderJS (ctx, width, height, frames, t, cx2, cy2, cxt, cyt, ct) {
   const imageData = ctx.getImageData(0, 0, width, height)
   // data is a width*height*4 array
   const { data } = imageData
@@ -151,23 +151,26 @@ async function renderJS (ctx, width, height, frames, t, cx2, cy2, ct) {
   const ctt = ct * frames * t
   for (let j = -cy; j < height - cy; j++) {
     // originally written as yPart = cy2 * (j/height)^2 * height
-    // const cy2y2 = cy2 * j * j / height
-    const cy2y2ctt = cy2 * j * j / height + ctt
+    const cy2y2 = (cy2) ? (cy2 * j * j / height) : 0
+    const cytyt = (cyt) ? (cyt * (t * frames * frames / 2) * (j / height)) : 0
+    const cy2y2cytytctt = cy2y2 + cytyt + ctt
     for (let i = -cx; i < width - cx; i++) {
+      // for x = i/width => [-.5,.5]
       // originally written as xPart = cx2 * (i/width)^2 * width
-      const cx2x2 = cx2 * i * i / width
+      const cx2x2 = (cx2) ? (cx2 * i * i / width) : 0
+      const cxtxt = (cxt) ? (cxt * (t * frames * frames / 2) * (i / width)) : 0
 
-      const phi = (cx2x2 + cy2y2ctt) * Math.PI
+      const phi = (cx2x2 + cxtxt + cy2y2cytytctt) * Math.PI
 
       // let phi; phi = 0
-      // // closest yet
-      // //  pure temporal t*f===t*(60-f)
-      // phi = (t * 58 * frames / 30) * Math.PI // max freq
-      //
-      // // x-t (Quantized)
-      // const QQ = 8
-      // const xx = Math.round(x * 2 * QQ) / QQ
-      // phi = (t * 2 * xx * frames) * Math.PI
+      // // // closest yet
+      // // //  pure temporal t*f===t*(60-f)
+      // // phi = (t * 58 * frames / 30) * Math.PI // max freq
+      // //
+      // // // x-t (Quantized)
+      // // const QQ = 400
+      // // const xx = Math.round(i / width * 2 * QQ) / QQ
+      // phi = (t * frames * frames / 2 * i / width) * Math.PI
 
       // Inline trig calculation - Math.cos
       // const c = Math.floor(Math.cos(phi) * 126 + 127)

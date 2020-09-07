@@ -14,9 +14,8 @@
 ## TODO
 
 - Buffered frames - RAF is unreliable?
-- Animate VH Zone Plate
 - Allocate mem in Rust (@gcouprie): <https://www.hellorust.com/demos/canvas/index.html>
-- Styling & Control (size/params)
+- Styling (Layout and refactor COntrols)
 - Exploit symmetry in zone plates
 - Add performance comparative benchmarks (lik in WASM Go README)
 - History (with scans and pictures)

@@ -17,10 +17,12 @@ pub fn draw(
     t: f64,
     cx2: f64,
     cy2: f64,
+    cxt: f64,
+    cyt: f64,
     ct: f64,
 ) -> Result<(), JsValue> {
     // The real workhorse of this algorithm, generating pixel data
-    let mut data = get_zoneplate(width, height, frames, t, cx2, cy2, ct);
+    let mut data = get_zoneplate(width, height, frames, t, cx2, cy2, cxt, cyt, ct);
     let data = ImageData::new_with_u8_clamped_array_and_sh(Clamped(&mut data), width, height)?;
     ctx.put_image_data(&data, 0.0, 0.0)
 }
@@ -32,6 +34,8 @@ fn get_zoneplate(
     t: f64,
     cx2: f64,
     cy2: f64,
+    cxt: f64,
+    cyt: f64,
     ct: f64,
 ) -> Vec<u8> {
     let mut data: Vec<u8> = vec![127; (width * height * 4) as usize];
@@ -44,12 +48,20 @@ fn get_zoneplate(
     let ctt = ct * frames as f64 * t;
     for j in -cy..cy {
         // let y2 = (j * j) as f64 / height as f64;
-        let cy2y2ctt = cy2 * (j * j) as f64 / height as f64 + ctt;
-
+        let cy2y2 = cy2 * (j * j) as f64 / height as f64;
+        let cytyt = cyt * (t * frames as f64 * frames as f64 / 2.0) * (j as f64 / height as f64);
         for i in -cx..cx {
-            let cx2x2 = cx2 * (i * i) as f64 / width as f64;
+            let mut phi: f64 = cy2y2 + cytyt + ctt;
+            if cx2 != 0.0 {
+                let cx2x2 = cx2 * (i * i) as f64 / width as f64;
+                phi += cx2x2;
+            }
+            if cxt != 0.0 {
+                let cxtxt = cxt * (t * (frames * frames / 2) as f64) * (i as f64 / width as f64);
+                phi += cxtxt;
+            }
 
-            let phi: f64 = (cx2x2 + cy2y2ctt) * PI;
+            phi = phi * PI;
 
             // lookup and inline trig calculation - <f64>.cos()
             // let c = phi.cos() * 126.0 + 127.0;
