@@ -13,15 +13,27 @@ pub fn draw(
     ctx: &CanvasRenderingContext2d,
     width: u32,
     height: u32,
-    offset: f64,
+    frames: u32,
+    t: f64,
+    cx2: f64,
+    cy2: f64,
+    ct: f64,
 ) -> Result<(), JsValue> {
     // The real workhorse of this algorithm, generating pixel data
-    let mut data = get_zoneplate(width, height, offset);
+    let mut data = get_zoneplate(width, height, frames, t, cx2, cy2, ct);
     let data = ImageData::new_with_u8_clamped_array_and_sh(Clamped(&mut data), width, height)?;
     ctx.put_image_data(&data, 0.0, 0.0)
 }
 
-fn get_zoneplate(width: u32, height: u32, offset: f64) -> Vec<u8> {
+fn get_zoneplate(
+    width: u32,
+    height: u32,
+    frames: u32,
+    t: f64,
+    cx2: f64,
+    cy2: f64,
+    ct: f64,
+) -> Vec<u8> {
     let mut data: Vec<u8> = vec![127; (width * height * 4) as usize];
     // let mut data = Vec::new();
 
@@ -29,16 +41,17 @@ fn get_zoneplate(width: u32, height: u32, offset: f64) -> Vec<u8> {
     let cy = height as i32 / 2;
 
     let mut index = 0;
+    let ctt = ct * frames as f64 * t;
     for j in -cy..cy {
-        // let y: f64 = ((j as f64) - cy) / (height as f64);
-        let y2 = (j * j) as f64 / height as f64;
-        for i in -cx..cx {
-            // let x: f64 = ((i as f64) - cx) / (width as f64);
-            let x2 = (i * i) as f64 / height as f64;
-            // let phi: f64 = x * x * width as f64 + y * y * height as f64;
-            let phi: f64 = (x2 + y2 + offset) * PI;
+        // let y2 = (j * j) as f64 / height as f64;
+        let cy2y2ctt = cy2 * (j * j) as f64 / height as f64 + ctt;
 
-            // Inline trig calculation - <f64>.cos()
+        for i in -cx..cx {
+            let cx2x2 = cx2 * (i * i) as f64 / width as f64;
+
+            let phi: f64 = (cx2x2 + cy2y2ctt) * PI;
+
+            // lookup and inline trig calculation - <f64>.cos()
             // let c = phi.cos() * 126.0 + 127.0;
 
             // Use the COSINE_LOOKUP table

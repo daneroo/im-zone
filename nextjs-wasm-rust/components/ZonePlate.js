@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Flex, Box, Label, Button, useThemeUI, Slider } from 'theme-ui'
+import { Flex, Box, Label, Button, Slider, Select, useThemeUI } from 'theme-ui'
 // async function - uses dynamic import
 async function importWasm () {
   const wasm = await import('../pkg')
@@ -7,15 +7,19 @@ async function importWasm () {
 }
 
 export default function ZonePlate () {
-  const width = 400
-  const height = 400
   const { theme } = useThemeUI()
   const { colors: { primary, secondary } } = theme
   const canvasRef = useRef(null)
   const [renderTime, setRenderTime] = useState('0.00')
   const [timePosition, setTimePosition] = useState('0.00')
-  const [params, setParams] = useState({ A: 0, B: 0, C: 0, D: 0 })
-
+  const [params, setParams] = useState({ cx2: 1, cy2: 1, ct: 1 })
+  const sizes = {
+    64: { width: 64, height: 64 },
+    200: { width: 200, height: 200 },
+    400: { width: 400, height: 400 }
+  }
+  const [size, setSize] = useState('400')
+  const { width, height } = sizes[size]
   function drawJS (renderer) {
     loop(renderJS)
   }
@@ -46,16 +50,15 @@ export default function ZonePlate () {
       const t = (loop - frames / 2) / frames
       const start = +new Date()
 
-      // TODO pass frames,t
-      renderer(ctx, width, height, t)
-      // renderer(ctx, width, height, { ...params, t, frames })
+      const { cx2, cy2, ct } = params
+      renderer(ctx, width, height, frames, t / 15, cx2, cy2, ct)
 
       const elapsed = +new Date() - start
 
       addRenderTime(elapsed)
       if (loop % 1 === 0) {
         setRenderTime(averageRenderTime())
-        setTimePosition(Math.abs(t).toFixed(2))
+        setTimePosition(t.toFixed(2))
       }
 
       if (loop < frames - 1) { // -1 because we will trigger one more step()
@@ -69,13 +72,14 @@ export default function ZonePlate () {
 
   return (
     <div>
-      <h3>Canvas Experiment</h3>
+      <h2>Zone Plate Generator</h2>
+      <h3>WASM / Canvas experiment</h3>
       <Box sx={{ color: 'gray', py: 1 }}>
         Invokes the drawing function (either in JavaScript or Rust/WASM),
         and reports the average render time (ms) for the last {renderTimeAverageLength} frames.
       </Box>
       <Flex>
-        {['A', 'B', 'C', 'D'].map((k) => {
+        {['cx2', 'cy2', 'ct'].map((k) => {
           return (
             <>
               <Label sx={{ flex: 1 }} htmlFor={k}>{k} ({params[k]})</Label>
@@ -83,7 +87,7 @@ export default function ZonePlate () {
                 sx={{ flex: 3, maxWidth: 100 }}
                 name={k}
                 type='range'
-                min='-1' max='1'
+                min='-2' max='2'
                 value={params[k]}
                 onChange={(e) => setParams({ ...params, [k]: e.target.value })}
                 step='1'
@@ -91,7 +95,22 @@ export default function ZonePlate () {
             </>
           )
         })}
+      </Flex>
+      <Flex>
         <pre>{JSON.stringify(params)}</pre>
+      </Flex>
+      <Flex sx={{ maxWidth: 150 }}>
+        <Label sx={{ flex: 1 }} htmlFor='size'>Size</Label>
+        <Select
+          name='size'
+          value={size}
+          sx={{ width: 100 }}
+          onChange={(e) => setSize(e.target.value)}
+        >
+          {Object.entries(sizes).map(([k, v]) => {
+            return <option key={k}>{k}</option>
+          })}
+        </Select>
       </Flex>
       <Flex>
         <Box p={1}>
@@ -119,7 +138,7 @@ export default function ZonePlate () {
   )
 }
 
-async function renderJS (ctx, width, height, t) {
+async function renderJS (ctx, width, height, frames, t, cx2, cy2, ct) {
   const imageData = ctx.getImageData(0, 0, width, height)
   // data is a width*height*4 array
   const { data } = imageData
@@ -127,18 +146,18 @@ async function renderJS (ctx, width, height, t) {
   const cx = width / 2
   const cy = height / 2
 
-  // const { A, B, C, D, t, frames } = params
-  // const Dt = D * t
-  // const offset = Math.random() * 10
   let index = 0
+  // originally as : tPart = ct * t * frames
+  const ctt = ct * frames * t
   for (let j = -cy; j < height - cy; j++) {
-    const y = j / height
-    // const By2H = B * y * y * height
-    // const CytF = C * y * t * 2 * frames
+    // originally written as yPart = cy2 * (j/height)^2 * height
+    // const cy2y2 = cy2 * j * j / height
+    const cy2y2ctt = cy2 * j * j / height + ctt
     for (let i = -cx; i < width - cx; i++) {
-      const x = i / width
+      // originally written as xPart = cx2 * (i/width)^2 * width
+      const cx2x2 = cx2 * i * i / width
 
-      const phi = (x * x * width + y * y * height + t) * Math.PI
+      const phi = (cx2x2 + cy2y2ctt) * Math.PI
 
       // let phi; phi = 0
       // // closest yet
@@ -179,8 +198,9 @@ const cosineLookup = Array.from({ length: Q }, (_, iPhi) => {
 })
 
 // This index calculation was inlined
-function Cosine (phi) {
-  const absPhi = (phi < 0) ? -phi : phi
-  const iPhi = Math.floor(Q * absPhi / (2 * Math.PI)) % Q
-  return cosineLookup[iPhi]
-}
+// So commented for possible future use
+// function Cosine (phi) {
+//   const absPhi = (phi < 0) ? -phi : phi
+//   const iPhi = Math.floor(Q * absPhi / (2 * Math.PI)) % Q
+//   return cosineLookup[iPhi]
+// }
