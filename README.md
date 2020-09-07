@@ -15,7 +15,11 @@
 
 - Buffered frames - RAF is unreliable?
 - Allocate mem in Rust (@gcouprie): <https://www.hellorust.com/demos/canvas/index.html>
-- Styling (Layout and refactor COntrols)
+- Styling (Layout and refactor Controls)
+  - <https://1linelayouts.glitch.me/>
+  - <https://twitter.com/buildsghost/status/1251569049940537345>
+  - <https://github.com/callstack/linaria>
+  - <https://react-spectrum.adobe.com/architecture.html>
 - Exploit symmetry in zone plates
 - Add performance comparative benchmarks (lik in WASM Go README)
 - History (with scans and pictures)
