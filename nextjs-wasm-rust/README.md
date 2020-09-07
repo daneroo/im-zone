@@ -43,3 +43,7 @@ and `wasm-pack` npm module must be available on path (so `-g`)
 npm i -g wasm-pack
 npx create-next-app --example with-webassembly with-webassembly-app
 ```
+
+## References
+
+- <http://downloads.bbc.co.uk/rd/pubs/reports/1978-23.pdf>

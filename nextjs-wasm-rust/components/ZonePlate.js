@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-
+import { Flex, Box, Label, Button, useThemeUI, Slider } from 'theme-ui'
 // async function - uses dynamic import
 async function importWasm () {
   const wasm = await import('../pkg')
@@ -9,9 +9,13 @@ async function importWasm () {
 export default function ZonePlate () {
   const width = 400
   const height = 400
+  const { theme } = useThemeUI()
+  const { colors: { primary, secondary } } = theme
   const canvasRef = useRef(null)
-  const [renderTime, setRenderTime] = useState(0)
-  // canvas.current
+  const [renderTime, setRenderTime] = useState('0.00')
+  const [timePosition, setTimePosition] = useState('0.00')
+  const [params, setParams] = useState({ A: 0, B: 0, C: 0, D: 0 })
+
   function drawJS (renderer) {
     loop(renderJS)
   }
@@ -20,11 +24,11 @@ export default function ZonePlate () {
     loop(renderRust)
   }
 
+  const renderTimeAverageLength = 30
   const renderTimes = []
   function addRenderTime (elapsed) {
-    const memoryLength = 30
     renderTimes.push(elapsed)
-    if (renderTimes.length > memoryLength) {
+    if (renderTimes.length > renderTimeAverageLength) {
       renderTimes.shift()
     }
   }
@@ -33,49 +37,89 @@ export default function ZonePlate () {
     return avg.toFixed(2)
   }
 
+  const frames = 60
   function loop (renderer) {
     const ctx = canvasRef.current.getContext('2d')
     let loop = 0
-    // print for rust;s static...
-    // console.log(JSON.stringify(cosineLookup, null, 2))
+
     function step () {
-      loop++
-      const offset = loop / 30
+      const t = (loop - frames / 2) / frames
       const start = +new Date()
-      renderer(ctx, width, height, offset)
+
+      // TODO pass frames,t
+      renderer(ctx, width, height, t)
+      // renderer(ctx, width, height, { ...params, t, frames })
+
       const elapsed = +new Date() - start
 
-      // setRenderTime(elapsed)
       addRenderTime(elapsed)
-      if (loop % 10 === 0) {
+      if (loop % 1 === 0) {
         setRenderTime(averageRenderTime())
+        setTimePosition(Math.abs(t).toFixed(2))
       }
 
-      if (loop < 300) {
+      if (loop < frames - 1) { // -1 because we will trigger one more step()
         window.requestAnimationFrame(step)
       }
+      loop++
     }
+
     window.requestAnimationFrame(step)
   }
 
   return (
     <div>
       <h3>Canvas Experiment</h3>
-      <div style={{ padding: 10 }}>
+      <Box sx={{ color: 'gray', py: 1 }}>
         Invokes the drawing function (either in JavaScript or Rust/WASM),
-        and reports the render time (ms) for each render.
-      </div>
-      <div>
-        <button onClick={() => drawJS()}>DrawJS</button>
-        <button onClick={() => drawRust()}>Draw Rust</button>
-        <span style={{ marginLeft: 10 }}>Render Time: ~{renderTime} ms</span>
-      </div>
-      <canvas ref={canvasRef} style={{ border: '1px solid red' }} width={width} height={height} />
+        and reports the average render time (ms) for the last {renderTimeAverageLength} frames.
+      </Box>
+      <Flex>
+        {['A', 'B', 'C', 'D'].map((k) => {
+          return (
+            <>
+              <Label sx={{ flex: 1 }} htmlFor={k}>{k} ({params[k]})</Label>
+              <Slider
+                sx={{ flex: 3, maxWidth: 100 }}
+                name={k}
+                type='range'
+                min='-1' max='1'
+                value={params[k]}
+                onChange={(e) => setParams({ ...params, [k]: e.target.value })}
+                step='1'
+              />
+            </>
+          )
+        })}
+        <pre>{JSON.stringify(params)}</pre>
+      </Flex>
+      <Flex>
+        <Box p={1}>
+          <Button onClick={() => drawJS()}>DrawJS</Button>
+        </Box>
+        <Box p={1}>
+          <Button onClick={() => drawRust()}>Draw Rust</Button>
+        </Box>
+        <Box p={1}>
+          <Label sx={{ color: secondary }}>Render Time: ~{renderTime} ms</Label>
+          <Label sx={{ color: secondary }}>Time: {timePosition} s</Label>
+        </Box>
+      </Flex>
+      <Box>
+        <canvas
+          ref={canvasRef}
+          style={{
+            border: `1px solid ${primary}`,
+            padding: '8px'
+          }}
+          width={width} height={height}
+        />
+      </Box>
     </div>
   )
 }
 
-async function renderJS (ctx, width, height, offset) {
+async function renderJS (ctx, width, height, t) {
   const imageData = ctx.getImageData(0, 0, width, height)
   // data is a width*height*4 array
   const { data } = imageData
@@ -83,13 +127,28 @@ async function renderJS (ctx, width, height, offset) {
   const cx = width / 2
   const cy = height / 2
 
+  // const { A, B, C, D, t, frames } = params
+  // const Dt = D * t
   // const offset = Math.random() * 10
-  for (let j = 0; j < height; j++) {
-    const y = (j - cy) / height
-    for (let i = 0; i < width; i++) {
-      const x = (i - cx) / width
+  let index = 0
+  for (let j = -cy; j < height - cy; j++) {
+    const y = j / height
+    // const By2H = B * y * y * height
+    // const CytF = C * y * t * 2 * frames
+    for (let i = -cx; i < width - cx; i++) {
+      const x = i / width
 
-      const phi = (x * x * width + y * y * height + offset) * Math.PI
+      const phi = (x * x * width + y * y * height + t) * Math.PI
+
+      // let phi; phi = 0
+      // // closest yet
+      // //  pure temporal t*f===t*(60-f)
+      // phi = (t * 58 * frames / 30) * Math.PI // max freq
+      //
+      // // x-t (Quantized)
+      // const QQ = 8
+      // const xx = Math.round(x * 2 * QQ) / QQ
+      // phi = (t * 2 * xx * frames) * Math.PI
 
       // Inline trig calculation - Math.cos
       // const c = Math.floor(Math.cos(phi) * 126 + 127)
@@ -102,11 +161,12 @@ async function renderJS (ctx, width, height, offset) {
       const iPhi = Math.floor(Q * absPhi / (2 * Math.PI)) % Q
       const c = cosineLookup[iPhi]
 
-      const index = (j * width + i) * 4
+      // const index = (j * width + i) * 4
       data[index + 0] = c // red
       data[index + 1] = c // green
       data[index + 2] = c // blue
       data[index + 3] = 255 // alpha
+      index += 4
     }
   }
   ctx.putImageData(imageData, 0, 0)

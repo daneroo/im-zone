@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "@theme-ui/presets": "^0.3.0",
     "next": "latest",
     "react": "^16.7.0",
-    "react-dom": "^16.7.0"
+    "react-dom": "^16.7.0",
+    "theme-ui": "^0.3.1"
   },
   "scripts": {
     "dev": "next",

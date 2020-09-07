@@ -1,5 +1,6 @@
 
 import { useState } from 'react'
+import { Flex, Label, Button } from 'theme-ui'
 
 // async function - uses dynamic import
 async function importWasm () {
@@ -18,9 +19,15 @@ export default function WasmAdder () {
   return (
     <div>
       <h3>Simple Math</h3>
-      <div>Number: {number}</div>
-      <button onClick={async () => setNumber(await add(number, -1))}>-</button>
-      <button onClick={async () => setNumber(await add(number, 1))}>+</button>
+      <div style={{ padding: 10 }}>
+        Invokes an `add` function in Rust/WASM.
+      </div>
+
+      <Flex gap={2} columns={3}>
+        <Button onClick={async () => setNumber(await add(number, -1))}>-</Button>
+        <Label sx={{ maxWidth: 100 }}>Number: {number}</Label>
+        <Button onClick={async () => setNumber(await add(number, 1))}>+</Button>
+      </Flex>
     </div>
   )
 }
