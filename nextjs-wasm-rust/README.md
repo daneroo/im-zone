@@ -26,6 +26,10 @@ npm run deploy:vercel
 
 ## Setup
 
+These are project level configuration notes, which I could move to pages/about.mdx
+
+### Initialize with webpack for WASM/Rust
+
 We added a[custom webpack config for next.js][nxdoc]
 to replicate [the JuliaSet wasm-bindgen example configuration][wsmdoc]
 
@@ -43,6 +47,22 @@ and `wasm-pack` npm module must be available on path (so `-g`)
 npm i -g wasm-pack
 npx create-next-app --example with-webassembly with-webassembly-app
 ```
+
+### theme-ui
+
+- `npm i  theme-ui @theme-ui/presets`
+- Added `./styles/theme.js`
+- Wrapped `ThemeProvider` in `./pages/_app.js`
+
+### MDX
+
+Using `@next/mdx` [plugin](https://www.npmjs.com/package/@next/mdx)
+
+- `npm install --save @next/mdx @mdx-js/loader`
+- wrap `next.config.js` object `withMDX()`
+  - optionally add `remarkPlugins` and `rehypePlugins`
+  - add config.pageExtensions:[...,''mdx] for top level .mdx pages
+- Check for interaction with theme-ui
 
 ## References
 

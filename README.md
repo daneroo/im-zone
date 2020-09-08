@@ -15,12 +15,12 @@
 
 - Render frame 0 on load.
 - Buffered frames - RAF is unreliable?
-- Allocate mem in Rust (@gcouprie): <https://www.hellorust.com/demos/canvas/index.html>
+  - Requires refactoring of `ZonePlate`
 - Styling (Layout and refactor Controls)
+  - INCLUDE MDX PLUGIN
+  - Examine builtin next.js style options
   - <https://1linelayouts.glitch.me/>
-  - <https://twitter.com/buildsghost/status/1251569049940537345>
-  - <https://github.com/callstack/linaria>
-  - <https://react-spectrum.adobe.com/architecture.html>
+- Allocate mem in Rust (@gcouprie): <https://www.hellorust.com/demos/canvas/index.html>
 - Exploit symmetry in zone plates
 - Content
   - History (with scans and pictures)

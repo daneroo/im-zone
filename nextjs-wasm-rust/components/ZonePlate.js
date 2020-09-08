@@ -169,6 +169,7 @@ async function renderJS (ctx, width, height, frames, t, cx2, cy2, cxt, cyt, ct) 
   let index = 0
   // originally as : tPart = ct * t * frames
   const ctt = ct * frames * t
+
   for (let j = -cy; j < height - cy; j++) {
     // originally written as yPart = cy2 * (j/height)^2 * height
     const cy2y2 = (cy2) ? (cy2 * j * j / height) : 0
@@ -178,19 +179,11 @@ async function renderJS (ctx, width, height, frames, t, cx2, cy2, cxt, cyt, ct) 
       // for x = i/width => [-.5,.5]
       // originally written as xPart = cx2 * (i/width)^2 * width
       const cx2x2 = (cx2) ? (cx2 * i * i / width) : 0
+      // TODO: this is not periodic in t
+      //   but we have phi(t)==phi(frames-t) ..check?
       const cxtxt = (cxt) ? (cxt * (t * frames * frames / 2) * (i / width)) : 0
 
       const phi = (cx2x2 + cxtxt + cy2y2cytytctt) * Math.PI
-
-      // let phi; phi = 0
-      // // // closest yet
-      // // //  pure temporal t*f===t*(60-f)
-      // // phi = (t * 58 * frames / 30) * Math.PI // max freq
-      // //
-      // // // x-t (Quantized)
-      // // const QQ = 400
-      // // const xx = Math.round(i / width * 2 * QQ) / QQ
-      // phi = (t * frames * frames / 2 * i / width) * Math.PI
 
       // Inline trig calculation - Math.cos
       // const c = Math.floor(Math.cos(phi) * 126 + 127)
