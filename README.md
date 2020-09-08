@@ -13,6 +13,7 @@
 
 ## TODO
 
+- Render frame 0 on load.
 - Buffered frames - RAF is unreliable?
 - Allocate mem in Rust (@gcouprie): <https://www.hellorust.com/demos/canvas/index.html>
 - Styling (Layout and refactor Controls)
@@ -21,8 +22,12 @@
   - <https://github.com/callstack/linaria>
   - <https://react-spectrum.adobe.com/architecture.html>
 - Exploit symmetry in zone plates
-- Add performance comparative benchmarks (lik in WASM Go README)
-- History (with scans and pictures)
+- Content
+  - History (with scans and pictures)
+  - Math
+    - <https://github.com/Rokt33r/remark-math>
+    - <https://github.com/MatejBransky/react-mathjax>
+  - Add performance comparative benchmarks (lik in WASM Go README)
 
 ## History
 

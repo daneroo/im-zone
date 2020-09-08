@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Flex, Box, Label, Button, Slider, Select, useThemeUI } from 'theme-ui'
+import { Grid, Flex, Box, Label, Button, IconButton, Slider, Select, useThemeUI } from 'theme-ui'
 // async function - uses dynamic import
 async function importWasm () {
   const wasm = await import('../pkg')
@@ -78,24 +78,44 @@ export default function ZonePlate () {
         Invokes the drawing function (either in JavaScript or Rust/WASM),
         and reports the average render time (ms) for the last {renderTimeAverageLength} frames.
       </Box>
-      <Flex>
+      <Grid>
+        <Flex sx={{ my: 1, gap: 10 }}>
+          {Object.entries({
+            VH: { cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 },
+            VT: { cx2: 0, cy2: 1, cxt: 1, cyt: 0, ct: 0 },
+            HT: { cx2: 1, cy2: 0, cxt: 0, cyt: 1, ct: 0 }
+          }).map(([k, v]) => {
+            return (
+              <IconButton
+                key={k} size={64}
+                onClick={(e) => setParams(v)}
+              >
+                <img
+                  style={{ borderRadius: '10px' }}
+                  src={`https://via.placeholder.com/48/000/fff?text=${k}`}
+                />
+              </IconButton>
+            )
+          })}
+        </Flex>
+
+      </Grid>
+      <Grid columns={2} sx={{ gap: 1, maxWidth: '15rem' }}>
         {['cx2', 'cy2', 'cxt', 'cyt', 'ct'].map((k) => {
           return (
-            <>
+            <Flex key={k}>
               <Label sx={{ flex: 1 }} htmlFor={k}>{k} ({params[k]})</Label>
               <Slider
-                sx={{ flex: 3, maxWidth: 100 }}
+                sx={{ flex: '1 2' }}
                 name={k}
-                type='range'
-                min='-2' max='2'
+                type='range' min='-2' max='2' step='1'
                 value={params[k]}
                 onChange={(e) => setParams({ ...params, [k]: e.target.value })}
-                step='1'
               />
-            </>
+            </Flex>
           )
         })}
-      </Flex>
+      </Grid>
       <Flex>
         <pre>{JSON.stringify(params)}</pre>
       </Flex>
