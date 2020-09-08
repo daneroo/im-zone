@@ -1,7 +1,10 @@
 const path = require('path')
 const WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin')
-
-module.exports = {
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx?$/
+})
+module.exports = withMDX({
+  pageExtensions: ['js', 'jsx', 'mdx'],
   webpack (config, { buildId, dev, isServer, defaultLoaders, webpack }) {
     config.output.webassemblyModuleFilename = 'static/wasm/[modulehash].wasm'
     config.plugins = [
@@ -17,4 +20,4 @@ module.exports = {
     ]
     return config
   }
-}
+})

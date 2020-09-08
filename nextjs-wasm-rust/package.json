@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@mdx-js/loader": "^1.6.16",
+    "@next/mdx": "^9.5.3",
     "@theme-ui/presets": "^0.3.0",
     "next": "latest",
     "react": "^16.7.0",
