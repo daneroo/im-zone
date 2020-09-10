@@ -11,8 +11,10 @@ export default function ZonePlate () {
   const { theme } = useThemeUI()
   const { colors: { primary, secondary } } = theme
   const canvasRef = useRef(null)
+
   const [renderTime, setRenderTime] = useState('0.00')
   const [timePosition, setTimePosition] = useState('0.00')
+
   const [params, setParams] = useState({ cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 })
   const sizes = {
     64: { width: 64, height: 64 },
@@ -21,6 +23,7 @@ export default function ZonePlate () {
   }
   const [size, setSize] = useState('400')
   const { width, height } = sizes[size]
+
   function drawJS (renderer) {
     loop(renderJS)
   }
@@ -84,6 +87,7 @@ export default function ZonePlate () {
     renderJS(ctx, width, height, frames, t, cx2, cy2, cxt, cyt, ct)
   }
 
+  const [showParams, setShowParams] = useState(false)
   return (
     <div>
       <h3>WASM / Canvas experiment</h3>
@@ -92,7 +96,7 @@ export default function ZonePlate () {
         and reports the average render time (ms) for the last {renderTimeAverageLength} frames.
       </Box>
       <Grid>
-        <Flex sx={{ my: 1, gap: 10 }}>
+        <Flex sx={{ my: 1, gap: 10, alignItems: 'center' }}>
           {Object.entries({
             VH: { cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 },
             VT: { cx2: 0, cy2: 1, cxt: 1, cyt: 0, ct: 0 },
@@ -110,41 +114,45 @@ export default function ZonePlate () {
               </IconButton>
             )
           })}
+          <Button onClick={() => setShowParams(!showParams)}>More...</Button>
         </Flex>
-
       </Grid>
-      <Grid columns={2} sx={{ gap: 1, maxWidth: '15rem' }}>
-        {['cx2', 'cy2', 'cxt', 'cyt', 'ct'].map((k) => {
-          return (
-            <Flex key={k}>
-              <Label sx={{ flex: 1 }} htmlFor={k}>{k} ({params[k]})</Label>
-              <Slider
-                sx={{ flex: '1 2' }}
-                name={k}
-                type='range' min='-2' max='2' step='1'
-                value={params[k]}
-                onChange={(e) => setParams({ ...params, [k]: e.target.value })}
-              />
-            </Flex>
-          )
-        })}
-      </Grid>
-      <Flex>
-        <pre>{JSON.stringify(params)}</pre>
-      </Flex>
-      <Flex sx={{ maxWidth: 150 }}>
-        <Label sx={{ flex: 1 }} htmlFor='size'>Size</Label>
-        <Select
-          name='size'
-          value={size}
-          sx={{ width: 100 }}
-          onChange={(e) => setSize(e.target.value)}
-        >
-          {Object.entries(sizes).map(([k, v]) => {
-            return <option key={k}>{k}</option>
-          })}
-        </Select>
-      </Flex>
+      {showParams && (
+        <>
+          <Grid columns={2} sx={{ gap: 1, maxWidth: '15rem' }}>
+            {['cx2', 'cy2', 'cxt', 'cyt', 'ct'].map((k) => {
+              return (
+                <Flex key={k}>
+                  <Label sx={{ flex: 1 }} htmlFor={k}>{k} ({params[k]})</Label>
+                  <Slider
+                    sx={{ flex: '1 2' }}
+                    name={k}
+                    type='range' min='-2' max='2' step='1'
+                    value={params[k]}
+                    onChange={(e) => setParams({ ...params, [k]: e.target.value })}
+                  />
+                </Flex>
+              )
+            })}
+          </Grid>
+          <Flex>
+            <pre>{JSON.stringify(params)}</pre>
+          </Flex>
+          <Flex sx={{ maxWidth: 150 }}>
+            <Label sx={{ flex: 1 }} htmlFor='size'>Size</Label>
+            <Select
+              name='size'
+              value={size}
+              sx={{ width: 100 }}
+              onChange={(e) => setSize(e.target.value)}
+            >
+              {Object.entries(sizes).map(([k, v]) => {
+                return <option key={k}>{k}</option>
+              })}
+            </Select>
+          </Flex>
+        </>
+      )}
       <Flex>
         <Box p={1}>
           <Button onClick={() => drawJS()}>DrawJS</Button>
