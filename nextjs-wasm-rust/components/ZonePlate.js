@@ -1,5 +1,8 @@
 import { useRef, useState } from 'react'
-import { Grid, Flex, Box, Label, Button, IconButton, Slider, Select, useThemeUI } from 'theme-ui'
+import { Flex, Box, Label, Button, useThemeUI } from 'theme-ui'
+
+import Controls from './ZonePlate/Controls'
+import { useParams, useSizes } from './ZonePlate/hooks'
 
 // async function - uses dynamic import
 async function importWasm () {
@@ -15,14 +18,9 @@ export default function ZonePlate () {
   const [renderTime, setRenderTime] = useState('0.00')
   const [timePosition, setTimePosition] = useState('0.00')
 
-  const [params, setParams] = useState({ cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 })
-  const sizes = {
-    64: { width: 64, height: 64 },
-    200: { width: 200, height: 200 },
-    400: { width: 400, height: 400 }
-  }
-  const [size, setSize] = useState('400')
-  const { width, height } = sizes[size]
+  // These control the size and coefficients od the ZonePlate
+  const [params, setParams] = useParams()
+  const [width, height, sizes, setSize] = useSizes()
 
   function drawJS (renderer) {
     loop(renderJS)
@@ -87,7 +85,6 @@ export default function ZonePlate () {
     renderJS(ctx, width, height, frames, t, cx2, cy2, cxt, cyt, ct)
   }
 
-  const [showParams, setShowParams] = useState(false)
   return (
     <div>
       <h3>WASM / Canvas experiment</h3>
@@ -95,72 +92,11 @@ export default function ZonePlate () {
         Invokes the drawing function (either in JavaScript or Rust/WASM),
         and reports the average render time (ms) for the last {renderTimeAverageLength} frames.
       </Box>
-      <Grid>
-        <Flex sx={{ my: 1, gap: 10, alignItems: 'center' }}>
-          {Object.entries({
-            VH: { cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 },
-            VT: { cx2: 0, cy2: 1, cxt: 1, cyt: 0, ct: 0 },
-            HT: { cx2: 1, cy2: 0, cxt: 0, cyt: 1, ct: 0 }
-          }).map(([k, v]) => {
-            return (
-              <IconButton
-                key={k} size={64}
-                onClick={(e) => setParams(v)}
-              >
-                <img
-                  style={{ borderRadius: '10px' }}
-                  src={`https://via.placeholder.com/48/000/fff?text=${k}`}
-                />
-              </IconButton>
-            )
-          })}
-          <Button onClick={() => setShowParams(!showParams)}>More...</Button>
-        </Flex>
-      </Grid>
-      {showParams && (
-        <>
-          <Grid columns={2} sx={{ gap: 1, maxWidth: '15rem' }}>
-            {['cx2', 'cy2', 'cxt', 'cyt', 'ct'].map((k) => {
-              return (
-                <Flex key={k}>
-                  <Label sx={{ flex: 1 }} htmlFor={k}>{k} ({params[k]})</Label>
-                  <Slider
-                    sx={{ flex: '1 2' }}
-                    name={k}
-                    type='range' min='-2' max='2' step='1'
-                    value={params[k]}
-                    onChange={(e) => setParams({ ...params, [k]: e.target.value })}
-                  />
-                </Flex>
-              )
-            })}
-          </Grid>
-          <Flex>
-            <pre>{JSON.stringify(params)}</pre>
-          </Flex>
-          <Flex sx={{ maxWidth: 150 }}>
-            <Label sx={{ flex: 1 }} htmlFor='size'>Size</Label>
-            <Select
-              name='size'
-              value={size}
-              sx={{ width: 100 }}
-              onChange={(e) => setSize(e.target.value)}
-            >
-              {Object.entries(sizes).map(([k, v]) => {
-                return <option key={k}>{k}</option>
-              })}
-            </Select>
-          </Flex>
-        </>
-      )}
-      <Flex>
-        <Box p={1}>
-          <Button onClick={() => drawJS()}>DrawJS</Button>
-        </Box>
-        <Box p={1}>
-          <Button onClick={() => drawRust()}>Draw Rust</Button>
-        </Box>
-        <Box p={1}>
+      <Controls {...{ params, setParams, setSize, sizes }} />
+      <Flex sx={{ gap: 2, py: 1 }}>
+        <Button onClick={() => drawJS()}>DrawJS</Button>
+        <Button onClick={() => drawRust()}>Draw Rust</Button>
+        <Box>
           <Label sx={{ color: secondary }}>Render Time: ~{renderTime} ms</Label>
           <Label sx={{ color: secondary }}>Time: {timePosition} s</Label>
         </Box>
