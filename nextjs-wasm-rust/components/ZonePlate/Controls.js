@@ -5,30 +5,31 @@ import { Grid, Flex, Label, Button, IconButton, Slider, Select } from 'theme-ui'
 export default function Controls ({ params, setParams, size, setSize, sizes }) {
   const [showParams, setShowParams] = useState(false)
 
+  const knownParams = {
+    VH: { cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 },
+    VT: { cx2: 0, cy2: 1, cxt: 1, cyt: 0, ct: 0 },
+    HT: { cx2: 1, cy2: 0, cxt: 0, cyt: 1, ct: 0 }
+  }
+
   return (
     <>
-      <Grid>
-        <Flex sx={{ my: 1, gap: 10, alignItems: 'center' }}>
-          {Object.entries({
-            VH: { cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 },
-            VT: { cx2: 0, cy2: 1, cxt: 1, cyt: 0, ct: 0 },
-            HT: { cx2: 1, cy2: 0, cxt: 0, cyt: 1, ct: 0 }
-          }).map(([k, v]) => {
-            return (
-              <IconButton
-                key={k} size={64}
-                onClick={(e) => setParams(v)}
-              >
-                <img
-                  style={{ borderRadius: '10px' }}
-                  src={`https://via.placeholder.com/48/000/fff?text=${k}`}
-                />
-              </IconButton>
-            )
-          })}
-          <Button onClick={() => setShowParams(!showParams)}>More...</Button>
-        </Flex>
-      </Grid>
+      <Flex sx={{ gap: 1, alignItems: 'center' }}>
+        {Object.entries(knownParams).map(([k, v]) => {
+          return (
+            <IconButton
+              key={k} size={40}
+              onClick={(e) => setParams(v)}
+            >
+              <img
+                width={40} height={40}
+                style={{ borderRadius: '4px' }}
+                src={`https://via.placeholder.com/40/333/fff?text=${k}`}
+              />
+            </IconButton>
+          )
+        })}
+        <Button onClick={() => setShowParams(!showParams)}>More...</Button>
+      </Flex>
       {showParams && (
         <>
           <Grid columns={2} sx={{ gap: 1, maxWidth: '15rem' }}>

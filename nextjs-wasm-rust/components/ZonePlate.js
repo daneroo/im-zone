@@ -93,7 +93,7 @@ export default function ZonePlate () {
         and reports the average render time (ms) for the last {renderTimeAverageLength} frames.
       </Box>
       <Controls {...{ params, setParams, setSize, sizes }} />
-      <Flex sx={{ gap: 2, py: 1 }}>
+      <Flex sx={{ gap: 1, py: 1 }}>
         <Button onClick={() => drawJS()}>DrawJS</Button>
         <Button onClick={() => drawRust()}>Draw Rust</Button>
         <Box>
