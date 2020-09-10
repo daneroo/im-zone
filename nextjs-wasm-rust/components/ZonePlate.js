@@ -87,11 +87,6 @@ export default function ZonePlate () {
 
   return (
     <div>
-      <h3>WASM / Canvas experiment</h3>
-      <Box sx={{ color: 'gray', py: 1 }}>
-        Invokes the drawing function (either in JavaScript or Rust/WASM),
-        and reports the average render time (ms) for the last {renderTimeAverageLength} frames.
-      </Box>
       <Controls {...{ params, setParams, setSize, sizes }} />
       <Flex sx={{ gap: 1, py: 1 }}>
         <Button onClick={() => drawJS()}>DrawJS</Button>
