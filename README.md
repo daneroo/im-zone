@@ -13,17 +13,14 @@
 
 ## TODO
 
-- Render frame 0 on load.
+- Render frame 0 on load - WIP
 - Buffered frames - RAF is unreliable?
   - Requires refactoring of `ZonePlate`
-- Styling (Layout and refactor Controls)
-  - INCLUDE MDX PLUGIN
-  - Examine builtin next.js style options
-  - <https://1linelayouts.glitch.me/>
+- Styling - <https://1linelayouts.glitch.me/>
 - Allocate mem in Rust (@gcouprie): <https://www.hellorust.com/demos/canvas/index.html>
 - Exploit symmetry in zone plates
 - Content
-  - History (with scans and pictures)
+  - History add scans and pictures
   - Math
     - <https://github.com/Rokt33r/remark-math>
     - <https://github.com/MatejBransky/react-mathjax>

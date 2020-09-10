@@ -43,7 +43,9 @@ export default function ZonePlate () {
   }
 
   const frames = 60
+  const [looping, setLooping] = useState(false)
   function loop (renderer) {
+    setLooping(true)
     const ctx = canvasRef.current.getContext('2d')
     let loop = 0
 
@@ -64,6 +66,8 @@ export default function ZonePlate () {
 
       if (loop < frames - 1) { // -1 because we will trigger one more step()
         window.requestAnimationFrame(step)
+      } else {
+        setLooping(false)
       }
       loop++
     }
@@ -71,9 +75,17 @@ export default function ZonePlate () {
     window.requestAnimationFrame(step)
   }
 
+  if (canvasRef && canvasRef.current && !looping) {
+    console.log('draw', { looping })
+    const ctx = canvasRef.current.getContext('2d')
+
+    const { cx2, cy2, cxt, cyt, ct } = params
+    const t = -0.5
+    renderJS(ctx, width, height, frames, t, cx2, cy2, cxt, cyt, ct)
+  }
+
   return (
     <div>
-      <h2>Zone Plate Generator</h2>
       <h3>WASM / Canvas experiment</h3>
       <Box sx={{ color: 'gray', py: 1 }}>
         Invokes the drawing function (either in JavaScript or Rust/WASM),
