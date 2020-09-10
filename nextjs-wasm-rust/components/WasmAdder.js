@@ -23,9 +23,9 @@ export default function WasmAdder () {
         Invokes an `add` function in Rust/WASM.
       </div>
 
-      <Flex gap={2} columns={3}>
+      <Flex sx={{ gap: 1, justifyContent: 'flext-start', alignItems: 'center' }}>
         <Button onClick={async () => setNumber(await add(number, -1))}>-</Button>
-        <Label sx={{ maxWidth: 100 }}>Number: {number}</Label>
+        <label>Number: {number}</label>
         <Button onClick={async () => setNumber(await add(number, 1))}>+</Button>
       </Flex>
     </div>

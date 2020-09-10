@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { Grid, Flex, Box, Label, Button, IconButton, Slider, Select, useThemeUI } from 'theme-ui'
+
 // async function - uses dynamic import
 async function importWasm () {
   const wasm = await import('../pkg')
