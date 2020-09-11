@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Flex, Box, Label, Button, useThemeUI } from 'theme-ui'
 
 import Controls from './ZonePlate/Controls'
@@ -14,7 +14,6 @@ async function importWasm () {
 export default function ZonePlate () {
   const { theme } = useThemeUI()
   const { colors: { primary, secondary } } = theme
-  const canvasRef = useRef(null)
 
   const [renderTime, setRenderTime] = useState('0.00')
   const [timePosition, setTimePosition] = useState('0.00')
@@ -22,6 +21,22 @@ export default function ZonePlate () {
   // These control the size and coefficients od the ZonePlate
   const [params, setParams] = useParams()
   const [width, height, size, sizes, setSize] = useSizes()
+
+  const [canvas, setCanvas] = useState(null)
+  // useCallback instead of useRef - https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
+  const canvasRef = useCallback(canvas => {
+    setCanvas(canvas)
+  }) // dependency of [size] breaks first render
+
+  useEffect(() => {
+    if (canvas !== null) {
+      const ctx = canvas.getContext('2d')
+
+      const { cx2, cy2, cxt, cyt, ct } = params
+      const t = -0.5
+      renderJS(ctx, width, height, frames, t, cx2, cy2, cxt, cyt, ct)
+    }
+  }, [canvasRef, params])
 
   function drawJS (renderer) {
     loop(renderJS)
@@ -48,7 +63,7 @@ export default function ZonePlate () {
   const [looping, setLooping] = useState(false)
   function loop (renderer) {
     setLooping(true)
-    const ctx = canvasRef.current.getContext('2d')
+    const ctx = canvas.getContext('2d')
     let loop = 0
 
     function step () {
@@ -78,12 +93,6 @@ export default function ZonePlate () {
   }
 
   if (canvasRef && canvasRef.current && !looping) {
-    console.log('draw', { looping })
-    const ctx = canvasRef.current.getContext('2d')
-
-    const { cx2, cy2, cxt, cyt, ct } = params
-    const t = -0.5
-    renderJS(ctx, width, height, frames, t, cx2, cy2, cxt, cyt, ct)
   }
 
   return (
