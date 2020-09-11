@@ -19,9 +19,10 @@
 - Styling - <https://1linelayouts.glitch.me/>
 - Allocate mem in Rust (@gcouprie): <https://www.hellorust.com/demos/canvas/index.html>
 - Exploit symmetry in zone plates
+- lerna - split go and rust into submodules and publish
 - Content
   - History add scans and pictures
-  - Math
+  - Math in markdown
     - <https://github.com/Rokt33r/remark-math>
     - <https://github.com/MatejBransky/react-mathjax>
   - Add performance comparative benchmarks (lik in WASM Go README)

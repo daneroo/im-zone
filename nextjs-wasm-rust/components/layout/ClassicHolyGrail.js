@@ -25,7 +25,7 @@ export default function ClassicHolyGrail ({
       <div style={{ gridColumn: '3 / 4', padding: '1rem' }}>
         {right}
       </div>
-      <footer style={{ padding: '1rem', textAlign: 'center', gridColumn: '1 / 4' }}>
+      <footer style={{ padding: '1rem', gridColumn: '1 / 4' }}>
         {footer}
       </footer>
     </div>

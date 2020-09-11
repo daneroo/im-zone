@@ -4,23 +4,18 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import Icon from './icons/Icon'
-import Twitter from './icons/Twitter'
-import Github from './icons/Github'
 import ColorToggle from './icons/ColorToggle'
 
 export default function SiteHeader () {
   return (
     <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-      <LogoLink />
+      <LogoLink size='24' />
       <Flex sx={{ gap: 1 }}>
         <ActiveLink href='/stack'>Stack</ActiveLink>
         |
         <ActiveLink href='/history'>History</ActiveLink>
       </Flex>
-      <Flex sx={{ justifyContent: 'flex-end', alignItems: 'center', gap: 2 }}>
-        <SocialLinks size={24} />
-        <ThemeSwitcher size={32} />
-      </Flex>
+      <ThemeSwitcher size={24} />
     </Flex>
   )
 }
@@ -75,40 +70,6 @@ function ActiveLink ({ children, href }) {
     <Link sx={{ px: 1 }} href={href}>
       <a style={style}>{children}</a>
     </Link>
-  )
-}
-
-function SocialLinks ({ size = 24 }) {
-// TODO: get urls from ...
-  const social = {
-    twitter: {
-      href: 'https://twitter.com/daneroo',
-      IconComponent: <Twitter />
-    },
-    //  repo or user?
-    github: {
-      href: 'https://github.com/daneroo/im-zone',
-      IconComponent: <Github />
-    }
-  }
-  return (
-    <Flex sx={{ gap: 1, alignItems: 'center', opacity: 0.7 }}>
-      {Object.entries(social).map(([name, { href, IconComponent }]) => {
-        return (
-          <a
-            key={name}
-            href={href} target='_blank' rel='noopener noreferrer'
-            // NOTE: must set height explicitly on <a/> to preserve height of icon
-            style={{ height: size }}
-            aria-label={name}
-            title={name}
-          >
-            <Icon icon={IconComponent} size={size} />
-          </a>
-
-        )
-      })}
-    </Flex>
   )
 }
 

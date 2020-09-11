@@ -86,9 +86,9 @@ export default function ZonePlate () {
   }
 
   return (
-    <div>
+    <Flex sx={{ flexDirection: 'column', gap: 1 }}>
       <Controls {...{ params, setParams, setSize, sizes }} />
-      <Flex sx={{ gap: 1, py: 1 }}>
+      <Flex sx={{ gap: 1 }}>
         <Button onClick={() => drawJS()}>DrawJS</Button>
         <Button onClick={() => drawRust()}>Draw Rust</Button>
         <Box>
@@ -106,7 +106,7 @@ export default function ZonePlate () {
           width={width} height={height}
         />
       </Box>
-    </div>
+    </Flex>
   )
 }
 
