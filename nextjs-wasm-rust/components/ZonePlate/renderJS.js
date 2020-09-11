@@ -5,7 +5,7 @@
 export async function renderJS (ctx, width, height, frames, t, cx2, cy2, cxt, cyt, ct) {
   // const imageData = ctx.getImageData(0, 0, width, height)
   // Was replaced with a cached allocated ImageData array
-  const imageData = getCachedImageData(width, height, false)
+  const imageData = getCachedImageData(width, height)
 
   // data is a width*height*4 array
   const { data } = imageData
@@ -71,9 +71,13 @@ const cosineLookup = Array.from({ length: Q }, (_, iPhi) => {
 // Simply Reuse ImageData for each render
 // This avoids re-allocating the data structure
 const reuseImageData = {}
-function getCachedImageData (width, height, force = false) {
+function getCachedImageData (width, height) {
   const key = JSON.stringify({ width, height })
-  if (!reuseImageData[key] || force) {
+  if (!reuseImageData[key]) {
+    Object.keys(reuseImageData).forEach((key) => {
+      console.log('de-alloc imagedata', key)
+      delete reuseImageData[key]
+    })
     console.log('alloc imagedata', key)
     const imageData = new ImageData(width, height)
     const { data } = imageData
