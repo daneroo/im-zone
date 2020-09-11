@@ -75,10 +75,10 @@ function getCachedImageData (width, height) {
   const key = JSON.stringify({ width, height })
   if (!reuseImageData[key]) {
     Object.keys(reuseImageData).forEach((key) => {
-      console.log('de-alloc imagedata', key)
+      // console.log('de-alloc imagedata', key)
       delete reuseImageData[key]
     })
-    console.log('alloc imagedata', key)
+    // console.log('alloc imagedata', key)
     const imageData = new ImageData(width, height)
     const { data } = imageData
     for (let i = 0; i < width * height * 4; i += 4) {

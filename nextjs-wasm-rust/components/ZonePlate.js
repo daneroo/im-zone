@@ -25,25 +25,23 @@ export default function ZonePlate () {
   const [canvas, setCanvas] = useState(null)
   // useCallback instead of useRef - https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
   const canvasRef = useCallback(canvas => {
+    // console.log('useCallback', size, canvas)
     setCanvas(canvas)
-  }) // dependency of [size] breaks first render
+  }, [size])
 
   useEffect(() => {
+    // console.log('useEffect', size, canvas)
     if (canvas !== null) {
-      const ctx = canvas.getContext('2d')
-
-      const { cx2, cy2, cxt, cyt, ct } = params
-      const t = -0.5
-      renderJS(ctx, width, height, frames, t, cx2, cy2, cxt, cyt, ct)
+      drawLoop(renderJS, 1)
     }
-  }, [canvasRef, params])
+  }, [canvasRef, canvas, params])
 
   function drawJS (renderer) {
-    loop(renderJS)
+    drawLoop(renderJS, 60)
   }
   async function drawRust (renderer) {
     const { draw: renderRust } = await importWasm()
-    loop(renderRust)
+    drawLoop(renderRust, 60)
   }
 
   const renderTimeAverageLength = 60
@@ -59,10 +57,7 @@ export default function ZonePlate () {
     return avg.toFixed(2) + '/' + renderTimes.length
   }
 
-  const frames = 60
-  const [looping, setLooping] = useState(false)
-  function loop (renderer) {
-    setLooping(true)
+  function drawLoop (renderer, frames = 1) {
     const ctx = canvas.getContext('2d')
     let loop = 0
 
@@ -84,15 +79,12 @@ export default function ZonePlate () {
       if (loop < frames - 1) { // -1 because we will trigger one more step()
         window.requestAnimationFrame(step)
       } else {
-        setLooping(false)
+        // console.log('last.step', { loop, t, frames })
       }
       loop++
     }
 
     window.requestAnimationFrame(step)
-  }
-
-  if (canvasRef && canvasRef.current && !looping) {
   }
 
   return (
