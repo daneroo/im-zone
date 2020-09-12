@@ -13,19 +13,20 @@
 
 ## TODO
 
-- Render frame 0 on load - WIP
+- Styling - <https://1linelayouts.glitch.me/>
+  - Body/Main maxWidth
+  - Responsive
+- lerna - split go and rust into submodules and publish
 - Buffered frames - RAF is unreliable?
   - Requires refactoring of `ZonePlate`
-- Styling - <https://1linelayouts.glitch.me/>
-- Allocate mem in Rust (@gcouprie): <https://www.hellorust.com/demos/canvas/index.html>
 - Exploit symmetry in zone plates
-- lerna - split go and rust into submodules and publish
 - Content
   - History add scans and pictures
   - Math in markdown
     - <https://github.com/Rokt33r/remark-math>
     - <https://github.com/MatejBransky/react-mathjax>
   - Add performance comparative benchmarks (lik in WASM Go README)
+    - pub-sub in nats?
 
 ## History
 

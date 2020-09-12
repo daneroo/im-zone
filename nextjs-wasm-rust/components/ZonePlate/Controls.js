@@ -20,7 +20,6 @@ export default function Controls ({ params, setParams, size, setSize, sizes, shu
               key={k} size={40}
               onClick={(e) => {
                 setParams(v)
-                console.log(k, k !== 'VH')
                 setShuttle(k !== 'VH')
               }}
             >

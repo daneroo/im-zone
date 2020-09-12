@@ -14,7 +14,7 @@ export function useSizes () {
     400: { width: 400, height: 400 }
   }
   // size is the label(str) index into the sizes map
-  const [size, setSize] = useState('400')
+  const [size, setSize] = useState('200')
   const { width, height } = sizes[size]
   return [width, height, size, sizes, setSize]
 }
