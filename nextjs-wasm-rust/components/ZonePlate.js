@@ -54,7 +54,7 @@ export default function ZonePlate () {
   }
   function averageRenderTime () {
     const avg = renderTimes.reduce((sum, elapsed) => (sum + elapsed)) / renderTimes.length
-    return avg.toFixed(2) + '/' + renderTimes.length
+    return `${avg.toFixed(2)}ms -  ${renderTimes.length}f`
   }
 
   function drawLoop (renderer, frames = 1) {
@@ -94,7 +94,7 @@ export default function ZonePlate () {
         <Button onClick={() => drawJS()}>DrawJS</Button>
         <Button onClick={() => drawRust()}>Draw Rust</Button>
         <Box>
-          <Label sx={{ color: secondary }}>Render Time: ~{renderTime} ms</Label>
+          <Label sx={{ color: secondary }}>Render Time: ~{renderTime}</Label>
           <Label sx={{ color: secondary }}>Time: {timePosition} s</Label>
         </Box>
       </Flex>

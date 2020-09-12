@@ -1,4 +1,7 @@
 use std::f64::consts::PI;
+use std::mem;
+use std::os::raw::c_void;
+// use std::slice; // for making a slice from allocated ptr
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::Clamped;
 use web_sys::{CanvasRenderingContext2d, ImageData};
@@ -6,6 +9,21 @@ use web_sys::{CanvasRenderingContext2d, ImageData};
 #[wasm_bindgen]
 pub fn add_rust(x: i32, y: i32) -> i32 {
     x + y
+}
+
+#[wasm_bindgen]
+pub fn alloc(size: usize) -> *mut c_void {
+    let mut buf = Vec::with_capacity(size);
+    let ptr = buf.as_mut_ptr();
+    mem::forget(buf);
+    return ptr as *mut c_void;
+}
+
+#[wasm_bindgen]
+pub fn dealloc(ptr: *mut c_void, cap: usize) {
+    unsafe {
+        let _buf = Vec::from_raw_parts(ptr, 0, cap);
+    }
 }
 
 #[wasm_bindgen]
@@ -21,13 +39,27 @@ pub fn draw(
     cyt: f64,
     ct: f64,
 ) -> Result<(), JsValue> {
+    let size = (width * height * 4) as usize;
+
+    // This is using a pointer allocated by alloc() above
+    // It was deemed an unnecessary optimization
+    // - 1 million alloc/dealloc invocations take 60ms
+    // this method requires passing the alooc() -> pointer: *mut u8 param
+    // let data = unsafe { slice::from_raw_parts_mut(pointer, size) };
+
+    // This allocates a new vec every render, and casts it to $mut [u8]
+    let mut v = vec![255_u8; size];
+    let data: &mut [u8] = v.as_mut();
+
     // The real workhorse of this algorithm, generating pixel data
-    let mut data = get_zoneplate(width, height, frames, t, cx2, cy2, cxt, cyt, ct);
-    let data = ImageData::new_with_u8_clamped_array_and_sh(Clamped(&mut data), width, height)?;
-    ctx.put_image_data(&data, 0.0, 0.0)
+    fill_zoneplate(data, width, height, frames, t, cx2, cy2, cxt, cyt, ct);
+
+    let img_data = ImageData::new_with_u8_clamped_array_and_sh(Clamped(data), width, height)?;
+    ctx.put_image_data(&img_data, 0.0, 0.0)
 }
 
-fn get_zoneplate(
+fn fill_zoneplate(
+    data: &mut [u8],
     width: u32,
     height: u32,
     frames: u32,
@@ -37,9 +69,7 @@ fn get_zoneplate(
     cxt: f64,
     cyt: f64,
     ct: f64,
-) -> Vec<u8> {
-    let mut data: Vec<u8> = vec![127; (width * height * 4) as usize];
-
+) {
     let cx = width as i32 / 2;
     let cy = height as i32 / 2;
 
@@ -78,8 +108,6 @@ fn get_zoneplate(
             index += 4;
         }
     }
-
-    data
 }
 
 #[macro_use]
