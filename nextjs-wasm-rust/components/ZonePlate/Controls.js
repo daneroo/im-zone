@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
-import { Grid, Flex, Label, Button, IconButton, Slider, Select } from 'theme-ui'
+import { Grid, Flex, Label, Button, Checkbox, IconButton, Slider, Select } from 'theme-ui'
 
-export default function Controls ({ params, setParams, size, setSize, sizes }) {
+export default function Controls ({ params, setParams, size, setSize, sizes, shuttle, setShuttle }) {
   const [showParams, setShowParams] = useState(false)
 
   const knownParams = {
@@ -18,7 +18,11 @@ export default function Controls ({ params, setParams, size, setSize, sizes }) {
           return (
             <IconButton
               key={k} size={40}
-              onClick={(e) => setParams(v)}
+              onClick={(e) => {
+                setParams(v)
+                console.log(k, k !== 'VH')
+                setShuttle(k !== 'VH')
+              }}
             >
               <img
                 width={40} height={40}
@@ -64,6 +68,10 @@ export default function Controls ({ params, setParams, size, setSize, sizes }) {
               })}
             </Select>
           </Flex>
+          <Label>
+            <Checkbox checked={shuttle} onChange={(e) => setShuttle(!shuttle)} />
+              Shuttle
+          </Label>
         </>
       )}
     </>
