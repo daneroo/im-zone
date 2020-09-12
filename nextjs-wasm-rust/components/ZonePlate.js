@@ -40,14 +40,14 @@ export default function ZonePlate () {
   async function drawJS (renderer) {
     for (let i = 0; i < 10; i++) {
       const direction = (shuttle) ? (i % 2) * 2 - 1 : 1
-      const avgRenderTime = await drawLoop(renderJS, 60, direction)
+      /* const avgRenderTime = */ await drawLoop(renderJS, 60, direction)
     }
   }
   async function drawRust (renderer) {
     const { draw: renderRust } = await importWasm()
     for (let i = 0; i < 10; i++) {
       const direction = (shuttle) ? (i % 2) * 2 - 1 : 1
-      const avgRenderTime = await drawLoop(renderRust, 60, direction)
+      /* const avgRenderTime = */ await drawLoop(renderRust, 60, direction)
     }
   }
 
