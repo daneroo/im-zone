@@ -46,15 +46,12 @@ export default function Controls ({ params, setParams, size, setSize, sizes, shu
                     name={k}
                     type='range' min='-2' max='2' step='1'
                     value={params[k]}
-                    onChange={(e) => setParams({ ...params, [k]: e.target.value })}
+                    onChange={(e) => setParams({ ...params, [k]: Number(e.target.value) })}
                   />
                 </Flex>
               )
             })}
           </Grid>
-          <Flex>
-            <pre>{JSON.stringify(params)}</pre>
-          </Flex>
           <Flex sx={{ maxWidth: 150 }}>
             <Label sx={{ flex: 1 }} htmlFor='size'>Size</Label>
             <Select

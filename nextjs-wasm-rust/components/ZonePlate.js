@@ -4,6 +4,7 @@ import { Flex, Box, Label, Button, useThemeUI } from 'theme-ui'
 import Controls from './ZonePlate/Controls'
 import { useParams, useSizes } from './ZonePlate/hooks'
 import { renderJS } from './ZonePlate/renderJS'
+import Equation from './ZonePlate/Equation'
 
 // async function - uses dynamic import
 async function importWasm () {
@@ -99,7 +100,7 @@ export default function ZonePlate () {
   }
 
   return (
-    <Flex sx={{ flexDirection: 'column', gap: 1 }}>
+    <Flex sx={{ flexDirection: 'column', gap: 1, alignItems: 'center' }}>
       <Controls {...{ params, setParams, size, setSize, sizes, shuttle, setShuttle }} />
       <Flex sx={{ gap: 1 }}>
         <Button onClick={() => drawJS()}>DrawJS</Button>
@@ -109,6 +110,7 @@ export default function ZonePlate () {
           <Label sx={{ color: secondary }}>Time: {timePosition} s</Label>
         </Box>
       </Flex>
+      <Equation params={params} />
       <Box>
         <canvas
           ref={canvasRef}
