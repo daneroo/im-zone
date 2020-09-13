@@ -16,7 +16,7 @@ import (
 var (
 	wFlag      = flag.Int("W", 640, "width of images")
 	hFlag      = flag.Int("H", 480, "height of images")
-	framesFlag = flag.Int("n", 240, "number of frames")
+	framesFlag = flag.Int("n", 60, "number of frames")
 	jpegFlag   = flag.Bool("jpeg", false, "use .jpg instead oof .png")
 	vxtFlag    = flag.Bool("vxt", false, "x*t+y^2 (default)")
 	vhFlag     = flag.Bool("vh", false, "x^2+y^2 zone")
@@ -64,7 +64,7 @@ func main() {
 
 // phi functions
 func vh(s image.Point, frames int, x, y, t float64) float64 {
-	return (float64(s.X)*x*x + float64(s.Y)*y*y) * math.Pi
+	return (float64(s.X)*x*x + float64(s.Y)*y*y + t*float64(frames/15)) * math.Pi
 }
 func vxt(s image.Point, frames int, x, y, t float64) float64 {
 	return (float64(frames)*x*t + float64(s.Y)*y*y) * math.Pi
