@@ -68,5 +68,3 @@ export const sxmedia = namedPxBreakpoints.reduce(
   }),
   {}
 )
-
-console.log(sxmedia)

@@ -105,12 +105,13 @@ export default function ZonePlate () {
       <Flex sx={{ gap: 1 }}>
         <Button onClick={() => drawJS()}>DrawJS</Button>
         <Button onClick={() => drawRust()}>Draw Rust</Button>
-        <Box>
-          <Label sx={{ color: secondary }}>Render Time: ~{renderTime}</Label>
-          <Label sx={{ color: secondary }}>Time: {timePosition} s</Label>
-        </Box>
       </Flex>
       <Equation params={params} />
+      <Box>
+        <Label sx={{ color: secondary, fontSize: '90%' }}>Render: ~{renderTime}</Label>
+        {/* add svg sparkline and time axis progress [-.5,.5] */}
+        {/* <Label sx={{ color: secondary }}>Time: {timePosition} s</Label> */}
+      </Box>
       <Box>
         <canvas
           ref={canvasRef}
