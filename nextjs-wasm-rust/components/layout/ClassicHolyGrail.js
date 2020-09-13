@@ -1,33 +1,44 @@
 
 // with https://1linelayouts.glitch.me/ 05. Classic Holy Grail Layout
 
+import { Grid } from 'theme-ui'
+
 export function ClassicHolyGrail ({
   header = <></>,
   left = <></>, main = <></>, right = <></>,
   footer = <></>
 }) {
   return (
-    <div style={{
-      display: 'grid',
+    <Grid sx={{
       height: '100vh',
-      gridTemplate: 'auto 1fr auto / auto 1fr auto'
+      margin: 'auto', // center when maxWidth is active
+      gridTemplate: 'auto 1fr auto / auto 1fr auto',
+
+      // maxWidth using theme-ui breakpoint array notation
+      maxWidth: [null, null, 1024]
+      // which is equivalent to:
+      // const { theme: { sxmedia } } = useThemeUI()
+      // [sxmedia.desktop_up]: {
+      //   maxWidth: '1024px'
+      // }
     }}
     >
       <header style={{ padding: '1rem', gridColumn: '1 / 4' }}>
         {header}
       </header>
-      <div style={{ gridColumn: '1 / 2', padding: '1rem' }}>
+      {/* Removed Left Right padding, because there is none on this site. */}
+      <div style={{ gridColumn: '1 / 2', padding: '0rem' }}>
         {left}
       </div>
       <main style={{ gridColumn: '2 / 3' }}>
         {main}
       </main>
-      <div style={{ gridColumn: '3 / 4', padding: '1rem' }}>
+      <div style={{ gridColumn: '3 / 4', padding: '0rem' }}>
         {right}
       </div>
       <footer style={{ padding: '1rem', gridColumn: '1 / 4' }}>
         {footer}
       </footer>
-    </div>
+    </Grid>
   )
 }

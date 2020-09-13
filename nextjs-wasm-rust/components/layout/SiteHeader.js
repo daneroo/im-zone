@@ -1,4 +1,4 @@
-import { useThemeUI, useColorMode, Flex } from 'theme-ui'
+import { useThemeUI, useColorMode, Flex, Box } from 'theme-ui'
 import Link from 'next/link'
 
 import { useRouter } from 'next/router'
@@ -8,10 +8,13 @@ import ColorToggle from './icons/ColorToggle'
 import { SocialLinks } from './SocialLinks'
 
 export function SiteHeader () {
-  const { theme: { breakpoints } } = useThemeUI()
-  console.log({ breakpoints })
+  const { theme: { sxmedia } } = useThemeUI()
   return (
-    <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+    <Flex sx={{
+      alignItems: 'center',
+      justifyContent: 'space-between'
+    }}
+    >
       <LogoLink size='32' />
       <Flex sx={{ gap: 1 }}>
         <ActiveLink href='/stack'>Stack</ActiveLink>
@@ -19,7 +22,15 @@ export function SiteHeader () {
         <ActiveLink href='/history'>History</ActiveLink>
       </Flex>
       <Flex sx={{ gap: 2 }}>
-        <SocialLinks size={20} />
+        <Box sx={{
+          display: 'none',
+          [sxmedia.tablet_up]: {
+            display: 'block'
+          }
+        }}
+        >
+          <SocialLinks size={20} />
+        </Box>
         <ThemeSwitcher size={24} />
       </Flex>
     </Flex>
