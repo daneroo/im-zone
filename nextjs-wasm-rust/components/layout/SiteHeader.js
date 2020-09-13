@@ -5,17 +5,23 @@ import { useRouter } from 'next/router'
 
 import Icon from './icons/Icon'
 import ColorToggle from './icons/ColorToggle'
+import { SocialLinks } from './SocialLinks'
 
-export default function SiteHeader () {
+export function SiteHeader () {
+  const { theme: { breakpoints } } = useThemeUI()
+  console.log({ breakpoints })
   return (
     <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-      <LogoLink size='24' />
+      <LogoLink size='32' />
       <Flex sx={{ gap: 1 }}>
         <ActiveLink href='/stack'>Stack</ActiveLink>
         |
         <ActiveLink href='/history'>History</ActiveLink>
       </Flex>
-      <ThemeSwitcher size={24} />
+      <Flex sx={{ gap: 2 }}>
+        <SocialLinks size={20} />
+        <ThemeSwitcher size={24} />
+      </Flex>
     </Flex>
   )
 }
@@ -24,7 +30,8 @@ function LogoLink ({ size = 32 }) {
   return (
     <Flex sx={{ alignItems: 'center', gap: 1 }}>
       <Link href='/'>
-        <a style={{ height: size }}>
+        {/* compensate for active link bottom border? */}
+        <a style={{ height: size - 2 }}>
           <Logo size={size} />
         </a>
       </Link>

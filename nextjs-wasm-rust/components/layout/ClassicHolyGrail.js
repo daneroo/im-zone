@@ -1,7 +1,7 @@
 
 // with https://1linelayouts.glitch.me/ 05. Classic Holy Grail Layout
 
-export default function ClassicHolyGrail ({
+export function ClassicHolyGrail ({
   header = <></>,
   left = <></>, main = <></>, right = <></>,
   footer = <></>

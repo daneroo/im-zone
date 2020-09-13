@@ -15,7 +15,10 @@
 
 - Styling - <https://1linelayouts.glitch.me/>
   - Body/Main maxWidth
-  - Responsive
+  - Responsive 
+    - 600px, 900px ?
+    - 43em (688px), 62em (992px), and 82em (1312px) wide
+    - example hide social media <43(r)em
 - lerna - split go and rust into submodules and publish
 - Buffered frames - RAF is unreliable?
   - Requires refactoring of `ZonePlate`
