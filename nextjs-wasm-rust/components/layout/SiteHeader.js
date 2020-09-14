@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { useRouter } from 'next/router'
 
-import Icon from './icons/Icon'
+import IconButton from './icons/IconButton'
 import ColorToggle from './icons/ColorToggle'
 import { SocialLinks } from './SocialLinks'
 
@@ -95,19 +95,12 @@ function ActiveLink ({ children, href }) {
 function ThemeSwitcher ({ size = 32 }) {
   const { colorMode, cycleColorMode } = useCycleColor()
   return (
-    <button
-      style={{
-        padding: 0,
-        background: 'none',
-        border: 'none',
-        cursor: 'pointer'
-      }}
+    <IconButton
       onClick={cycleColorMode}
-      aria-label='Change Theme'
-      title={colorMode}
-    >
-      <Icon icon={<ColorToggle />} size={size} />
-    </button>
+      label={colorMode}
+      icon={<ColorToggle />}
+      size={size}
+    />
   )
 }
 

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
-import { Grid, Flex, Label, Button, Checkbox, IconButton, Slider, Select } from 'theme-ui'
+import { Grid, Flex, Box, Label, Button, Checkbox, Slider, Select } from 'theme-ui'
+import IconButton from '../layout/icons/IconButton'
 import SVG from '../layout/icons/SVG'
-import Icon from '../layout/icons/Icon'
 
 export default function Controls ({ params, setParams, size, setSize, sizes, shuttle, setShuttle }) {
   const [showParams, setShowParams] = useState(false)
@@ -18,27 +18,30 @@ export default function Controls ({ params, setParams, size, setSize, sizes, shu
     <>
       <Flex sx={{ gap: 1, alignItems: 'center' }}>
         <Label sx={{ flex: 1 }} htmlFor='presets'>Presets</Label>
-
         {Object.entries(knownParams).map(([k, v]) => {
+          const size = 48
           return (
             <IconButton
-              key={k} size={40}
+              key={k}
+              size={size}
               onClick={(e) => {
                 setParams(v)
-                setShuttle(k !== 'VH')
+                // pretty flaky...
+                setShuttle(k.endsWith('T'))
               }}
-            >
-              <img
-                width={40} height={40}
-                style={{ borderRadius: '4px' }}
-                src={`https://via.placeholder.com/40/333/fff?text=${k}`}
-              />
-            </IconButton>
+              icon={
+                <img
+                  width={size} height={size}
+                  style={{ borderRadius: '4px' }}
+                  src={`https://via.placeholder.com/40/333/fff?text=${k}`}
+                />
+              }
+            />
           )
         })}
       </Flex>
       <Flex sx={{ my: 2, gap: 3, alignItems: 'center' }}>
-        <Label sx={{ flex: 1 }} htmlFor='size'>Size</Label>
+        <Label sx={{ flex: 1 }} htmlFor='size'>Sizes</Label>
         <SizeButtons sizes={sizes} setSize={setSize} />
       </Flex>
       <Flex sx={{ gap: 1, alignItems: 'center' }}>
@@ -46,80 +49,103 @@ export default function Controls ({ params, setParams, size, setSize, sizes, shu
       </Flex>
       {showParams && (
         <>
-          <Grid columns={2} sx={{ gap: 1, maxWidth: '15rem' }}>
+          <Grid columns={2} sx={{ gap: 2 }}>
             {['cx2', 'cy2', 'cxt', 'cyt', 'ct'].map((k) => {
               return (
-                <Flex key={k}>
-                  <Label sx={{ flex: 1 }} htmlFor={k}>{k} ({params[k]})</Label>
+                <Label key={k} sx={{ gap: 2, alignItems: 'center' }}>
+                  <Box sx={{ flex: 1, textAlign: 'right' }}>
+                    <Term name={k} value={params[k]} />
+                  </Box>
                   <Slider
-                    sx={{ flex: '1 2' }}
+                    sx={{ flex: 2 }}
                     name={k}
                     type='range' min='-2' max='2' step='1'
                     value={params[k]}
                     onChange={(e) => setParams({ ...params, [k]: Number(e.target.value) })}
                   />
-                </Flex>
+                </Label>
               )
             })}
           </Grid>
-          <Flex sx={{ maxWidth: 150 }}>
-            <Label sx={{ flex: 1 }} htmlFor='size'>Size</Label>
-            <Select
-              name='size'
-              value={size}
-              sx={{ width: 100 }}
-              onChange={(e) => setSize(e.target.value)}
-            >
-              {Object.entries(sizes).map(([k, v]) => {
-                return <option key={k}>{k}</option>
-              })}
-            </Select>
-          </Flex>
-          <Label>
-            <Checkbox checked={shuttle} onChange={(e) => setShuttle(!shuttle)} />
-              Shuttle
-          </Label>
+          <Grid columns={2} sx={{ gap: 3, alignItems: 'center' }}>
+            <Label sx={{ gap: 1, alignItems: 'center' }}>
+              <div>Size</div>
+              <Select
+                name='size'
+                value={size}
+                sx={{ width: '5rem' }}
+                onChange={(e) => setSize(e.target.value)}
+              >
+                {Object.entries(sizes).map(([k, v]) => {
+                  return <option key={k}>{k}</option>
+                })}
+              </Select>
+            </Label>
+            <Label sx={{ gap: 1 }}>
+              <div>Shuttle</div>
+              <Checkbox checked={shuttle} onChange={(e) => setShuttle(!shuttle)} />
+            </Label>
+          </Grid>
         </>
       )}
     </>
   )
 }
 
-function SizeButtons ({ sizes, setSize }) {
-  // Object.entries(sizes).map(([sz, { width, height }, i]) => ...
-  // sizes is a map : label -> {width,height}
-  // we want array of labels
-  const labels = Object.keys(sizes)
+// k: cx2, cy2, ct..
+function Term ({ name, value }) {
+  const monomial = {
+    cx2: <>x<sup>2</sup></>,
+    cy2: <>y<sup>2</sup></>,
+    cxt: <>xt</>,
+    cyt: <>yt</>,
+    ct: <>t</>
+  }
+  return (
+    <code style={{ fontSize: '1.3em' }}>
+      {value}{monomial[name]}
+    </code>
 
-  return labels.map((label, i) => (
-    <SizeButton
-      key={i}
-      sz01={(i + 2) / (labels.length + 1)} // .5,.75,1
-      onClick={() => setSize(label)}
-    />)
   )
 }
+function SizeButtons ({ sizes, setSize }) {
+  // sizes is a map : label -> {width,height}
+  // we want array of labels
 
-function SizeButton ({ sz01, onClick }) {
-  const sz = sz01
-  const offset = (1 - sz) / 2
+  const iconSpecs = Object.keys(sizes).map((label, i, labels) => {
+    const { width, height } = sizes[label]
+    return {
+      label,
+      wide: (i + 2) / (labels.length + 1),
+      ratio: width / height
+    }
+  })
+  return iconSpecs.map(({ label, wide, ratio }) => (
+    <SizeButton
+      key={label}
+      label={label}
+      wide={wide}
+      ratio={ratio}
+      onClick={() => setSize(label)}
+    />
+  ))
+}
+
+function SizeButton ({ label, wide, ratio, onClick }) {
+  const high = wide / ratio
   return (
-    <IconButton key={sz} onClick={onClick}>
-      <Icon icon={
-      // eslint-disable-next-line react/jsx-pascal-case
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          viewBox='0 0 1 1'
-          width={24}
-          height={24}
-        >
-          <g stroke='red' strokeWidth={0.01} transform={`translate(${offset},${offset})`}>
-            {/* <circle r={sz} /> */}
-            <rect width={sz} height={sz} />
+    <IconButton
+      label={label}
+      size={24}
+      onClick={onClick}
+      icon={(
+        // eslint-disable-next-line react/jsx-pascal-case
+        <SVG viewBox='0 0 1 1'>
+          <g transform={`translate(${(1 - wide) / 2},${(1 - high) / 2})scale(1,${1 / ratio})`}>
+            <rect width={wide} height={wide} />
           </g>
-        </svg>
-      }
-      />
-    </IconButton>
+        </SVG>
+      )}
+    />
   )
 }

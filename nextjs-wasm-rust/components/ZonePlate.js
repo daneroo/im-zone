@@ -102,7 +102,7 @@ export default function ZonePlate () {
   return (
     <Flex sx={{ flexDirection: 'column', gap: 1, alignItems: 'center' }}>
       <Controls {...{ params, setParams, size, setSize, sizes, shuttle, setShuttle }} />
-      <Flex sx={{ gap: 1 }}>
+      <Flex sx={{ gap: 1, my: 1 }}>
         <Button onClick={() => drawJS()}>DrawJS</Button>
         <Button onClick={() => drawRust()}>Draw Rust</Button>
       </Flex>

@@ -11,7 +11,9 @@ export function useSizes () {
   const sizes = {
     64: { width: 64, height: 64 },
     200: { width: 200, height: 200 },
-    400: { width: 400, height: 400 }
+    400: { width: 400, height: 400 },
+    '480p': { width: 768, height: 480 } // or 720 or 768
+    // '720p': { width: 1280, height: 720 }
   }
   // size is the label(str) index into the sizes map
   const [size, setSize] = useState('200')
