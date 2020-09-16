@@ -28,21 +28,25 @@ export function useSizes () {
 
 /* global requestAnimationFrame cancelAnimationFrame */
 
-export function useAnimationFrame (callback, pause = true) {
+export function useAnimationFrame (callback = (delta) => {}, pause = true) {
   // Use useRef for mutable variables that we want to persist
   // without triggering a re-render on their change
   const requestRef = useRef()
   const previousTimeRef = useRef()
-  const pauseRef = useRef()
+  const pauseRef = useRef(pause)
+  const callbackRef = useRef(callback)
   useEffect(() => {
     console.log({ pause })
     pauseRef.current = pause
   }, [pause]) // Make sure the effect runs only once
+  useEffect(() => {
+    callbackRef.current = callback
+  }, [callback]) // Make sure the effect runs only once
 
   const animate = time => {
     if (previousTimeRef.current !== undefined) {
-      const deltaTime = time - previousTimeRef.current
-      callback(deltaTime)
+      const delta = time - previousTimeRef.current
+      callbackRef.current(delta)
     }
     previousTimeRef.current = time
     requestRef.current = requestAnimationFrame(animate)
