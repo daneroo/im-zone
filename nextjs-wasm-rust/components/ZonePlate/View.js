@@ -10,68 +10,102 @@ async function importWasm () {
   return wasm
 }
 
-export default function View ({ width, height, params, pause, renderer }) {
+export default function View ({ width, height, params, pause, shuttle, renderer }) {
   const { theme: { colors: { primary } } } = useThemeUI()
+
+  // Resolve dynamic imports (once only) asynchronously
+  const engineRef = useRef({ JS: renderJS }) // ...Rust:renderRust,Go:renderGo
+  useEffect(() => {
+    async function loader () {
+      const { draw: renderRust } = await importWasm()
+      engineRef.current.Rust = renderRust
+      // Go comes next
+      engineRef.current.Go = renderJS // Placeholder
+    }
+    loader()
+  }, [])
 
   const [canvas, setCanvas] = useState(null)
   // useCallback instead of useRef - https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
   const canvasRef = useCallback(canvas => {
-    // console.log('useCallback', size, canvas)
     setCanvas(canvas)
   }, [width, height])
 
   // make sure we render when size/params change
   useEffect(() => {
-    // console.log('useEffect', size, canvas)
     if (canvas !== null) {
-      draw()
+      const frame = 30
+      draw(frame)
+      annotate({ frame })
     }
   }, [canvasRef, canvas, params, renderer])
 
-  async function draw (frame = 30, frames = 60) {
-    const start = +new Date()
-
+  // invoke the appropriate engine for rendering the zoneplate
+  function draw (frame = 30, frames = 60) {
     const t = (frame - frames / 2) / frames
     const { cx2, cy2, cxt, cyt, ct } = params
     const ctx = canvas.getContext('2d')
-    if (renderer === 'Rust') {
-      const { draw: renderRust } = await importWasm()
-      renderRust(ctx, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
-    } else {
-      renderJS(ctx, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
-    }
 
-    const elapsed = +new Date() - start
-    return elapsed
+    // default to renderJS - in case loader has not completed yet
+    if (!engineRef.current || !engineRef.current[renderer]) {
+      console.log('Renderer not ready, defaulting to renderJS')
+    }
+    const renderFunc = engineRef.current[renderer] || renderJS
+
+    renderFunc(ctx, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
   }
 
-  const frameValue = useRef()
-  const stampValue = useRef()
-
-  useEffect(() => {
-    stampValue.current = +new Date()
-    frameValue.current = 42
-  }, [])
-
-  async function animate ({ fps, avgFps, avgElapsed }) {
-    frameValue.current = (frameValue.current + 1) % 60
-    const frame = frameValue.current
-
-    const elapsed = await draw(frame)
-
+  function annotate ({ avgFps = 0, avgElapsed = 0, frame = 0 } = {}) {
+    const padding = 2
+    const baseFontSize = (width < 150) ? 16 : 20
     const ctx = canvas.getContext('2d')
+    ctx.font = `${baseFontSize}px monospace`
     ctx.fillStyle = 'black'
-    ctx.font = '20px monospace'
-    ctx.fillText(`${fps}fps ~${avgFps}fps`, 10, 20)
-    ctx.fillText(`${elapsed.toString().padStart(3, ' ')}ms ~${avgElapsed.padStart(5, ' ')}ms`, 10, 40)
+    ctx.textAlign = 'left'
+    ctx.textBaseline = 'top'
+    if (avgFps) {
+      ctx.fillText(`${avgElapsed.toFixed(1).padStart(3, ' ')}ms`, padding, padding)
+    }
+    if (avgElapsed) {
+      ctx.fillText(`${avgFps.toFixed(0)}fps`, padding, padding + baseFontSize)
+    }
     const gopherBlue = 'rgb(1, 173, 216)'
     // const fuschia = 'rgb(206, 48, 98)'
     const rust = 'rgb(183,65,14)'
-    ctx.font = '40px monospace'
+    ctx.font = `${baseFontSize * 2}px monospace`
     ctx.fillStyle = { JS: 'yellow', Rust: rust, Go: gopherBlue }[renderer] || 'yellow'
-    ctx.fillText(renderer, 10, height - 20)
+    ctx.textAlign = 'right'
+    ctx.textBaseline = 'top'
+    ctx.fillText(renderer, width - 2, 2)
 
-    return elapsed
+    if (frame || frame === 0) {
+      ctx.fillStyle = primary
+      ctx.beginPath()
+      const x = width * frame / 60
+      const y = 0
+      const radius = height * 0.02
+      ctx.arc(x, y, radius, 0, 2 * Math.PI)
+      ctx.closePath()
+      ctx.fill()
+    }
+  }
+
+  // counter for current frame when in animation loop
+  const frameRef = useRef()
+  useEffect(() => {
+    frameRef.current = 0
+  }, [])
+
+  // update the frame counter, invoke the render, annotate
+  // `animate` is called from useAnimationFrame, which injects fps/elapsed
+  function animate ({ avgFps, avgElapsed }) {
+    const period = 60 // 2 x for shuttle
+    frameRef.current = (frameRef.current + 1) % (2 * period)
+    const fc = frameRef.current
+    const frame = (shuttle) ? period - Math.abs(period - fc) : fc % 60
+
+    draw(frame)
+    annotate({ avgFps, avgElapsed, frame })
   }
   useAnimationFrame(animate, pause)
 

@@ -43,7 +43,7 @@ export default function ZonePlate () {
         {/* <Label sx={{ color: secondary }}>Time: {timePosition} s</Label> */}
       </Box>
       <Box>
-        <View {...{ width, height, params, pause, renderer }} />
+        <View {...{ width, height, params, pause, shuttle, renderer }} />
       </Box>
     </Flex>
   )

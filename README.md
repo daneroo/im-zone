@@ -14,20 +14,13 @@
 ## TODO
 
 - Styling - <https://1linelayouts.glitch.me/>
-  - Body/Main maxWidth
-  - Responsive 
-    - 600px, 900px ?
-    - 43em (688px), 62em (992px), and 82em (1312px) wide
-    - example hide social media <43(r)em
-- lerna - split go and rust into submodules and publish
+  - Control/Play-Pause
+- lerna - split go and rust into packages and publish
+- api route for images/ per engine
 - Buffered frames - RAF is unreliable?
-  - Requires refactoring of `ZonePlate`
 - Exploit symmetry in zone plates
 - Content
   - History add scans and pictures
-  - Math in markdown
-    - <https://github.com/Rokt33r/remark-math>
-    - <https://github.com/MatejBransky/react-mathjax>
   - Add performance comparative benchmarks (lik in WASM Go README)
     - pub-sub in nats?
 

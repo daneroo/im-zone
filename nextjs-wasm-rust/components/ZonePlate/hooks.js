@@ -9,7 +9,7 @@ export function useParams () {
 //  This was to accommodate varying aspect ratios...
 export function useSizes () {
   const sizes = {
-    64: { width: 64, height: 64 },
+    100: { width: 100, height: 100 },
     200: { width: 200, height: 200 },
     400: { width: 400, height: 400 },
     '480p': { width: 768, height: 480 } // or 720 or 768
@@ -28,9 +28,11 @@ export function useSizes () {
 
 /* global requestAnimationFrame cancelAnimationFrame */
 
+// Provides control for an animation loop
+// pause - animation state - start/stop control
+// call back will be invoked with (fps,elapsed)
+//  which are averaged over the last avgHorizon=60 frames
 export function useAnimationFrame (callback = (delta) => {}, pause = true) {
-  console.log('-useRAF')
-
   // Use useRef for mutable variables that we want to persist
   // without triggering a re-render on their change
   const requestRef = useRef()
@@ -50,18 +52,19 @@ export function useAnimationFrame (callback = (delta) => {}, pause = true) {
     elapsedHistoRef.current = [] // reset Histogram
   }, [pause, callback])
 
-  const animate = async time => {
+  const animate = time => {
     if (previousTimeRef.current !== undefined) {
       const delta = time - previousTimeRef.current
       const histo = appendTrim(deltaHistoRef.current, delta)
       // console.log(deltaHistoRef.current)
       deltaHistoRef.current = histo
-      const avgDelta = avg(histo)
+      const avgFps = (1000 / avg(histo))
       const avgElapsed = avg(elapsedHistoRef.current)
-      const fps = (1000 / delta).toFixed(0).padStart(3, ' ')
-      const avgFps = (1000 / avgDelta).toFixed(0)
 
-      const elapsed = await callbackRef.current({ fps, avgFps, avgElapsed: avgElapsed.toFixed(1) })
+      const start = +new Date()
+      callbackRef.current({ avgFps, avgElapsed })
+      const elapsed = +new Date() - start
+
       elapsedHistoRef.current = appendTrim(elapsedHistoRef.current, elapsed)
     }
     previousTimeRef.current = time
@@ -73,7 +76,6 @@ export function useAnimationFrame (callback = (delta) => {}, pause = true) {
       requestRef.current = requestAnimationFrame(animate)
     }
     return () => {
-      console.log('cancel')
       cancelAnimationFrame(requestRef.current)
     }
   }, [pause]) // Make sure the effect runs only once
