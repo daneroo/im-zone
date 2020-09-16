@@ -46,8 +46,8 @@ export async function renderJS (ctx, width, height, frames, t, cx2, cy2, cxt, cy
       // const index = (j * width + i) * 4
       data[index + 0] = c // red
       data[index + 1] = c // green
-      data[index + 2] = c // blue
-      // data[index + 3] = 255 // alpha
+      // data[index + 2] = c // blue
+      // data[index + 3] = 255 // alpha // set once in getCachedImageData
       index += 4
     }
   }
@@ -69,7 +69,7 @@ const cosineLookup = Array.from({ length: Q }, (_, iPhi) => {
 // }
 
 // Simply Reuse ImageData for each render
-// This avoids re-allocating the data structure
+// This avoids re-allocating the data structure - unless width/height change
 const reuseImageData = {}
 function getCachedImageData (width, height) {
   const key = JSON.stringify({ width, height })

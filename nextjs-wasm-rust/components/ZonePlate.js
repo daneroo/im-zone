@@ -1,8 +1,9 @@
-import { useState, useCallback, useEffect } from 'react'
-import { Flex, Box, Label, Button, useThemeUI } from 'theme-ui'
+import { useState, useCallback, useEffect, useRef } from 'react'
+import { Flex, Box, Label, Button, Checkbox, useThemeUI } from 'theme-ui'
+// import { useAnimationFrameLoop } from 'react-timing-hooks'
 
 import Controls from './ZonePlate/Controls'
-import { useParams, useSizes } from './ZonePlate/hooks'
+import { useParams, useSizes, useAnimationFrame } from './ZonePlate/hooks'
 import { renderJS } from './ZonePlate/renderJS'
 import Equation from './ZonePlate/Equation'
 
@@ -18,6 +19,9 @@ export default function ZonePlate () {
   const [renderTime, setRenderTime] = useState('0.00')
   const [timePosition, setTimePosition] = useState('0.00')
   const [shuttle, setShuttle] = useState(false)
+  const [renderer, setRenderer] = useState('JS')
+  // animation state
+  const [pause, setPause] = useState(true)
 
   // These control the size and coefficients od the ZonePlate
   const [params, setParams] = useParams()
@@ -34,23 +38,9 @@ export default function ZonePlate () {
   useEffect(() => {
     // console.log('useEffect', size, canvas)
     if (canvas !== null) {
-      drawLoop(renderJS, 1)
+      draw()
     }
-  }, [canvasRef, canvas, params])
-
-  async function drawJS (renderer) {
-    for (let i = 0; i < 10; i++) {
-      const direction = (shuttle) ? (i % 2) * 2 - 1 : 1
-      /* const avgRenderTime = */ await drawLoop(renderJS, 60, direction)
-    }
-  }
-  async function drawRust (renderer) {
-    const { draw: renderRust } = await importWasm()
-    for (let i = 0; i < 10; i++) {
-      const direction = (shuttle) ? (i % 2) * 2 - 1 : 1
-      /* const avgRenderTime = */ await drawLoop(renderRust, 60, direction)
-    }
-  }
+  }, [canvasRef, canvas, params, renderer])
 
   const renderTimeAverageLength = 60
   const renderTimes = []
@@ -61,56 +51,74 @@ export default function ZonePlate () {
     }
   }
   function averageRenderTime () {
-    const avg = renderTimes.reduce((sum, elapsed) => (sum + elapsed)) / renderTimes.length
-    return `${avg.toFixed(2)}ms -  ${renderTimes.length}f`
+    const avg = renderTimes.length ? renderTimes.reduce((sum, elapsed) => (sum + elapsed)) / renderTimes.length : 0
+    return `${avg.toFixed(1)}ms -  ${renderTimes.length}f`
   }
 
-  function drawLoop (renderer, frames = 1, direction = 1) {
-    return new Promise((resolve) => {
-      const ctx = canvas.getContext('2d')
-      let loop = (direction < 0) ? frames - 2 : 0
+  async function draw (frame = 30, frames = 60) {
+    const start = +new Date()
 
-      function step () {
-        const t = (loop - frames / 2) / frames
-        const start = +new Date()
+    const t = (frame - frames / 2) / frames
+    const { cx2, cy2, cxt, cyt, ct } = params
+    const ctx = canvas.getContext('2d')
+    if (renderer === 'Rust') {
+      const { draw: renderRust } = await importWasm()
+      renderRust(ctx, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
+    } else {
+      renderJS(ctx, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
+    }
 
-        const { cx2, cy2, cxt, cyt, ct } = params
-        renderer(ctx, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
+    const elapsed = +new Date() - start
 
-        const elapsed = +new Date() - start
+    addRenderTime(elapsed)
+    if (frame % 1 === 0) {
+      setRenderTime(averageRenderTime())
+      setTimePosition(t.toFixed(2))
+    }
 
-        addRenderTime(elapsed)
-        if (loop % 1 === 0) {
-          setRenderTime(averageRenderTime())
-          setTimePosition(t.toFixed(2))
-        }
-
-        if (loop < frames - 1 && loop >= 0) { // -1 because we will trigger one more step()
-          window.requestAnimationFrame(step)
-        } else {
-          // console.log('last.step', { loop, t, frames })
-          // or maybe the average?
-          resolve(averageRenderTime())
-        }
-        loop += direction
-      }
-
-      window.requestAnimationFrame(step)
-    })
+    return elapsed
   }
+
+  const frameValue = useRef()
+  const stampValue = useRef()
+
+  useEffect(() => {
+    stampValue.current = +new Date()
+    frameValue.current = 42
+  }, [])
+
+  async function thing (delta) {
+    const fps = (1000 / delta).toFixed(1)
+
+    frameValue.current = (frameValue.current + 1) % 60
+    const frame = frameValue.current
+
+    const elapsed = await draw(frame)
+    // console.log('renderer:', renderer, fps, averageRenderTime())
+  }
+  useAnimationFrame(thing, pause)
 
   return (
     <Flex sx={{ flexDirection: 'column', gap: 1, alignItems: 'center' }}>
       <Controls {...{ params, setParams, size, setSize, sizes, shuttle, setShuttle }} />
-      <Flex sx={{ gap: 1, my: 1 }}>
-        <Button onClick={() => drawJS()}>DrawJS</Button>
-        <Button onClick={() => drawRust()}>Draw Rust</Button>
+      <Flex sx={{ gap: 1, my: 1, alignItems: 'center' }}>
+        <Label sx={{ gap: 1 }}>
+          <div>JavaScript</div>
+          <Checkbox checked={renderer === 'JS'} onChange={(e) => setRenderer('JS')} />
+        </Label>
+        <Label sx={{ gap: 1 }}>
+          <div>Rust</div>
+          <Checkbox checked={renderer === 'Rust'} onChange={(e) => setRenderer('Rust')} />
+        </Label>
+        <Box>
+          <Button onClick={() => setPause(!pause)}>{pause ? 'Play' : 'Pause'}</Button>
+        </Box>
       </Flex>
       <Equation params={params} />
       <Box>
         <Label sx={{ color: secondary, fontSize: '90%' }}>Render: ~{renderTime}</Label>
         {/* add svg sparkline and time axis progress [-.5,.5] */}
-        {/* <Label sx={{ color: secondary }}>Time: {timePosition} s</Label> */}
+        <Label sx={{ color: secondary }}>Time: {timePosition} s</Label>
       </Box>
       <Box>
         <canvas
