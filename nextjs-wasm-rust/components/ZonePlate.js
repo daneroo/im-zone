@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Flex, Box, Label, Button, Checkbox, useThemeUI } from 'theme-ui'
+import { Flex, Box, Label, Button, Checkbox } from 'theme-ui'
 
 import Controls from './ZonePlate/Controls'
 import { useParams, useSizes } from './ZonePlate/hooks'
@@ -7,10 +7,6 @@ import Equation from './ZonePlate/Equation'
 import View from './ZonePlate/View'
 
 export default function ZonePlate () {
-  const { theme: { colors: { secondary } } } = useThemeUI()
-
-  const [renderTime, setRenderTime] = useState('0.00')
-  const [timePosition, setTimePosition] = useState('0.00')
   const [shuttle, setShuttle] = useState(false)
   const [renderer, setRenderer] = useState('JS')
   // animation state
@@ -20,23 +16,10 @@ export default function ZonePlate () {
   const [params, setParams] = useParams()
   const [width, height, size, sizes, setSize] = useSizes()
 
-  const renderTimeAverageLength = 60
-  const renderTimes = []
-  function addRenderTime (elapsed) {
-    renderTimes.push(elapsed)
-    if (renderTimes.length > renderTimeAverageLength) {
-      renderTimes.shift()
-    }
-  }
-  function averageRenderTime () {
-    const avg = renderTimes.length ? renderTimes.reduce((sum, elapsed) => (sum + elapsed)) / renderTimes.length : 0
-    return `${avg.toFixed(1)}ms -  ${renderTimes.length}f`
-  }
-
   return (
     <Flex sx={{ flexDirection: 'column', gap: 1, alignItems: 'center' }}>
       <Controls {...{ params, setParams, size, setSize, sizes, shuttle, setShuttle }} />
-      <Flex sx={{ gap: 2, my: 1, alignItems: 'center', flexDirection: 'column' }}>
+      <Flex sx={{ gap: 2, my: 1, alignItems: 'center' }}>
         <Label sx={{ gap: 1 }}>
           <div>JavaScript</div>
           <Checkbox checked={renderer === 'JS'} onChange={(e) => setRenderer('JS')} />
@@ -55,12 +38,12 @@ export default function ZonePlate () {
       </Flex>
       <Equation params={params} />
       <Box>
-        <Label sx={{ color: secondary, fontSize: '90%' }}>Render: ~{renderTime}</Label>
+        {/* <Label sx={{ color: secondary, fontSize: '90%' }}>Render: ~{renderTime}</Label> */}
         {/* add svg sparkline and time axis progress [-.5,.5] */}
-        <Label sx={{ color: secondary }}>Time: {timePosition} s</Label>
+        {/* <Label sx={{ color: secondary }}>Time: {timePosition} s</Label> */}
       </Box>
       <Box>
-        <View {...{ width, height, params, pause, addRenderTime, averageRenderTime, setRenderTime, setTimePosition, renderer }} />
+        <View {...{ width, height, params, pause, renderer }} />
       </Box>
     </Flex>
   )

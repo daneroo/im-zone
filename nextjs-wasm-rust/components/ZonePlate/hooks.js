@@ -29,24 +29,40 @@ export function useSizes () {
 /* global requestAnimationFrame cancelAnimationFrame */
 
 export function useAnimationFrame (callback = (delta) => {}, pause = true) {
+  console.log('-useRAF')
+
   // Use useRef for mutable variables that we want to persist
   // without triggering a re-render on their change
   const requestRef = useRef()
   const previousTimeRef = useRef()
   const pauseRef = useRef(pause)
   const callbackRef = useRef(callback)
+  const deltaHistoRef = useRef([])
+  const elapsedHistoRef = useRef([])
   useEffect(() => {
-    console.log({ pause })
     pauseRef.current = pause
-  }, [pause]) // Make sure the effect runs only once
+  }, [pause])
   useEffect(() => {
     callbackRef.current = callback
-  }, [callback]) // Make sure the effect runs only once
+  }, [callback])
+  useEffect(() => {
+    deltaHistoRef.current = [] // reset Histogram
+    elapsedHistoRef.current = [] // reset Histogram
+  }, [pause, callback])
 
-  const animate = time => {
+  const animate = async time => {
     if (previousTimeRef.current !== undefined) {
       const delta = time - previousTimeRef.current
-      callbackRef.current(delta)
+      const histo = appendTrim(deltaHistoRef.current, delta)
+      // console.log(deltaHistoRef.current)
+      deltaHistoRef.current = histo
+      const avgDelta = avg(histo)
+      const avgElapsed = avg(elapsedHistoRef.current)
+      const fps = (1000 / delta).toFixed(0).padStart(3, ' ')
+      const avgFps = (1000 / avgDelta).toFixed(0)
+
+      const elapsed = await callbackRef.current({ fps, avgFps, avgElapsed: avgElapsed.toFixed(1) })
+      elapsedHistoRef.current = appendTrim(elapsedHistoRef.current, elapsed)
     }
     previousTimeRef.current = time
     requestRef.current = requestAnimationFrame(animate)
@@ -61,4 +77,13 @@ export function useAnimationFrame (callback = (delta) => {}, pause = true) {
       cancelAnimationFrame(requestRef.current)
     }
   }, [pause]) // Make sure the effect runs only once
+}
+
+function avg (histo) {
+  return (histo.reduce((acc, value) => acc + value, 0) / histo.length)
+}
+
+const avgHorizon = 60
+function appendTrim (histo, value) {
+  return [...histo.slice(-avgHorizon + 1), value]
 }

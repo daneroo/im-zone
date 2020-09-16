@@ -10,7 +10,7 @@ async function importWasm () {
   return wasm
 }
 
-export default function View ({ width, height, params, pause, addRenderTime, averageRenderTime, setRenderTime, setTimePosition, renderer }) {
+export default function View ({ width, height, params, pause, renderer }) {
   const { theme: { colors: { primary } } } = useThemeUI()
 
   const [canvas, setCanvas] = useState(null)
@@ -42,13 +42,6 @@ export default function View ({ width, height, params, pause, addRenderTime, ave
     }
 
     const elapsed = +new Date() - start
-
-    addRenderTime(elapsed)
-    if (frame % 1 === 0) {
-      setRenderTime(averageRenderTime())
-      setTimePosition(t.toFixed(2))
-    }
-
     return elapsed
   }
 
@@ -60,16 +53,27 @@ export default function View ({ width, height, params, pause, addRenderTime, ave
     frameValue.current = 42
   }, [])
 
-  async function thing (delta) {
-    const fps = (1000 / delta).toFixed(1)
-
+  async function animate ({ fps, avgFps, avgElapsed }) {
     frameValue.current = (frameValue.current + 1) % 60
     const frame = frameValue.current
 
     const elapsed = await draw(frame)
-    console.log('renderer:', renderer, fps, elapsed, averageRenderTime())
+
+    const ctx = canvas.getContext('2d')
+    ctx.fillStyle = 'black'
+    ctx.font = '20px monospace'
+    ctx.fillText(`${fps}fps ~${avgFps}fps`, 10, 20)
+    ctx.fillText(`${elapsed.toString().padStart(3, ' ')}ms ~${avgElapsed.padStart(5, ' ')}ms`, 10, 40)
+    const gopherBlue = 'rgb(1, 173, 216)'
+    // const fuschia = 'rgb(206, 48, 98)'
+    const rust = 'rgb(183,65,14)'
+    ctx.font = '40px monospace'
+    ctx.fillStyle = { JS: 'yellow', Rust: rust, Go: gopherBlue }[renderer] || 'yellow'
+    ctx.fillText(renderer, 10, height - 20)
+
+    return elapsed
   }
-  useAnimationFrame(thing, pause)
+  useAnimationFrame(animate, pause)
 
   return (
     <canvas
