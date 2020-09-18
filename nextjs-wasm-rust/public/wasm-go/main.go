@@ -122,6 +122,7 @@ func (z *zone) render(frames int, t, cx2, cy2, cxt, cyt, ct float64) {
 			}
 			phi *= math.Pi
 
+			// This is without any common expression elimination (~20% slower)
 			// phi := ct * F * t
 			// phi += cy2 * j * j / H
 			// phi += cyt * j / H * t * F * F / 2
