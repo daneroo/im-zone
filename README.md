@@ -14,7 +14,7 @@
 ## TODO
 
 - [Switch to tinyGo](https://tinygo.org/webassembly/webassembly/)
-  - compare speed, size of wasm
+  - compare speed, size of wasm (2200K->)
 - Styling - <https://1linelayouts.glitch.me/>
   - Control/Play-Pause
 - lerna - split go and rust into packages and publish
