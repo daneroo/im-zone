@@ -66,17 +66,16 @@ Using `@next/mdx` [plugin](https://www.npmjs.com/package/@next/mdx)
 
 ### Switching to tinygo
 
-```bash
-# using docker
-cd public/wasm-go
-docker run --rm -v $(pwd):/src tinygo/tinygo:0.15.0 tinygo build -o /src/wasm.wasm -target=wasm /src/main.go
+See `build.sh` file for docker invocation example
 
-# using brew - but uninstalled, in favor of docker
+There is a brew tap, but replaced it with docker solution
+
+```bash
 brew tap tinygo-org/tools
 brew install tinygo
 tinygo version
 
-tinygo build -o wasm.wasm -target=wasm main.go
+tinygo build -o ...
 ```
 
 ## References
