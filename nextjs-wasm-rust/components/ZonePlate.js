@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { Flex, Box, Label, Button, Checkbox } from 'theme-ui'
 
+import IconButton from './layout/icons/IconButton'
+import PlayPause from './layout/icons/PlayPause'
+import Info from './layout/icons/Info'
+
 import Controls from './ZonePlate/Controls'
 import { useParams, useSizes } from './ZonePlate/hooks'
 import Equation from './ZonePlate/Equation'
@@ -11,6 +15,7 @@ export default function ZonePlate () {
   const [renderer, setRenderer] = useState('JS')
   // animation state
   const [pause, setPause] = useState(true)
+  const [showInfo, setShowInfo] = useState(true)
 
   // These control the size and coefficients od the ZonePlate
   const [params, setParams] = useParams()
@@ -19,31 +24,47 @@ export default function ZonePlate () {
   return (
     <Flex sx={{ flexDirection: 'column', gap: 1, alignItems: 'center' }}>
       <Controls {...{ params, setParams, size, setSize, sizes, shuttle, setShuttle }} />
-      <Flex sx={{ gap: 2, my: 1, alignItems: 'center' }}>
-        <Label sx={{ gap: 1 }}>
+      <Flex sx={{
+        gap: 2,
+        my: 1,
+        alignItems: 'center'
+      }}
+      >
+        <Label sx={{ gap: 1, flex: 2 }}>
           <div>JavaScript</div>
           <Checkbox checked={renderer === 'JS'} onChange={(e) => setRenderer('JS')} />
         </Label>
-        <Label sx={{ gap: 1 }}>
+        <Label sx={{ gap: 1, flex: 1 }}>
           <div>Rust</div>
           <Checkbox checked={renderer === 'Rust'} onChange={(e) => setRenderer('Rust')} />
         </Label>
-        <Label sx={{ gap: 1 }}>
+        <Label sx={{ gap: 1, flex: 1 }}>
           <div>Go</div>
           <Checkbox checked={renderer === 'Go'} onChange={(e) => setRenderer('Go')} />
         </Label>
-        <Box>
-          <Button onClick={() => setPause(!pause)}>{pause ? 'Play' : 'Pause'}</Button>
-        </Box>
       </Flex>
-      <Equation params={params} />
       <Box>
-        {/* <Label sx={{ color: secondary, fontSize: '90%' }}>Render: ~{renderTime}</Label> */}
-        {/* add svg sparkline and time axis progress [-.5,.5] */}
-        {/* <Label sx={{ color: secondary }}>Time: {timePosition} s</Label> */}
+        <Equation params={params} />
       </Box>
+      <Flex sx={{
+        width: sizes[size].width,
+        // alignItems: 'center',
+        justifyContent: 'space-between'
+      }}
+      >
+        <IconButton
+          size={24}
+          onClick={() => setShowInfo(!showInfo)}
+          icon={<Info show={showInfo} />}
+        />
+        <IconButton
+          size={24}
+          onClick={() => setPause(!pause)}
+          icon={<PlayPause pause={pause} />}
+        />
+      </Flex>
       <Box>
-        <View {...{ width, height, params, pause, shuttle, renderer }} />
+        <View {...{ width, height, params, pause, showInfo, shuttle, renderer }} />
       </Box>
     </Flex>
   )

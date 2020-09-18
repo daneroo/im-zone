@@ -12,7 +12,7 @@ import { renderGo } from './renderGo'
 
 // async function - uses dynamic import
 
-export default function View ({ width, height, params, pause, shuttle, renderer }) {
+export default function View ({ width, height, params, pause, showInfo, shuttle, renderer }) {
   const { theme: { colors: { primary } } } = useThemeUI()
 
   const [canvas, setCanvas] = useState(null)
@@ -26,9 +26,11 @@ export default function View ({ width, height, params, pause, shuttle, renderer 
     if (canvas !== null) {
       const frame = 30
       draw(frame)
-      annotate({ frame })
+      if (showInfo) {
+        annotate({ frame })
+      }
     }
-  }, [canvasRef, canvas, params, renderer])
+  }, [canvasRef, canvas, params, renderer, showInfo])
 
   // invoke the appropriate engine for rendering the zoneplate
   function draw (frame = 30, frames = 60) {
@@ -116,7 +118,9 @@ export default function View ({ width, height, params, pause, shuttle, renderer 
     const frame = (shuttle) ? period - Math.abs(period - fc) : fc % 60
 
     draw(frame)
-    annotate({ avgFps, avgElapsed, frame })
+    if (showInfo) {
+      annotate({ avgFps, avgElapsed, frame })
+    }
   }
   useAnimationFrame(animate, pause)
 
