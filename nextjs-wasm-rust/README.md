@@ -64,6 +64,21 @@ Using `@next/mdx` [plugin](https://www.npmjs.com/package/@next/mdx)
   - add config.pageExtensions:[...,''mdx] for top level .mdx pages
 - Check for interaction with theme-ui
 
+### Switching to tinygo
+
+```bash
+# using docker
+cd public/wasm-go
+docker run --rm -v $(pwd):/src tinygo/tinygo:0.15.0 tinygo build -o /src/wasm.wasm -target=wasm /src/main.go
+
+# using brew - but uninstalled, in favor of docker
+brew tap tinygo-org/tools
+brew install tinygo
+tinygo version
+
+tinygo build -o wasm.wasm -target=wasm main.go
+```
+
 ## References
 
 - <http://downloads.bbc.co.uk/rd/pubs/reports/1978-23.pdf>

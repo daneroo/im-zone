@@ -13,8 +13,11 @@
 
 ## TODO
 
+- Show Error for 'Renderer (XX) not ready'
+  - Go WASM broken on Safari instantiateStreaming?
 - [Switch to tinyGo](https://tinygo.org/webassembly/webassembly/)
   - compare speed, size of wasm (2200K->)
+- [webpack go loader](https://www.aaron-powell.com/posts/2019-02-12-golang-wasm-6-typescript-react/)
 - Styling - <https://1linelayouts.glitch.me/>
   - Control/Play-Pause
 - lerna - split go and rust into packages and publish

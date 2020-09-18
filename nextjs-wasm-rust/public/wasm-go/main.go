@@ -153,7 +153,9 @@ func init() {
 	cos = make([]byte, Q)
 	for iPhi, _ := range cos {
 		phi := float64(iPhi) * 2 * math.Pi / float64(Q)
-		cos[iPhi] = uint8(math.Cos(phi)*126.0 + 127.0)
+		// Otherwise tinygo won't compile: swap Cos(θ) with Sin(π/2-θ)
+		// cos[iPhi] = uint8(math.Cos(phi)*126.0 + 127.0)
+		cos[iPhi] = uint8(math.Sin(math.Pi/2-phi)*126.0 + 127.0)
 	}
 }
 
