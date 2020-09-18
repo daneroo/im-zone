@@ -43,11 +43,14 @@ export default function View ({ width, height, params, pause, shuttle, renderer 
       Go: renderGo
     }
 
-    if (!engines[renderer]) {
-      console.log(`Renderer (${renderer}) not ready, defaulting to renderJS`, { engines })
+    if (!engines[renderer]) { // indicate renderer (mutable dynamic import) is not available
+      // console.log(`Renderer (${renderer}) not ready, defaulting to renderJS`, { engines })
+      ctx.fillStyle = 'red'
+      ctx.fillRect(0, 0, width, height)
+    } else {
+      const renderFunc = engines[renderer] || renderJS
+      renderFunc(ctx, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
     }
-    const renderFunc = engines[renderer] || renderJS
-    renderFunc(ctx, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
   }
 
   const jsYellow = '#f7df1e'
