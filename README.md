@@ -13,9 +13,12 @@
 
 ## TODO
 
+- [Switch to tinyGo](https://tinygo.org/webassembly/webassembly/)
+  - compare speed, size of wasm
 - Styling - <https://1linelayouts.glitch.me/>
   - Control/Play-Pause
 - lerna - split go and rust into packages and publish
+- landing pages - not found
 - api route for images/ per engine
 - Buffered frames - RAF is unreliable?
 - Exploit symmetry in zone plates

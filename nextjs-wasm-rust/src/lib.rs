@@ -1,7 +1,6 @@
 use std::f64::consts::PI;
 use std::mem;
 use std::os::raw::c_void;
-// use std::slice; // for making a slice from allocated ptr
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::Clamped;
 use web_sys::{CanvasRenderingContext2d, ImageData};
@@ -41,13 +40,14 @@ pub fn draw(
 ) -> Result<(), JsValue> {
     let size = (width * height * 4) as usize;
 
-    // This is using a pointer allocated by alloc() above
+    // We tried using a pointer allocated by alloc() above
     // It was deemed an unnecessary optimization
-    // - 1 million alloc/dealloc invocations take 60ms
-    // this method requires passing the alooc() -> pointer: *mut u8 param
+    // - 1 million alloc/dealloc invocations takes 60ms
+    // this method requires passing the alloc() -> pointer: *mut u8 param
     // let data = unsafe { slice::from_raw_parts_mut(pointer, size) };
 
     // This allocates a new vec every render, and casts it to $mut [u8]
+    // also sets all values to 255
     let mut v = vec![255_u8; size];
     let data: &mut [u8] = v.as_mut();
 
@@ -73,38 +73,44 @@ fn fill_zoneplate(
     let cx = width as i32 / 2;
     let cy = height as i32 / 2;
 
+    let f = frames as f64;
+    let h = height as f64;
+    let w = width as f64;
+
+    // originally: x=(i/W), y=(j/H) both in [0,1]
+    // phi = cx2 * x^2*W + cy2*y^2*H + cxt*x*t*F*F/2 + cyt*y*t*F*F/2 + ct*t*F
+
     let mut index = 0;
     let ctt = ct * frames as f64 * t;
+
     for j in -cy..cy {
-        // let y2 = (j * j) as f64 / height as f64;
-        let cy2y2 = cy2 * (j * j) as f64 / height as f64;
-        let cytyt = cyt * (t * frames as f64 * frames as f64 / 2.0) * (j as f64 / height as f64);
+        let cy2y2 = cy2 * (j * j) as f64 / h;
+        let cytyt = cyt * (j as f64 / h) * (t * f * f / 2.0);
         for i in -cx..cx {
             let mut phi: f64 = cy2y2 + cytyt + ctt;
             if cx2 != 0.0 {
-                let cx2x2 = cx2 * (i * i) as f64 / width as f64;
+                let cx2x2 = cx2 * (i * i) as f64 / w;
                 phi += cx2x2;
             }
             if cxt != 0.0 {
-                let cxtxt = cxt * (t * (frames * frames / 2) as f64) * (i as f64 / width as f64);
+                let cxtxt = cxt * (i as f64 / w) * (t * f * f / 2.0);
                 phi += cxtxt;
             }
 
             phi = phi * PI;
 
-            // lookup and inline trig calculation - <f64>.cos()
-            // let c = phi.cos() * 126.0 + 127.0;
+            // inline trig calculation - <f64>.cos()
+            // let c = (phi.cos() * 126.0 + 127.0) as u8;
 
-            // Use the COSINE_LOOKUP table
+            // Use the COSINE_LOOKUP (Quantized) table
             let abs_phi = if phi < 0.0 { -phi } else { phi };
             let i_phi = ((Q as f64 * abs_phi / (2.0 * PI)).floor()) as usize % Q;
             let c = COSINE_LOOKUP[i_phi];
-            // let c = i_phi as u8;
 
             data[index + 0] = c;
             data[index + 1] = c;
             data[index + 2] = c;
-            data[index + 3] = 255;
+            // data[index + 3] = 255; // set in allocation (255_u8)
             index += 4;
         }
     }
@@ -119,11 +125,9 @@ lazy_static! {
     pub static ref COSINE_LOOKUP: [u8; Q] = {
         let mut table = [0_u8; Q];
 
-        // const phi = iPhi * 2 * Math.PI / Q
-        // return Math.cos(phi) * 126.0 + 127.0
         for i_phi in 0..Q {
-            let phi = (i_phi as f64)*2.0 * PI / (Q as f64);
-            table[i_phi] = (phi.cos()*126.0+127.0) as u8;
+            let phi = (i_phi as f64) * 2.0 * PI / (Q as f64);
+            table[i_phi] = (phi.cos() * 126.0 + 127.0) as u8;
         }
 
         table

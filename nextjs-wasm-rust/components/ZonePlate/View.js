@@ -1,29 +1,19 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useThemeUI } from 'theme-ui'
-import { renderJS } from './renderJS'
 import { useAnimationFrame } from './hooks'
+import { renderJS } from './renderJS'
+// Careful: these symbols are mutable
+// their values change from undefined to the actual function reference
+// after the async WASM has loaded
+// Care should be taken if the symbols are copied...
+import { renderRust } from './renderRust'
+import { renderGo } from './renderGo'
 
 // async function - uses dynamic import
-async function importWasm () {
-  const wasm = await import('../../pkg')
-  return wasm
-}
 
 export default function View ({ width, height, params, pause, shuttle, renderer }) {
   const { theme: { colors: { primary } } } = useThemeUI()
-
-  // Resolve dynamic imports (once only) asynchronously
-  const engineRef = useRef({ JS: renderJS }) // ...Rust:renderRust,Go:renderGo
-  useEffect(() => {
-    async function loader () {
-      const { draw: renderRust } = await importWasm()
-      engineRef.current.Rust = renderRust
-      // Go comes next
-      engineRef.current.Go = renderJS // Placeholder
-    }
-    loader()
-  }, [])
 
   const [canvas, setCanvas] = useState(null)
   // useCallback instead of useRef - https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
@@ -47,18 +37,37 @@ export default function View ({ width, height, params, pause, shuttle, renderer 
     const ctx = canvas.getContext('2d')
 
     // default to renderJS - in case loader has not completed yet
-    if (!engineRef.current || !engineRef.current[renderer]) {
-      console.log('Renderer not ready, defaulting to renderJS')
+    const engines = {
+      JS: renderJS,
+      Rust: renderRust,
+      Go: renderGo
     }
-    const renderFunc = engineRef.current[renderer] || renderJS
 
+    if (!engines[renderer]) {
+      console.log(`Renderer (${renderer}) not ready, defaulting to renderJS`, { engines })
+    }
+    const renderFunc = engines[renderer] || renderJS
     renderFunc(ctx, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
   }
+
+  const jsYellow = '#f7df1e'
+  const gopherBlue = 'rgb(1, 173, 216)'
+  const rust = 'rgb(183,65,14)'
+  const rendererColor = { JS: jsYellow, Rust: rust, Go: gopherBlue }
 
   function annotate ({ avgFps = 0, avgElapsed = 0, frame = 0 } = {}) {
     const padding = 2
     const baseFontSize = (width < 150) ? 16 : 20
     const ctx = canvas.getContext('2d')
+
+    // renderer color overlay
+    // ctx.save()
+    // ctx.globalAlpha = 0.2
+    // ctx.fillStyle = rendererColor[renderer] || 'yellow'
+    // ctx.fillRect(0, 0, width, height)
+    // ctx.restore()
+
+    // avgElapsed and avgFPS
     ctx.font = `${baseFontSize}px monospace`
     ctx.fillStyle = 'black'
     ctx.textAlign = 'left'
@@ -69,11 +78,10 @@ export default function View ({ width, height, params, pause, shuttle, renderer 
     if (avgElapsed) {
       ctx.fillText(`${avgFps.toFixed(0)}fps`, padding, padding + baseFontSize)
     }
-    const gopherBlue = 'rgb(1, 173, 216)'
-    // const fuschia = 'rgb(206, 48, 98)'
-    const rust = 'rgb(183,65,14)'
+
+    // Renderer Name
     ctx.font = `${baseFontSize * 2}px monospace`
-    ctx.fillStyle = { JS: 'yellow', Rust: rust, Go: gopherBlue }[renderer] || 'yellow'
+    ctx.fillStyle = rendererColor[renderer] || 'yellow'
     ctx.textAlign = 'right'
     ctx.textBaseline = 'top'
     ctx.fillText(renderer, width - 2, 2)

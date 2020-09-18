@@ -1,6 +1,6 @@
 
 import { useState } from 'react'
-import { Flex, Label, Button } from 'theme-ui'
+import { Flex, Button } from 'theme-ui'
 
 // async function - uses dynamic import
 async function importWasm () {
