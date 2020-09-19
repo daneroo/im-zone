@@ -52,6 +52,7 @@ export default function ZonePlate () {
           width: width,
           height: height
         }}
+        onClick={() => setPause(!pause)}
       >
         <View {...{ width, height, params, pause, showInfo, shuttle, renderer }} />
       </Box>

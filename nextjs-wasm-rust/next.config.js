@@ -22,5 +22,5 @@ module.exports = withMDX({
   },
   // Fixes going directly to a page on exported site:
   // https://nextjs.org/docs/api-reference/next.config.js/exportPathMap#adding-a-trailing-slash
-  exportTrailingSlash: true
+  trailingSlash: true
 })
