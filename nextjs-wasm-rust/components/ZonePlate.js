@@ -37,20 +37,22 @@ export default function ZonePlate () {
       >
         <IconButton
           size={24}
-          onClick={() => setShowInfo(!showInfo)}
+          label='Show Render Info'
           icon={<Info show={showInfo} />}
+          onClick={() => setShowInfo(!showInfo)}
         />
         <Box sx={{
           fontSize: 0,
           // alignSelf: 'flex-end',
-          opacity: 0.5
+          opacity: 0.8
         }}
         >{(width * height * 60 / 1e6).toFixed(1)} Mp/s
         </Box>
         <IconButton
           size={24}
-          onClick={() => setPause(!pause)}
+          label='Play/Pause'
           icon={<PlayPause pause={pause} />}
+          onClick={() => setPause(!pause)}
         />
       </Flex>
       <Box

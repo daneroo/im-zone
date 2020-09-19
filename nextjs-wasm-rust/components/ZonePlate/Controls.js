@@ -41,12 +41,12 @@ export function Presets ({ params, setParams, size, setSize, sizes, shuttle, set
 // Return a fragment of IconButtons
 function PresetParams ({ setParams, setShuttle }) {
   const knownParams = {
-    VH: { cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 },
-    VHHyp: { cx2: 1, cy2: -1, cxt: 0, cyt: 0, ct: 1 },
-    VT: { cx2: 0, cy2: 1, cxt: 1, cyt: 0, ct: 0 },
-    HT: { cx2: 1, cy2: 0, cxt: 0, cyt: 1, ct: 0 }
+    Spherical: { cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 },
+    Hyperbolic: { cx2: 1, cy2: -1, cxt: 0, cyt: 0, ct: 1 },
+    'Vertical-Temporal': { cx2: 0, cy2: 1, cxt: 1, cyt: 0, ct: 0 },
+    'Horizontal-Temporal': { cx2: 1, cy2: 0, cxt: 0, cyt: 1, ct: 0 }
   }
-  return Object.entries(knownParams).map(([k, params]) => {
+  return Object.entries(knownParams).map(([label, params]) => {
     const size = 48
     const icon = (
       <View
@@ -64,12 +64,13 @@ function PresetParams ({ setParams, setShuttle }) {
 
     return (
       <IconButton
-        key={k}
+        key={label}
         size={size}
+        label={`${label} Preset`}
         onClick={(e) => {
           setParams(params)
           // pretty flaky...
-          setShuttle(k.endsWith('T'))
+          setShuttle(label.endsWith('T'))
         }}
         icon={icon}
       />

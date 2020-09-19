@@ -42,7 +42,7 @@ function LogoLink ({ size = 32 }) {
     <Flex sx={{ alignItems: 'center', gap: 1 }}>
       <Link href='/'>
         {/* compensate for active link bottom border? */}
-        <a style={{ height: size - 2 }}>
+        <a title='Zone Plate Home' style={{ height: size - 2 }}>
           <Logo size={size} />
         </a>
       </Link>
@@ -72,7 +72,7 @@ function Logo ({ size = 32 }) {
 }
 
 // for Top Menu - should Styled in theme-ui?
-function ActiveLink ({ children, href }) {
+function ActiveLink ({ children, href, title = '' }) {
   const { theme: { colors: { primary, text } } } = useThemeUI()
 
   const router = useRouter()
@@ -86,7 +86,7 @@ function ActiveLink ({ children, href }) {
 
   return (
     <Link sx={{ px: 1 }} href={href}>
-      <a style={style}>{children}</a>
+      <a title={title} style={style}>{children}</a>
     </Link>
   )
 }

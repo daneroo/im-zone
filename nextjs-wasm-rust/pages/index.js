@@ -9,7 +9,7 @@ const Page = ({ router: { query } }) => {
     <div>
       <h3>Next.js WebAssembly Canvas experiment</h3>
       {/* text color should be muted? */}
-      <Box sx={{ color: 'text', opacity: 0.5, py: 0, mx: 2 }}>
+      <Box sx={{ color: 'text', opacity: 0.8, py: 0, mx: 2 }}>
         <p>
           Invokes the drawing function either in JavaScript, Rust or Go,
         and reports the average render time.
