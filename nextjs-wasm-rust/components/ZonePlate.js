@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { Flex, Box, Label, Checkbox } from 'theme-ui'
+import { Flex, Box } from 'theme-ui'
 
 import IconButton from './layout/icons/IconButton'
 import PlayPause from './layout/icons/PlayPause'
 import Info from './layout/icons/Info'
 
-import { Presets, RendererSelector, FullSettings } from './ZonePlate/Controls'
+import { Presets, FullSettings } from './ZonePlate/Controls'
 import { useParams, useSizes } from './ZonePlate/hooks'
 import Equation from './ZonePlate/Equation'
 import View from './ZonePlate/View'
@@ -23,15 +23,7 @@ export default function ZonePlate () {
 
   return (
     <Flex sx={{ flexDirection: 'column', gap: 1, alignItems: 'center' }}>
-      <Presets {...{ params, setParams, size, setSize, sizes, shuttle, setShuttle }} />
-      <Flex sx={{
-        gap: 2,
-        my: 1,
-        alignItems: 'center'
-      }}
-      >
-        <RendererSelector {...{ renderer, setRenderer }} />
-      </Flex>
+      <Presets {...{ params, setParams, size, setSize, sizes, shuttle, setShuttle, renderer, setRenderer }} />
       <Box>
         <Equation params={params} />
       </Box>
