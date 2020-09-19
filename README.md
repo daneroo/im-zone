@@ -13,7 +13,6 @@
 
 ## TODO
 
-- Zone/View for Presets
 - [webpack go loader](https://www.aaron-powell.com/posts/2019-02-12-golang-wasm-6-typescript-react/)
 - lerna - split go and rust into packages and publish
 - api route for images/ per engine
