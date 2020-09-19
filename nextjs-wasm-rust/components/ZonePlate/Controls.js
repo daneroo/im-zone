@@ -141,7 +141,7 @@ export function FullSettings ({ params, setParams, sizes, size, setSize, shuttle
   return (
     <>
       <Flex sx={{ gap: 1, alignItems: 'center' }}>
-        <Button onClick={() => setShowParams(!showParams)}>Settings...</Button>
+        <Button onClick={() => setShowParams(!showParams)}>Full Settings...</Button>
       </Flex>
       {showParams && (
         <>

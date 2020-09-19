@@ -1,16 +1,27 @@
 
 import { withRouter } from 'next/router'
 import { Box } from 'theme-ui'
+
 import ZonePlate from '../components/ZonePlate'
 
 const Page = ({ router: { query } }) => {
   return (
     <div>
-      <h3>WASM / Canvas experiment</h3>
-      {/* gray should be muted? */}
-      <Box sx={{ color: 'gray', py: 1 }}>
-        Invokes the drawing function (either in JavaScript or Rust/WASM),
+      <h3>Next.js WebAssembly Canvas experiment</h3>
+      {/* text color should be muted? */}
+      <Box sx={{ color: 'text', opacity: 0.5, py: 0, mx: 2 }}>
+        <p>
+          Invokes the drawing function either in JavaScript, Rust or Go,
         and reports the average render time.
+        The Rust and Go implementations were compiled to WebAssembly.
+        </p>
+        <p>
+          Click on the Zone Plate or the <em>Play/Pause</em> button to animate.
+          <Box sx={{ color: 'secondary' }}>
+            <em>Warning: The animation presents flashing images and stroboscopic sequences.</em>
+          </Box>
+
+        </p>
       </Box>
       <ZonePlate />
 

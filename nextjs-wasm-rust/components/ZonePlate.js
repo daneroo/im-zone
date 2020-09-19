@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Grid, Flex, Box, Button } from 'theme-ui'
+import { Grid, Flex, Box, Button, useThemeUI } from 'theme-ui'
 
 import IconButton from './layout/icons/IconButton'
 import PlayPause from './layout/icons/PlayPause'
@@ -21,6 +21,8 @@ export default function ZonePlate () {
   const [params, setParams] = useParams()
   const [width, height, size, sizes, setSize] = useSizes()
 
+  const { theme: { colors: { text } } } = useThemeUI()
+
   return (
     <Flex sx={{ flexDirection: 'column', gap: 1, alignItems: 'center' }}>
       <Presets {...{ params, setParams, size, setSize, sizes, shuttle, setShuttle, renderer, setRenderer }} />
@@ -29,7 +31,7 @@ export default function ZonePlate () {
       </Box>
       <Flex sx={{
         width: sizes[size].width,
-        // alignItems: 'center',
+        alignItems: 'center',
         justifyContent: 'space-between'
       }}
       >
@@ -38,6 +40,13 @@ export default function ZonePlate () {
           onClick={() => setShowInfo(!showInfo)}
           icon={<Info show={showInfo} />}
         />
+        <Box sx={{
+          fontSize: 0,
+          // alignSelf: 'flex-end',
+          opacity: 0.5
+        }}
+        >{(width * height * 60 / 1e6).toFixed(1)} Mp/s
+        </Box>
         <IconButton
           size={24}
           onClick={() => setPause(!pause)}
@@ -47,7 +56,7 @@ export default function ZonePlate () {
       <Box
         sx={{
           boxSizing: 'content-box',
-          border: '1px solid grey',
+          border: `1px solid ${text}`,
           padding: 2,
           width: width,
           height: height
