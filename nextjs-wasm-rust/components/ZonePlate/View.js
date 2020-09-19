@@ -127,10 +127,6 @@ export default function View ({ width, height, params, pause, showInfo, shuttle,
   return (
     <canvas
       ref={canvasRef}
-      style={{
-        border: `1px solid ${primary}`,
-        padding: '8px'
-      }}
       width={width} height={height}
     />
   )

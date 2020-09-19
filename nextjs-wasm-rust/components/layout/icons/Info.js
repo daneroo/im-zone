@@ -12,7 +12,8 @@ const Info = ({ show = true }) => {
       <text
         style={{ font: 'bold italic 72px serif' }}
         // fill={primary}
-        text-anchor='middle' x='50' y='75'
+        textAnchor='middle'
+        x='50' y='75'
       >i
       </text>
     </SVG>

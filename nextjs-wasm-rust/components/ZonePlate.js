@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Flex, Box } from 'theme-ui'
+import { Grid, Flex, Box, Button } from 'theme-ui'
 
 import IconButton from './layout/icons/IconButton'
 import PlayPause from './layout/icons/PlayPause'
@@ -44,11 +44,87 @@ export default function ZonePlate () {
           icon={<PlayPause pause={pause} />}
         />
       </Flex>
-      <Box>
+      <Box
+        sx={{
+          boxSizing: 'content-box',
+          border: '1px solid grey',
+          padding: 2,
+          width: width,
+          height: height
+        }}
+      >
         <View {...{ width, height, params, pause, showInfo, shuttle, renderer }} />
       </Box>
       <FullSettings {...{ params, setParams, sizes, size, setSize, shuttle, setShuttle }} />
-
+      <ManyMore />
     </Flex>
+  )
+}
+
+function ManyMore () {
+  const howMany = 60
+
+  const [showMany, setShowMany] = useState(false)
+  return (
+    <Flex sx={{ flexDirection: 'column', gap: 1, alignItems: 'center' }}>
+      <Button onClick={() => setShowMany(!showMany)}>Random Zones...</Button>
+      {showMany && (
+        <Grid sx={{
+        // minWidth: '500px',
+          maxWidth: [500, 600, 700],
+          gridTemplateColumns: 'repeat(auto-fit,120px)',
+          alignItems: 'center'
+        }}
+        >
+          <ManyZones howMany={howMany} />
+        </Grid>
+      )}
+    </Flex>
+
+  )
+}
+function randSettings () {
+  const max = 2
+  const r = () => Math.random() * max * 2 - max
+  return {
+    params: {
+      cx2: r(),
+      cy2: r(),
+      cxt: r(),
+      cyt: r(),
+      ct: r()
+    },
+    pause: Math.random() < 0.5,
+    renderer: ['JS', 'Rust'][Math.floor(Math.random() * 2)]
+  }
+}
+function ManyZones ({ howMany = 4 }) {
+  const sz = 100
+  return Array.from({ length: howMany }).map((_, key) => {
+    const [settings, setSettings] = useState(randSettings())
+    const icon = (
+      <View
+        {...{
+          height: sz,
+          width: sz,
+          params: settings.params,
+          pause: settings.pause,
+          showInfo: true,
+          shuttle: false,
+          renderer: settings.renderer
+        }}
+      />
+    )
+    return (
+      <IconButton
+        key={key}
+        size={sz + 10}
+        onClick={() => {
+          setSettings(randSettings())
+        }}
+        icon={icon}
+      />
+    )
+  }
   )
 }

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Grid, Flex, Box, Label, Button, Checkbox, Slider, Select, useThemeUI } from 'theme-ui'
 import IconButton from '../layout/icons/IconButton'
 import SVG from '../layout/icons/SVG'
+import View from './View'
 
 export function Presets ({ params, setParams, size, setSize, sizes, shuttle, setShuttle, renderer, setRenderer }) {
   return (
@@ -41,28 +42,36 @@ export function Presets ({ params, setParams, size, setSize, sizes, shuttle, set
 function PresetParams ({ setParams, setShuttle }) {
   const knownParams = {
     VH: { cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 },
-    'VH-1': { cx2: 1, cy2: -1, cxt: 0, cyt: 0, ct: 1 },
+    VHHyp: { cx2: 1, cy2: -1, cxt: 0, cyt: 0, ct: 1 },
     VT: { cx2: 0, cy2: 1, cxt: 1, cyt: 0, ct: 0 },
     HT: { cx2: 1, cy2: 0, cxt: 0, cyt: 1, ct: 0 }
   }
-  return Object.entries(knownParams).map(([k, v]) => {
+  return Object.entries(knownParams).map(([k, params]) => {
     const size = 48
+    const icon = (
+      <View
+        {...{
+          height: size,
+          width: size,
+          params: params,
+          pause: true,
+          showInfo: false,
+          shuttle: false,
+          renderer: 'JS'
+        }}
+      />
+    )
+
     return (
       <IconButton
         key={k}
         size={size}
         onClick={(e) => {
-          setParams(v)
+          setParams(params)
           // pretty flaky...
           setShuttle(k.endsWith('T'))
         }}
-        icon={
-          <img
-            width={size} height={size}
-            style={{ borderRadius: '4px' }}
-            src={`https://via.placeholder.com/40/333/fff?text=${k}`}
-          />
-        }
+        icon={icon}
       />
     )
   })
@@ -132,7 +141,7 @@ export function FullSettings ({ params, setParams, sizes, size, setSize, shuttle
   return (
     <>
       <Flex sx={{ gap: 1, alignItems: 'center' }}>
-        <Button onClick={() => setShowParams(!showParams)}>More...</Button>
+        <Button onClick={() => setShowParams(!showParams)}>Settings...</Button>
       </Flex>
       {showParams && (
         <>
