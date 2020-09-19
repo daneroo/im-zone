@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { Flex, Box, Label, Button, Checkbox } from 'theme-ui'
+import { Flex, Box, Label, Checkbox } from 'theme-ui'
 
 import IconButton from './layout/icons/IconButton'
 import PlayPause from './layout/icons/PlayPause'
 import Info from './layout/icons/Info'
 
-import Controls from './ZonePlate/Controls'
+import { Presets, RendererSelector, FullSettings } from './ZonePlate/Controls'
 import { useParams, useSizes } from './ZonePlate/hooks'
 import Equation from './ZonePlate/Equation'
 import View from './ZonePlate/View'
@@ -23,25 +23,14 @@ export default function ZonePlate () {
 
   return (
     <Flex sx={{ flexDirection: 'column', gap: 1, alignItems: 'center' }}>
-      <Controls {...{ params, setParams, size, setSize, sizes, shuttle, setShuttle }} />
+      <Presets {...{ params, setParams, size, setSize, sizes, shuttle, setShuttle }} />
       <Flex sx={{
         gap: 2,
         my: 1,
         alignItems: 'center'
       }}
       >
-        <Label sx={{ gap: 1, flex: 2 }}>
-          <div>JavaScript</div>
-          <Checkbox checked={renderer === 'JS'} onChange={(e) => setRenderer('JS')} />
-        </Label>
-        <Label sx={{ gap: 1, flex: 1 }}>
-          <div>Rust</div>
-          <Checkbox checked={renderer === 'Rust'} onChange={(e) => setRenderer('Rust')} />
-        </Label>
-        <Label sx={{ gap: 1, flex: 1 }}>
-          <div>Go</div>
-          <Checkbox checked={renderer === 'Go'} onChange={(e) => setRenderer('Go')} />
-        </Label>
+        <RendererSelector {...{ renderer, setRenderer }} />
       </Flex>
       <Box>
         <Equation params={params} />
@@ -66,6 +55,8 @@ export default function ZonePlate () {
       <Box>
         <View {...{ width, height, params, pause, showInfo, shuttle, renderer }} />
       </Box>
+      <FullSettings {...{ params, setParams, sizes, size, setSize, shuttle, setShuttle }} />
+
     </Flex>
   )
 }

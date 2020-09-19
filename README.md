@@ -14,10 +14,7 @@
 ## TODO
 
 - [webpack go loader](https://www.aaron-powell.com/posts/2019-02-12-golang-wasm-6-typescript-react/)
-- Styling - <https://1linelayouts.glitch.me/>
-  - Control/Play-Pause
 - lerna - split go and rust into packages and publish
-- landing pages - not found
 - api route for images/ per engine
 - Buffered frames - RAF is unreliable?
 - Exploit symmetry in zone plates
