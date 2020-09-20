@@ -3,6 +3,7 @@
     "@mdx-js/loader": "^1.6.17",
     "@next/mdx": "^9.5.3",
     "@theme-ui/presets": "^0.3.0",
+    "canvas": "^2.6.1",
     "next": "latest",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",

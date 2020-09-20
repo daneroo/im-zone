@@ -1,5 +1,6 @@
 
 // These exported symbols are mutated once the WASM is asynchronously loaded
+export let addRust
 export let renderRust
 export let alloc
 export let dealloc
@@ -10,6 +11,7 @@ export let dealloc
 async function importWasm () {
   const wasm = await import('../../pkg')
   // const { draw: renderRust, alloc, dealloc } = wasm
+  addRust = wasm.add_rust
   renderRust = wasm.draw // renamed from the rust export
   alloc = wasm.alloc
   dealloc = wasm.dealloc

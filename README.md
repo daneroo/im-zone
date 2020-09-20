@@ -1,7 +1,7 @@
 # Zone plate generation
 
 - [Deployed as a Next.js (w/Rust/WASM) site](https://zone.v.imetrical.com/)
-- Next.js - WASM - Rust: `./nextjs-wasm-rust/`
+- Next.js - WASM - Rust - Go: `./nextjs-wasm-rust/`
 - Go version, static cli, and WASM, working, not yet integrated into next app.
 - Static image/video generation in Go: `./static-go/`
 - Original `C++` code from CRC in `./legacy-CRC/` *circa 1996*
@@ -13,9 +13,17 @@
 
 ## TODO
 
+- refactor render API signature - no context, just pass a Uint8ClampedArray
+  - renderJS
+  - renderRust
+  - renderGo
+- api route for add and stamp
+- api route for images/ per engine
+  - [Pointers](https://rustwasm.github.io/docs/wasm-bindgen/reference/types/pointers.html)
+  - [Slices](https://rustwasm.github.io/docs/wasm-bindgen/reference/types/number-slices.html)
+  - [wasm-opt](https://rustwasm.github.io/docs/wasm-bindgen/examples/add.html)
 - [webpack go loader](https://www.aaron-powell.com/posts/2019-02-12-golang-wasm-6-typescript-react/)
 - lerna - split go and rust into packages and publish
-- api route for images/ per engine
 - Exploit symmetry in zone plates
 - Content
   - History add scans and pictures
