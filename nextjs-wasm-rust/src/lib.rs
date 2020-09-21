@@ -2,8 +2,8 @@ use std::f64::consts::PI;
 use std::mem;
 use std::os::raw::c_void;
 use wasm_bindgen::prelude::*;
-use wasm_bindgen::Clamped;
-use web_sys::{CanvasRenderingContext2d, ImageData};
+// use wasm_bindgen::Clamped;
+// use web_sys::{CanvasRenderingContext2d, ImageData};
 
 #[wasm_bindgen]
 pub fn add_rust(x: i32, y: i32) -> i32 {
@@ -27,7 +27,8 @@ pub fn dealloc(ptr: *mut c_void, cap: usize) {
 
 #[wasm_bindgen]
 pub fn draw(
-    ctx: &CanvasRenderingContext2d,
+    // ctx: &CanvasRenderingContext2d,
+    data: &mut [u8],
     width: u32,
     height: u32,
     frames: u32,
@@ -37,8 +38,8 @@ pub fn draw(
     cxt: f64,
     cyt: f64,
     ct: f64,
-) -> Result<(), JsValue> {
-    let size = (width * height * 4) as usize;
+) {
+    // let size = (width * height * 4) as usize;
 
     // We tried using a pointer allocated by alloc() above
     // It was deemed an unnecessary optimization
@@ -48,14 +49,14 @@ pub fn draw(
 
     // This allocates a new vec every render, and casts it to $mut [u8]
     // also sets all values to 255
-    let mut v = vec![255_u8; size];
-    let data: &mut [u8] = v.as_mut();
+    // let mut v = vec![255_u8; size];
+    // let data: &mut [u8] = v.as_mut();
 
     // The real workhorse of this algorithm, generating pixel data
     fill_zoneplate(data, width, height, frames, t, cx2, cy2, cxt, cyt, ct);
 
-    let img_data = ImageData::new_with_u8_clamped_array_and_sh(Clamped(data), width, height)?;
-    ctx.put_image_data(&img_data, 0.0, 0.0)
+    // let img_data = ImageData::new_with_u8_clamped_array_and_sh(Clamped(data), width, height)?;
+    // ctx.put_image_data(&img_data, 0.0, 0.0)
 }
 
 fn fill_zoneplate(
@@ -106,6 +107,12 @@ fn fill_zoneplate(
             let abs_phi = if phi < 0.0 { -phi } else { phi };
             let i_phi = ((Q as f64 * abs_phi / (2.0 * PI)).floor()) as usize % Q;
             let c = COSINE_LOOKUP[i_phi];
+
+            //  rust'ish color
+            // data[index + 0] = c;
+            // data[index + 1] = c / 2;
+            // data[index + 2] = 0;
+            // data[index + 3] = 255;
 
             data[index + 0] = c;
             data[index + 1] = c;

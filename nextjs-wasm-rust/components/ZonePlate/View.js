@@ -3,40 +3,56 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { useThemeUI } from 'theme-ui'
 import { useAnimationFrame } from './hooks'
 import { renderJS } from './renderJS'
+
 // Careful: these symbols are mutable
-// their values change from undefined to the actual function reference
+// Their values change from undefined to the actual function reference
 // after the async WASM has loaded
 // Care should be taken if the symbols are copied...
 import { renderRust } from './renderRust'
 import { renderGo } from './renderGo'
 
-// async function - uses dynamic import
-
 export default function View ({ width, height, params, pause, showInfo, shuttle, renderer }) {
   const { theme: { colors: { primary } } } = useThemeUI()
 
-  const [canvas, setCanvas] = useState(null)
+  // When [width,height], canvasRef changes, we update the state for ctx,imageData,data
+  // const [canvas, setCanvas] = useState(null)
+  const [backing, setBacking] = useState({ ctx: null, imageData: null, data: null })
+
   // useCallback instead of useRef - https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
+  // we get a reference to the canvas object when it is created
+  // at that point we allocate/replace the backing resources:
+  // backing = {ctx,imageData,data}
   const canvasRef = useCallback(canvas => {
-    setCanvas(canvas)
+    if (canvas != null) {
+      // if (canvas.width > 50)console.log('callback.ref', canvas)
+      const ctx = canvas.getContext('2d')
+      //  we could create a Uint8ClampedArray ourselves...
+      const imageData = ctx.getImageData(0, 0, width, height)
+      const { data } = imageData
+      // set the alpha channel to 255, so the renderers don't have to
+      // actually set all components with typedarray.fill(value)
+      data.fill(255)
+
+      setBacking({ ctx, imageData, data })
+    }
   }, [width, height])
 
-  // make sure we render when size/params change
+  // Make sure we render when size/params change
+  // Not sure canvasRef should be a dependency, canvas either.. Check again
   useEffect(() => {
-    if (canvas !== null) {
+    if (backing.ctx !== null) {
       const frame = 30
       draw(frame)
       if (showInfo) {
         annotate({ frame })
       }
     }
-  }, [canvasRef, canvas, params, renderer, showInfo])
+  }, [backing, params, renderer, showInfo])
 
   // invoke the appropriate engine for rendering the zoneplate
   function draw (frame = 30, frames = 60) {
     const t = (frame - frames / 2) / frames
     const { cx2, cy2, cxt, cyt, ct } = params
-    const ctx = canvas.getContext('2d')
 
     // default to renderJS - in case loader has not completed yet
     const engines = {
@@ -45,13 +61,15 @@ export default function View ({ width, height, params, pause, showInfo, shuttle,
       Go: renderGo
     }
 
-    if (!engines[renderer]) { // indicate renderer (mutable dynamic import) is not available
-      // console.log(`Renderer (${renderer}) not ready, defaulting to renderJS`, { engines })
+    if (!engines[renderer]) { // indicates renderer (mutable dynamic import) is not available
+      const { ctx } = backing
       ctx.fillStyle = 'red'
       ctx.fillRect(0, 0, width, height)
     } else {
+      const { ctx, imageData, data } = backing
       const renderFunc = engines[renderer] || renderJS
-      renderFunc(ctx, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
+      renderFunc(data, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
+      ctx.putImageData(imageData, 0, 0)
     }
   }
 
@@ -63,7 +81,9 @@ export default function View ({ width, height, params, pause, showInfo, shuttle,
   function annotate ({ avgFps = 0, avgElapsed = 0, frame = 0 } = {}) {
     const padding = 2
     const baseFontSize = (width < 150) ? 16 : 20
-    const ctx = canvas.getContext('2d')
+
+    // We need the ctx to fillText, etc..
+    const { ctx } = backing
 
     // renderer color overlay
     // ctx.save()
@@ -91,6 +111,7 @@ export default function View ({ width, height, params, pause, showInfo, shuttle,
     ctx.textBaseline = 'top'
     ctx.fillText(renderer, width - 2, 2)
 
+    //  The timeline 'dot'
     if (frame || frame === 0) {
       ctx.fillStyle = primary
       ctx.beginPath()

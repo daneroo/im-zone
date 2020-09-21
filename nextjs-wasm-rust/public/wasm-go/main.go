@@ -9,12 +9,7 @@ import (
 )
 
 func main() {
-	// z := zone{}
-	// z.start()
-	fmt.Println("Hello JS")
-
-	// could return a func through a callback?
-	//  can I pass args to main?
+	// expose our functions as JS globals.
 	js.Global().Set("HelloGo", js.FuncOf(Hello))
 	js.Global().Set("DrawGo", js.FuncOf(Draw))
 
@@ -32,7 +27,7 @@ func Hello(this js.Value, inputs []js.Value) interface{} {
 var singleZ *zone = nil
 
 func Draw(this js.Value, inputs []js.Value) interface{} {
-	ctx := inputs[0]
+	data := inputs[0]
 	width := inputs[1].Int()
 	height := inputs[2].Int()
 	frames := inputs[3].Int()
@@ -42,33 +37,28 @@ func Draw(this js.Value, inputs []js.Value) interface{} {
 	cxt := inputs[7].Float()
 	cyt := inputs[8].Float()
 	ct := inputs[9].Float()
-	// gopherBlue := "rgb(1, 173, 216)"
 
 	if singleZ == nil || width != singleZ.width || height != singleZ.height {
-		singleZ = NewZone(ctx, width, height)
+		singleZ = NewZone(width, height)
 	}
-	singleZ.RenderAndPutImage(frames, t, cx2, cy2, cxt, cyt, ct)
+	singleZ.RenderAndPutImage(data, frames, t, cx2, cy2, cxt, cyt, ct)
+
+	// z := NewZone(width, height)
+	// z.RenderAndPutImage(data, frames, t, cx2, cy2, cxt, cyt, ct)
 
 	return nil
 }
 
 type zone struct {
-	ctx js.Value
-
 	width  int
 	height int
-
-	Q   int
-	cos []byte
-
-	bitmap  []byte
-	imgData js.Value
-	data    js.Value
+	// allocated
+	bitmap []byte
 }
 
-func NewZone(ctx js.Value, width, height int) *zone {
+func NewZone(width, height int) *zone {
 	z := new(zone)
-	z.ctx = ctx
+	// z.ctx = ctx
 	z.width = width
 	z.height = height
 
@@ -76,23 +66,16 @@ func NewZone(ctx js.Value, width, height int) *zone {
 	for i := range z.bitmap {
 		z.bitmap[i] = 255
 	}
-	z.imgData = z.ctx.Call("getImageData", 0, 0, z.width, z.height)
-	z.data = z.imgData.Get("data")
-
 	return z
 }
 
-func (z *zone) RenderAndPutImage(frames int, t, cx2, cy2, cxt, cyt, ct float64) {
+func (z *zone) RenderAndPutImage(data js.Value, frames int, t, cx2, cy2, cxt, cyt, ct float64) {
 	// perform actual rendering into bitmap
-	singleZ.render(frames, t, cx2, cy2, cxt, cyt, ct)
-
+	z.render(frames, t, cx2, cy2, cxt, cyt, ct)
 	// Copy bitmap to data (which backs imgData)
-	js.CopyBytesToJS(z.data, z.bitmap) // 160µs @720x480
-
-	// copy imgData back to canvas
-	z.ctx.Call("putImageData", z.imgData, 0, 0) // 360µs @720x480
-
+	js.CopyBytesToJS(data, z.bitmap) // 160µs @720x480
 }
+
 func (z *zone) render(frames int, t, cx2, cy2, cxt, cyt, ct float64) {
 	cx := float64(z.width / 2)
 	cy := float64(z.height / 2)
@@ -133,6 +116,11 @@ func (z *zone) render(frames int, t, cx2, cy2, cxt, cyt, ct float64) {
 			// c := uint8(math.Cos(phi)*126.0 + 127.0)
 			// Lookup - faster than inlining Cos() code
 			c := Cos(phi)
+
+			// // cyan ~ gopherBlue
+			// z.bitmap[index+0] = 0
+			// z.bitmap[index+1] = c
+			// z.bitmap[index+2] = c
 
 			z.bitmap[index+0] = c
 			z.bitmap[index+1] = c

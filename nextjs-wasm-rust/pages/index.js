@@ -15,13 +15,13 @@ const Page = ({ router: { query } }) => {
         and reports the average render time.
         The Rust and Go implementations were compiled to WebAssembly.
         </p>
-        <p>
-          Click on the Zone Plate or the <em>Play/Pause</em> button to animate.
+        <div>
+          <p>Click on the Zone Plate or the <em>Play/Pause</em> button to animate.</p>
           <Box sx={{ color: 'secondary' }}>
             <em>Warning: The animation presents flashing images and stroboscopic sequences.</em>
           </Box>
 
-        </p>
+        </div>
       </Box>
       <ZonePlate />
 

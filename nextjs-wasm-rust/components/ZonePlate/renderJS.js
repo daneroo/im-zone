@@ -1,15 +1,7 @@
-/* global ImageData */
 
-// async to match interface contract
-// Could be fixed with better WASM loader setup..
-export async function renderJS (ctx, width, height, frames, t, cx2, cy2, cxt, cyt, ct) {
-  // const imageData = ctx.getImageData(0, 0, width, height)
-  // Was replaced with a cached allocated ImageData array
-  const imageData = getCachedImageData(width, height)
+// data is a width*height*4 Uint8ClampedArray
 
-  // data is a width*height*4 array
-  const { data } = imageData
-
+export function renderJS (data, width, height, frames, t, cx2, cy2, cxt, cyt, ct) {
   const cx = width / 2
   const cy = height / 2
 
@@ -43,6 +35,7 @@ export async function renderJS (ctx, width, height, frames, t, cx2, cy2, cxt, cy
       const iPhi = Math.floor(Q * absPhi / (2 * Math.PI)) % Q
       const c = cosineLookup[iPhi]
 
+      // yellow = red+green
       data[index + 0] = c // red
       data[index + 1] = c // green
       data[index + 2] = c // blue
@@ -50,7 +43,7 @@ export async function renderJS (ctx, width, height, frames, t, cx2, cy2, cxt, cy
       index += 4
     }
   }
-  ctx.putImageData(imageData, 0, 0)
+  // ctx.putImageData(imageData, 0, 0)
 }
 
 const Q = 1024
@@ -59,33 +52,10 @@ const cosineLookup = Array.from({ length: Q }, (_, iPhi) => {
   return Math.cos(phi) * 126.0 + 127.0
 })
 
-// This index calculation was inlined
+// This index calculation was inlined for performance
 // So commented for possible future use
 // function Cosine (phi) {
 //   const absPhi = (phi < 0) ? -phi : phi
 //   const iPhi = Math.floor(Q * absPhi / (2 * Math.PI)) % Q
 //   return cosineLookup[iPhi]
 // }
-
-// Simply Reuse ImageData for each render
-// This avoids re-allocating the data structure - unless width/height change
-const reuseImageData = {}
-function getCachedImageData (width, height) {
-  const key = JSON.stringify({ width, height })
-  if (!reuseImageData[key]) {
-    Object.keys(reuseImageData).forEach((key) => {
-      // console.log('de-alloc imagedata', key)
-      delete reuseImageData[key]
-    })
-    // console.log('alloc imagedata', key)
-    const imageData = new ImageData(width, height)
-    const { data } = imageData
-    for (let i = 0; i < width * height * 4; i += 4) {
-      data[i + 3] = 255
-    }
-    reuseImageData[key] = imageData
-    return imageData
-  }
-  const imageData = reuseImageData[key]
-  return imageData
-}

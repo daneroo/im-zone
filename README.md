@@ -13,10 +13,8 @@
 
 ## TODO
 
-- refactor render API signature - no context, just pass a Uint8ClampedArray
-  - renderJS
-  - renderRust
-  - renderGo
+- Go, try to find a zero allocation model (especially for tinyGo)
+  - go still allocates the array, and the copies it into the passed Uint8ClampedArray
 - api route for add and stamp
 - api route for images/ per engine
   - [Pointers](https://rustwasm.github.io/docs/wasm-bindgen/reference/types/pointers.html)
