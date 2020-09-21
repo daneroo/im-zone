@@ -86,30 +86,56 @@ export default function View ({ width, height, params, pause, showInfo, shuttle,
     const { ctx } = backing
 
     // renderer color overlay
-    // ctx.save()
+    ctx.save()
     // ctx.globalAlpha = 0.2
-    // ctx.fillStyle = rendererColor[renderer] || 'yellow'
-    // ctx.fillRect(0, 0, width, height)
-    // ctx.restore()
-
-    // avgElapsed and avgFPS
-    ctx.font = `${baseFontSize}px monospace`
-    ctx.fillStyle = 'black'
-    ctx.textAlign = 'left'
-    ctx.textBaseline = 'top'
-    if (avgFps) {
-      ctx.fillText(`${avgElapsed.toFixed(1).padStart(3, ' ')}ms`, padding, padding)
-    }
-    if (avgElapsed) {
-      ctx.fillText(`${avgFps.toFixed(0)}fps`, padding, padding + baseFontSize)
-    }
+    ctx.globalCompositeOperation = 'color'
+    ctx.fillStyle = rendererColor[renderer] || 'red'
+    ctx.fillRect(0, 0, width, height)
+    ctx.restore()
 
     // Renderer Name
+    ctx.save()
     ctx.font = `${baseFontSize * 2}px monospace`
+    ctx.shadowColor = 'white'
+    ctx.shadowBlur = baseFontSize / 2
     ctx.fillStyle = rendererColor[renderer] || 'yellow'
     ctx.textAlign = 'right'
     ctx.textBaseline = 'top'
-    ctx.fillText(renderer, width - 2, 2)
+    ctx.fillText(renderer, width - padding, padding)
+    ctx.restore()
+
+    // for stamp/fps/elapsed
+    ctx.save()
+    ctx.font = `${baseFontSize}px monospace`
+    ctx.shadowColor = 'black'
+    ctx.shadowBlur = 8 // baseFontSize
+    ctx.fillStyle = 'white'
+
+    // stamp
+    const stamp = new Date().toISOString()
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'bottom'
+    if (width < 300) {
+      // time portion
+      ctx.fillText(stamp.substr(11, 10), width / 2, height - padding)
+      if (width > 150) {
+        // date portion above
+        ctx.fillText(stamp.substr(0, 10), width / 2, height - baseFontSize - padding)
+      }
+    } else {
+      // show timestamp one line
+      ctx.fillText(stamp.substr(0, 22), width / 2, height - padding)
+    }
+    // avgElapsed and avgFPS
+    ctx.textAlign = 'left'
+    ctx.textBaseline = 'top'
+    if (avgElapsed) {
+      ctx.fillText(`${avgElapsed.toFixed(1).padStart(3, ' ')}ms`, padding, padding)
+    }
+    if (avgFps) {
+      ctx.fillText(`${avgFps.toFixed(0)}fps`, padding, padding + baseFontSize)
+    }
+    ctx.restore()
 
     //  The timeline 'dot'
     if (frame || frame === 0) {

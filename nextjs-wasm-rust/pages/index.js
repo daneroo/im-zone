@@ -1,6 +1,6 @@
 
 import { withRouter } from 'next/router'
-import { Box } from 'theme-ui'
+import { Box, Flex } from 'theme-ui'
 
 import ZonePlate from '../components/ZonePlate'
 
@@ -15,6 +15,10 @@ const Page = ({ router: { query } }) => {
         and reports the average render time.
         The Rust and Go implementations were compiled to WebAssembly.
         </p>
+        <Flex sx={{ width: '80%', margin: 'auto', alignItems: 'center', gap: 2 }}>
+          <img src={`/api/zone/?bust=${1234}`} alt='Random' width='200' height='200' />
+          <img src={`/api/zone/?bust=${4321}`} alt='Random' width='200' height='200' />
+        </Flex>
         <div>
           <p>Click on the Zone Plate or the <em>Play/Pause</em> button to animate.</p>
           <Box sx={{ color: 'secondary' }}>

@@ -13,14 +13,13 @@
 
 ## TODO
 
-- Go, try to find a zero allocation model (especially for tinyGo)
+- Go: try to find a zero allocation model (especially for tinyGo)
   - go still allocates the array, and the copies it into the passed Uint8ClampedArray
+  - Replace wasm_exec with ... a real module
 - api route for add and stamp
-- api route for images/ per engine
-  - [Pointers](https://rustwasm.github.io/docs/wasm-bindgen/reference/types/pointers.html)
-  - [Slices](https://rustwasm.github.io/docs/wasm-bindgen/reference/types/number-slices.html)
-  - [wasm-opt](https://rustwasm.github.io/docs/wasm-bindgen/examples/add.html)
-- [webpack go loader](https://www.aaron-powell.com/posts/2019-02-12-golang-wasm-6-typescript-react/)
+- api route for for go/wasm
+  - [](https://github.com/aaronpowell/webpack-golang-wasm-async-loader)
+  - [webpack go loader](https://www.aaron-powell.com/posts/2019-02-12-golang-wasm-6-typescript-react/)
 - lerna - split go and rust into packages and publish
 - Exploit symmetry in zone plates
 - Content
