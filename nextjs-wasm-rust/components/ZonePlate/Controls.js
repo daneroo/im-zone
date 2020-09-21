@@ -70,7 +70,7 @@ function PresetParams ({ setParams, setShuttle }) {
         onClick={(e) => {
           setParams(params)
           // pretty flaky...
-          setShuttle(label.endsWith('T'))
+          setShuttle(label.endsWith('-Temporal'))
         }}
         icon={icon}
       />
