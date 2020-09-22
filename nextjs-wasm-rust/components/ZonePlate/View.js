@@ -87,8 +87,7 @@ export default function View ({ width, height, params, pause, showInfo, shuttle,
 
     // renderer color overlay
     ctx.save()
-    // ctx.globalAlpha = 0.2
-    ctx.globalCompositeOperation = 'color'
+    ctx.globalCompositeOperation = 'multiply'
     ctx.fillStyle = rendererColor[renderer] || 'red'
     ctx.fillRect(0, 0, width, height)
     ctx.restore()
@@ -96,8 +95,8 @@ export default function View ({ width, height, params, pause, showInfo, shuttle,
     // Renderer Name
     ctx.save()
     ctx.font = `${baseFontSize * 2}px monospace`
-    ctx.shadowColor = 'white'
-    ctx.shadowBlur = baseFontSize / 2
+    ctx.shadowColor = 'black'
+    ctx.shadowBlur = 6
     ctx.fillStyle = rendererColor[renderer] || 'yellow'
     ctx.textAlign = 'right'
     ctx.textBaseline = 'top'
@@ -108,7 +107,7 @@ export default function View ({ width, height, params, pause, showInfo, shuttle,
     ctx.save()
     ctx.font = `${baseFontSize}px monospace`
     ctx.shadowColor = 'black'
-    ctx.shadowBlur = 8 // baseFontSize
+    ctx.shadowBlur = 4
     ctx.fillStyle = 'white'
 
     // stamp
