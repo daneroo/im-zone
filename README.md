@@ -13,17 +13,16 @@
 
 ## TODO
 
-- Go: try to find a zero allocation model (especially for tinyGo)
-  - go still allocates the array, and the copies it into the passed Uint8ClampedArray
-  - Replace wasm_exec with ... a real module
 - deploy to vercel with build
   - lerna - split go and rust into packages and publish
   - page for api/routes
   - api route for add and stamp
   - api route for for go/wasm
-
-- [](https://github.com/aaronpowell/webpack-golang-wasm-async-loader)
-  - [webpack go loader](https://www.aaron-powell.com/posts/2019-02-12-golang-wasm-6-typescript-react/)
+- Go: try to find a zero allocation model (especially for tinyGo)
+  - go still allocates the array, and the copies it into the passed Uint8ClampedArray
+  - Replace wasm_exec with ... a real module
+  - [webpack go loader npm](https://github.com/aaronpowell/webpack-golang-wasm-async-loader)
+  - [webpack go loader blog](https://www.aaron-powell.com/posts/2019-02-12-golang-wasm-6-typescript-react/)
 - Exploit symmetry in zone plates
 - Content
   - History add scans and pictures
