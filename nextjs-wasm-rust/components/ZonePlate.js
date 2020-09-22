@@ -98,6 +98,7 @@ function ManyMore () {
 function randSettings () {
   const max = 2
   const r = () => Math.random() * max * 2 - max
+  const renderers = ['JS', 'Rust', 'Go']
   return {
     params: {
       cx2: r(),
@@ -107,7 +108,7 @@ function randSettings () {
       ct: r()
     },
     pause: Math.random() < 0.5,
-    renderer: ['JS', 'Rust'][Math.floor(Math.random() * 2)]
+    renderer: renderers[Math.floor(Math.random() * renderers.length)]
   }
 }
 function ManyZones ({ howMany = 4 }) {
