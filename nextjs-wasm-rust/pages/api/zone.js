@@ -85,16 +85,15 @@ function annotate (ctx, renderer, width, height, elapsed) {
 
   // renderer color overlay
   ctx.save()
-  // ctx.globalAlpha = 0.2
-  ctx.globalCompositeOperation = 'color'
+  ctx.globalCompositeOperation = 'multiply'
   ctx.fillStyle = rendererColor[renderer] || 'red'
   ctx.fillRect(0, 0, width, height)
   ctx.restore()
 
   // renderer name
   ctx.font = `${baseFontSize * 2}px monospace`
-  ctx.shadowColor = 'white'
-  ctx.shadowBlur = baseFontSize / 2
+  ctx.shadowColor = 'black'
+  ctx.shadowBlur = 6
   ctx.fillStyle = rendererColor[renderer] || 'red'
   ctx.textAlign = 'right'
   ctx.textBaseline = 'top'
@@ -104,7 +103,7 @@ function annotate (ctx, renderer, width, height, elapsed) {
   const stamp = new Date().toISOString()
   ctx.font = `${baseFontSize}px monospace`
   ctx.shadowColor = 'black'
-  ctx.shadowBlur = 8 // baseFontSize
+  ctx.shadowBlur = 4
   ctx.fillStyle = 'white'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'bottom'
