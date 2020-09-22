@@ -138,14 +138,19 @@ export default function View ({ width, height, params, pause, showInfo, shuttle,
 
     //  The timeline 'dot'
     if (frame || frame === 0) {
-      ctx.fillStyle = primary
+      ctx.save()
+      ctx.fillStyle = 'white'
+      // ctx.shadowColor = 'black'
+      // ctx.shadowBlur = 4
+
       ctx.beginPath()
       const x = width * frame / 60
       const y = 0
-      const radius = height * 0.02
+      const radius = Math.max(4, height * 0.01)
       ctx.arc(x, y, radius, 0, 2 * Math.PI)
       ctx.closePath()
       ctx.fill()
+      ctx.restore()
     }
   }
 
