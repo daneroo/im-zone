@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@mdx-js/loader": "^1.6.17",
+    "@mdx-js/loader": "^1.6.18",
     "@next/mdx": "^9.5.3",
     "@theme-ui/presets": "^0.3.0",
     "canvas": "^2.6.1",
