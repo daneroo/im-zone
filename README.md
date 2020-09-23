@@ -18,6 +18,7 @@
   - page for api/routes
   - api route for add and stamp
   - api route for for go/wasm
+- measure performance without/less annotations, or without impact..
 - Go: try to find a zero allocation model (especially for tinyGo)
   - go still allocates the array, and the copies it into the passed Uint8ClampedArray
   - Replace wasm_exec with ... a real module
