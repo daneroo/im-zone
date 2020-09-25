@@ -9,7 +9,7 @@ export let dealloc
 // imports {add_rust,alloc,dealloc,draw}
 // then sets the exported variables
 export async function importWasm () {
-  const wasm = await import('../../pkg')
+  const wasm = await import('@daneroo/zoneplate-rust')
 
   // Set our mutable exported variables
   addRust = wasm.add_rust
