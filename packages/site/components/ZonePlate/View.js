@@ -1,8 +1,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useThemeUI } from 'theme-ui'
 import { useAnimationFrame } from './hooks'
-import { renderJS } from './renderJS'
+import { renderJS } from '@daneroo/zoneplate-js'
 
 // Careful: these symbols are mutable
 // Their values change from undefined to the actual function reference
@@ -12,8 +11,6 @@ import { renderRust } from './renderRust'
 import { renderGo } from './renderGo'
 
 export default function View ({ width, height, params, pause, showInfo, shuttle, renderer }) {
-  const { theme: { colors: { primary } } } = useThemeUI()
-
   // When [width,height], canvasRef changes, we update the state for ctx,imageData,data
   // const [canvas, setCanvas] = useState(null)
   const [backing, setBacking] = useState({ ctx: null, imageData: null, data: null })

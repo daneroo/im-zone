@@ -109,15 +109,15 @@ fn fill_zoneplate(
             let c = COSINE_LOOKUP[i_phi];
 
             //  rust'ish color
-            data[index + 0] = c;
-            data[index + 1] = c / 2;
-            data[index + 2] = 0;
-            data[index + 3] = 255;
-
             // data[index + 0] = c;
-            // data[index + 1] = c;
-            // data[index + 2] = c;
-            // // data[index + 3] = 255; // set in allocation (255_u8)
+            // data[index + 1] = c / 2;
+            // data[index + 2] = 0;
+            // data[index + 3] = 255;
+
+            data[index + 0] = c;
+            data[index + 1] = c;
+            data[index + 2] = c;
+            // data[index + 3] = 255; // set in allocation (255_u8)
             index += 4;
         }
     }

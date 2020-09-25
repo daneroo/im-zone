@@ -5,7 +5,7 @@ import { renderRust } from '../../components/ZonePlate/renderRust'
 // dynamic import
 // import { importWasm } from '../../components/ZonePlate/renderRust'
 
-import { renderJS } from '../../components/ZonePlate/renderJS'
+import { renderJS } from '@daneroo/zoneplate-js'
 
 export default async ({ query: { a = 40, b = 2 } } = {}, res) => {
   // validate width and height when they become query params
