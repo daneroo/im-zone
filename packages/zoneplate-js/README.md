@@ -1,6 +1,9 @@
 # render-js
 
-> TODO: Jest not working yet
+## TODO
+
+- Not sure if we should commit dist/ - Yes for now
+- Jest not working yet
 
 ## Usage
 
