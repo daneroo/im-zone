@@ -1,5 +1,4 @@
 
-
 // data is a width*height*4 Uint8ClampedArray
 
 export function renderJS (data, width, height, frames, t, cx2, cy2, cxt, cyt, ct) {
@@ -39,7 +38,7 @@ export function renderJS (data, width, height, frames, t, cx2, cy2, cxt, cyt, ct
       // yellow = red+green
       data[index + 0] = c // red
       data[index + 1] = c // green
-      data[index + 2] = 0 // blue
+      data[index + 2] = c // blue
       // data[index + 3] = 255 // alpha // set once in getCachedImageData
       index += 4
     }
