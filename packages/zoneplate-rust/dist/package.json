@@ -1,0 +1,16 @@
+{
+  "name": "@daneroo/zoneplate-rust",
+  "collaborators": [
+    "Daniel Lauzon"
+  ],
+  "description": "Zone Plate Generator in Rust/WASM",
+  "version": "1.0.0",
+  "files": [
+    "index_bg.wasm",
+    "index.js",
+    "index.d.ts"
+  ],
+  "module": "index.js",
+  "types": "index.d.ts",
+  "sideEffects": false
+}

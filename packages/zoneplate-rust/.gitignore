@@ -1,0 +1,3 @@
+# keep dist, so we can build on vercel...
+target/
+node_modules/

@@ -1,0 +1,21 @@
+[package]
+name = "zoneplate-rust"
+version = "1.0.0"
+description = "Zone Plate Generator in Rust/WASM"
+authors = ["Daniel Lauzon"]
+
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2.67"
+lazy_static = "1.4.0"
+
+[dependencies.web-sys]
+version = "0.3.4"
+features = [
+  'ImageData',
+  'CanvasRenderingContext2d',
+]
