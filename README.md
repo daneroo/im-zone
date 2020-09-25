@@ -15,9 +15,14 @@
 
 - deploy to vercel with build
   - lerna - split go and rust into packages and publish
+  - [microbundle](https://buttercms.com/blog/nextjs-storybook-and-lerna-build-a-monorepo-structure)
+  - [rollup and wasm-pack](https://github.com/wasm-tool/rollup-plugin-rust)
+  - [rust-webpack-template](https://github.com/rustwasm/rust-webpack-template)
+  - pika pack - @pika/plugin-wasm-bindings , https://www.pika.dev/blog/introducing-pika-pack/
   - page for api/routes
   - api route for add and stamp
   - api route for for go/wasm
+- [next-mdx-deck](https://github.com/whoisryosuke/next-mdx-deck)
 - measure performance without/less annotations, or without impact..
 - Go: try to find a zero allocation model (especially for tinyGo)
   - go still allocates the array, and the copies it into the passed Uint8ClampedArray
@@ -29,6 +34,55 @@
   - History add scans and pictures
   - Add performance comparative benchmarks (lik in WASM Go README)
     - pub-sub in nats?
+
+## Usage with lerna
+
+```bash
+lerna bootstrap
+lerna run dev --parallel
+
+lerna run test
+
+# example new package
+lerna create --private render-js
+# adjust names and  entrypoint:dist/index.js
+cd packages/render-js && npm i -D microbundle standard jest
+```
+
+Add `package.json` targets:
+
+```json
+"source": "lib/index.js",
+"scripts": {
+   ..
+   "dev": "microbundle watch --jsx React.createElement"
+ },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 0,
+        "statements": 0
+      }
+    }
+  },
+  "standard": {
+    "//parser": "babel-eslint",
+    "env": {
+      "jest": true
+    }
+  },
+```
+
+### Front end
+
+```bash
+cd packages
+npx create-next-app
+cd front-end
+lerna add render-js
+```
 
 ## History
 
