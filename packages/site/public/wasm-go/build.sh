@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-#  nodemon --watch src --watch main.go --exec ./build.sh
+
+# nodemon --watch src --watch main.go --exec ./build.sh
 
 echo "-= Copying wasm_exec.js"
 cp -p "$(go env GOROOT)/misc/wasm/wasm_exec.js" .
