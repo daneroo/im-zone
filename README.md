@@ -14,12 +14,11 @@
 ## TODO
 
 - deploy to vercel with build
-  - lerna - split go and rust into packages and publish
-  - replace microbundle with rollup directly, because we need a plugin
-  - [rollup-plugin-base64](https://www.npmjs.com/package/rollup-plugin-base64)
   - page for api/routes
   - api route for add and stamp
   - api route for for go/wasm
+- replace zoneplate-go wasm with rollup-plugin-base64
+  - need a plugin to move to /static/wasm/...wasm
 - [next-mdx-deck](https://github.com/whoisryosuke/next-mdx-deck)
 - measure performance without/less annotations, or without impact..
 - Go: try to find a zero allocation model (especially for tinyGo)
