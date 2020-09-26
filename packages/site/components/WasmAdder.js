@@ -4,7 +4,7 @@ import { Flex, Button } from 'theme-ui'
 
 // async function - uses dynamic import
 async function importWasm () {
-  const wasm = await import('../pkg')
+  const wasm = await import('@daneroo/zoneplate-rust')
   return wasm
 }
 
