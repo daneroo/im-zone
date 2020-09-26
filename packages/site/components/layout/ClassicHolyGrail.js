@@ -12,7 +12,7 @@ export function ClassicHolyGrail ({
   return (
     <>
       <Head>
-        <meta charset='utf-8' />
+        <meta charSet='utf-8' />
         <title>Zone Plate Experiment</title>
         <meta name='author' content='Daniel Lauzon' />
         <meta
