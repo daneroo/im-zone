@@ -1,2 +1,0 @@
-let e;async function t(){if(await import("./wasm_exec_fixed-1d69733a.js"),"undefined"!=typeof window){const t=new window.Go;let i;if("instantiateStreaming"in WebAssembly)i=await WebAssembly.instantiateStreaming(fetch("/wasm-go/main.wasm"),t.importObject);else{const e=await fetch("/wasm-go/main.wasm"),a=await e.arrayBuffer();i=await WebAssembly.instantiate(a,t.importObject)}t.run(i.instance),e=window.DrawGo,console.log("imported Go WASM")}else console.log("skipped importing Go WASM")}t();export{t as importWasm,e as renderGo};
-//# sourceMappingURL=index.modern.js.map

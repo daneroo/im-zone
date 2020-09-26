@@ -8,7 +8,7 @@ import { renderJS } from '@daneroo/zoneplate-js'
 // after the async WASM has loaded
 // Care should be taken if the symbols are copied...
 import { renderRust } from './renderRust'
-import { renderGo } from './renderGo'
+import { renderGo } from '@daneroo/zoneplate-go'
 
 export default function View ({ width, height, params, pause, showInfo, shuttle, renderer }) {
   // When [width,height], canvasRef changes, we update the state for ctx,imageData,data

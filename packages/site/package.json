@@ -6,6 +6,7 @@
 	"dependencies": {
 		"@daneroo/zoneplate-js": "^1.0.0",
 		"@daneroo/zoneplate-rust": "^1.0.0",
+		"@daneroo/zoneplate-go": "^1.0.0",
 		"@mdx-js/loader": "^1.6.18",
 		"@next/mdx": "^9.5.3",
 		"@theme-ui/presets": "^0.3.0",

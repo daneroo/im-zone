@@ -15,10 +15,8 @@
 
 - deploy to vercel with build
   - lerna - split go and rust into packages and publish
-  - [microbundle](https://buttercms.com/blog/nextjs-storybook-and-lerna-build-a-monorepo-structure)
-  - [rollup and wasm-pack](https://github.com/wasm-tool/rollup-plugin-rust)
-  - [rust-webpack-template](https://github.com/rustwasm/rust-webpack-template)
-  - pika pack - @pika/plugin-wasm-bindings , https://www.pika.dev/blog/introducing-pika-pack/
+  - replace microbundle with rollup directly, because we need a plugin
+  - [rollup-plugin-base64](https://www.npmjs.com/package/rollup-plugin-base64)
   - page for api/routes
   - api route for add and stamp
   - api route for for go/wasm
