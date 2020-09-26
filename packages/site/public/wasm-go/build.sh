@@ -1,5 +1,4 @@
-#!/bin/sh
-
+#!/usr/bin/env bash
 #  nodemon --watch src --watch main.go --exec ./build.sh
 
 echo "-= Copying wasm_exec.js"

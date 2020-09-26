@@ -24,9 +24,10 @@
     throw new Error('cannot export Go (neither global, window nor self is defined)')
   }
 
-  if (!global.require && typeof require !== 'undefined') {
-    global.require = require
-  }
+  // This is the culprit!
+  // if (!global.require && typeof require !== 'undefined') {
+  //   global.require = require
+  // }
 
   // if (!global.fs && global.require) {
   //   global.fs = require('fs')
