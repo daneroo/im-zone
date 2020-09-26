@@ -18,7 +18,7 @@
     "lint": "standard",
     "dev": "nodemon --watch lib/index.js --watch lib/wasm-go/main.go -e js,go --exec ./build.sh",
     "build": "./build.sh",
-    "bundle": "rollup -c",
+    "bundle": "rollup -c"
   },
   "bugs": {
     "url": "https://github.com/daneroo/im-zone/issues"
