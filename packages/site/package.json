@@ -18,12 +18,11 @@
 	},
 	"scripts": {
 		"dev": "next",
-		"build": "next build && next export",
+		"build": "next build",
 		"start": "next start",
-		"deploy:vercel": "npm run static && cd out && vercel --prod && npm run clean:vercel",
-		"clean:vercel": "vercel rm --safe --yes zone",
-		"preview:vercel": "npm run static && cd out && vercel",
-		"static": "npm run build && cp -r .vercel out/"
+		"vercel:deploy": "vercel --prod && npm run vercel:clean",
+		"vercel:clean": "vercel rm --safe --yes zone",
+		"vercel:preview": "vercel"
 	},
 	"license": "MIT",
 	"devDependencies": {
