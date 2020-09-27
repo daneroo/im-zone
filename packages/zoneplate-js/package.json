@@ -1,6 +1,6 @@
 {
   "name": "@daneroo/zoneplate-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Zone Plate Generator in JavaScript",
   "author": "Daniel Lauzon <daniel.lauzon@gmail.com>",
   "license": "MIT",
