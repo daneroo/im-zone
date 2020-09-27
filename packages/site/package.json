@@ -12,6 +12,7 @@
 		"@theme-ui/presets": "^0.3.0",
 		"canvas": "^2.6.1",
 		"next": "latest",
+		"node-fetch": "^2.6.1",
 		"react": "^16.7.0",
 		"react-dom": "^16.7.0",
 		"theme-ui": "^0.3.1"
