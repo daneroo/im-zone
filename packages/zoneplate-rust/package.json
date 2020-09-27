@@ -1,6 +1,6 @@
 {
   "name": "@daneroo/zoneplate-rust",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Zone Plate Generator in Rust/WASM",
   "author": "Daniel Lauzon <daniel.lauzon@gmail.com>",
   "license": "MIT",

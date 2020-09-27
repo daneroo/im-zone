@@ -1,12 +1,12 @@
 {
 	"name": "site",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"private": true,
 	"description": "Zone Plate Generator Next.js site",
 	"dependencies": {
 		"@daneroo/zoneplate-go": "^1.0.1",
 		"@daneroo/zoneplate-js": "^1.0.1",
-		"@daneroo/zoneplate-rust": "^1.0.2",
+		"@daneroo/zoneplate-rust": "^1.0.3",
 		"@mdx-js/loader": "^1.6.18",
 		"@next/mdx": "^9.5.3",
 		"@theme-ui/presets": "^0.3.0",
