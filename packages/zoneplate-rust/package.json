@@ -18,11 +18,6 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
-  "files": [
-    "dist",
-    "src",
-    "Cargo.toml"
-  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist && wasm-pack build  -s daneroo -d dist --out-name=index && rm -f dist/.gitignore",
