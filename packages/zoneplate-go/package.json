@@ -1,27 +1,33 @@
 {
   "name": "@daneroo/zoneplate-go",
   "version": "1.0.0",
-  "private": true,
   "description": "Zone Plate Generator in Go",
   "author": "Daniel Lauzon <daniel.lauzon@gmail.com>",
+  "license": "MIT",
   "homepage": "https://github.com/daneroo/im-zone#readme",
-  "license": "ISC",
-  "source": "lib/index.js",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/daneroo/im-zone.git"
   },
+  "bugs": {
+    "url": "https://github.com/daneroo/im-zone/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist",
+    "lib",
+    "build.sh",
+    "rollup.config.js"
+  ],
   "scripts": {
     "lint": "standard",
     "dev": "nodemon --watch lib/index.js --watch lib/wasm-go/main.go -e js,go --exec ./build.sh",
     "build": "./build.sh",
     "bundle": "rollup -c"
-  },
-  "bugs": {
-    "url": "https://github.com/daneroo/im-zone/issues"
   },
   "devDependencies": {
     "rollup-plugin-base64": "^1.0.1",

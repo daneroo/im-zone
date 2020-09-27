@@ -2,25 +2,33 @@
   "name": "@daneroo/zoneplate-rust",
   "version": "1.0.0",
   "description": "Zone Plate Generator in Rust/WASM",
-  "private": true,
-  "NOTmain": "src/index.js",
-  "files": [
-    "dist/index_bg.wasm",
-    "dist/index.js",
-    "dist/index.d.ts"
-  ],
+  "author": "Daniel Lauzon <daniel.lauzon@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/daneroo/im-zone#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daneroo/im-zone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/daneroo/im-zone/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
-  "dependencies": {},
-  "devDependencies": {
-    "nodemon": "^2.0.4"
-  },
+  "files": [
+    "dist",
+    "src",
+    "Cargo.toml"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist && wasm-pack build  -s daneroo -d dist --out-name=index && rm -f dist/.gitignore",
     "dev": "nodemon --watch src --watch Cargo.toml -e js,rs --exec npm run build"
   },
-  "author": "Daniel Lauzon",
-  "license": "ISC"
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
 }

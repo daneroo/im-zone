@@ -14,6 +14,9 @@
 ## TODO
 
 - deploy to vercel with build
+  - publish 3 generators on npm - MIT
+    - normalize the README
+    - normalize the package.json scripts - dev build lint test
   - page for api/routes
   - api route for add and stamp
   - api route for for go/wasm
@@ -21,6 +24,7 @@
   - need a plugin to move to /static/wasm/...wasm
 - [next-mdx-deck](https://github.com/whoisryosuke/next-mdx-deck)
 - measure performance without/less annotations, or without impact..
+- minimal testing (unit & integration)
 - Go: try to find a zero allocation model (especially for tinyGo)
   - go still allocates the array, and the copies it into the passed Uint8ClampedArray
   - Replace wasm_exec with ... a real module
