@@ -18,9 +18,14 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
+  "files": [
+    "dist",
+    "src",
+    "Cargo.toml"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && wasm-pack build  -s daneroo -d dist --out-name=index && rm -f dist/.gitignore",
+    "build": "rm -rf dist && wasm-pack build  -s daneroo -d dist --out-name=index && rm -f dist/.gitignore dist/package.json",
     "dev": "nodemon --watch src --watch Cargo.toml -e js,rs --exec npm run build"
   },
   "devDependencies": {
