@@ -1,11 +1,21 @@
 {
   "name": "root",
   "private": true,
+  "description": "Zone Plate Generator Monorepo",
+  "author": "Daniel Lauzon <daniel.lauzon@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/daneroo/im-zone#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daneroo/im-zone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/daneroo/im-zone/issues"
+  },
   "scripts": {
     "dev": "lerna run dev --parallel"
   },
   "devDependencies": {
     "lerna": "^3.22.1"
-  },
-  "dependencies": {}
+  }
 }
