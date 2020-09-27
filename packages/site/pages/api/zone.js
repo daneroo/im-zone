@@ -1,4 +1,4 @@
-import { createCanvas, createImageData } from 'canvas'
+import { createCanvas, createImageData, registerFont } from 'canvas'
 
 // mutable export
 import { renderRust } from '../../components/ZonePlate/renderRust'
@@ -77,6 +77,8 @@ export default async ({ query: { a = 40, b = 2 } } = {}, res) => {
 function annotate (ctx, renderer, width, height, elapsed) {
   const padding = 2
   const baseFontSize = (width < 150) ? 16 : 20
+  const fontFamily = 'monospace'
+  registerFont('public/fonts/CourierPrime-Regular.ttf', { family: 'monospace' })
 
   const jsYellow = '#f7df1e'
   const gopherBlue = 'rgb(1, 173, 216)'
@@ -91,7 +93,7 @@ function annotate (ctx, renderer, width, height, elapsed) {
   ctx.restore()
 
   // renderer name
-  ctx.font = `${baseFontSize * 2}px monospace`
+  ctx.font = `${baseFontSize * 2}px ${fontFamily}`
   ctx.shadowColor = 'black'
   ctx.shadowBlur = 6
   ctx.fillStyle = rendererColor[renderer] || 'red'
@@ -101,7 +103,7 @@ function annotate (ctx, renderer, width, height, elapsed) {
 
   // stamp
   const stamp = new Date().toISOString()
-  ctx.font = `${baseFontSize}px monospace`
+  ctx.font = `${baseFontSize}px ${fontFamily}`
   ctx.shadowColor = 'black'
   ctx.shadowBlur = 4
   ctx.fillStyle = 'white'

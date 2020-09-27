@@ -48,6 +48,15 @@ npm i -g wasm-pack
 npx create-next-app --example with-webassembly with-webassembly-app
 ```
 
+### Deploy to vercel
+
+To get node-canvas to work on lambda/vercel api routes need this special build:
+_although fonts are not working_
+
+```json
+ "vercel-build": "yum install libuuid-devel libmount-devel && cp /lib64/{libuuid,libmount,libblkid}.so.1 node_modules/canvas/build/Release/ && npm run build",
+```
+
 ### theme-ui
 
 - `npm i  theme-ui @theme-ui/presets`
