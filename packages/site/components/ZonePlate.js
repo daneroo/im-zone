@@ -116,6 +116,13 @@ function ManyZones ({ howMany = 4 }) {
   return Array.from({ length: howMany }).map((_, key) => {
     const [settings, setSettings] = useState(randSettings())
     const icon = (
+      // <img
+      //   {...{
+      //     height: sz,
+      //     width: sz,
+      //     src: `/api/zone?width=${sz}&bust=${Math.random()}`
+      //   }}
+      // />
       <View
         {...{
           height: sz,
