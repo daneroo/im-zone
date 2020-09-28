@@ -13,16 +13,13 @@
 
 ## TODO
 
-- deploy to vercel with build
-  - publish 3 generators on npm - MIT
-    - normalize the README
-    - normalize the package.json scripts - dev build lint test
-  - page for api/routes
-  - api route for add and stamp
-  - api route for for go/wasm
-- replace zoneplate-go wasm with rollup-plugin-base64
-  - need a plugin to move to /static/wasm/...wasm
 - [next-mdx-deck](https://github.com/whoisryosuke/next-mdx-deck)
+- npm packages
+  - normalize the README
+  - normalize the package.json scripts - dev build lint test
+- api route for for go/wasm
+- replaced zoneplate-go wasm with rollup-plugin-base64
+  - need a plugin to move to /static/wasm/...wasm
 - measure performance without/less annotations, or without impact..
 - minimal testing (unit & integration)
 - Go: try to find a zero allocation model (especially for tinyGo)
