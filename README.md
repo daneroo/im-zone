@@ -4,12 +4,12 @@
 - Next.js - WASM - Rust - Go: `./nextjs-wasm-rust/`
 - Go version, static cli, and WASM, working, not yet integrated into next app.
 - Static image/video generation in Go: `./static-go/`
-- Original `C++` code from CRC in `./legacy-CRC/` *circa 1996*
-- Original `Fortran` version: *lost*, but if I had it, I would dockerize it!
+- Original `C++` code from CRC in `./legacy-CRC/` _circa 1996_
+- Original `Fortran` version: _lost_, but if I had it, I would dockerize it!
 
-| VT Zone Plate | VH Zone Plate |
-|:-:|:-:|
-| <img src="./vt-zone.gif" alt="VT zone plate" width="200" height="200">|<img src="./vh-zone.gif" alt="VH zone plate" width="200" height="200">|
+|                             VT Zone Plate                              |                             VH Zone Plate                              |
+| :--------------------------------------------------------------------: | :--------------------------------------------------------------------: |
+| <img src="./vt-zone.gif" alt="VT zone plate" width="200" height="200"> | <img src="./vh-zone.gif" alt="VH zone plate" width="200" height="200"> |
 
 ## TODO
 
@@ -27,7 +27,8 @@
   - Replace wasm_exec with ... a real module
   - [webpack go loader npm](https://github.com/aaronpowell/webpack-golang-wasm-async-loader)
   - [webpack go loader blog](https://www.aaron-powell.com/posts/2019-02-12-golang-wasm-6-typescript-react/)
-- Exploit symmetry in zone plates
+- Exploit symmetry in zone
+- [Review Styling](https://www.smashingmagazine.com/2020/09/comparison-styling-methods-next-js/)
 - Content
   - History add scans and pictures
   - Add performance comparative benchmarks (lik in WASM Go README)
