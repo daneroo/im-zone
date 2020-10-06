@@ -15,10 +15,11 @@ const SlideshowPage = ({ totalSlidePages, currentSlide, filename }) => {
           {siteConfig.name} - {siteConfig.title}
         </title>
         <link rel="icon" href="/favicon.ico" />
+        {/* Poppins Bold 800->700, Roboto w/Italic 400,700,900 */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Roboto:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
           rel="stylesheet"
-        />
+        ></link>
       </Head>
       <Header
         name={siteConfig.name}

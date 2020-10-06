@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
     --base: 1.5rem;
     --code: 1rem;
     --heading-font-family: "Poppins";
-    --heading-font-weight: 800;
+    --heading-font-weight: 700;
   }
 
   @media (max-width: 600px) {
@@ -69,41 +69,49 @@ const GlobalStyle = createGlobalStyle`
 
   #slide ul,
   #slide ol {
-      text-align: left;
-      margin-left: 32px;
+    text-align: left;
   }
 
   #slide ol {
+    /*margin-left: 32px;*/
+    margin-left: 1.34rem;
     list-style: none;
     counter-reset: slide-ol-counter;
   }
 
   #slide ol li {
     counter-increment: slide-ol-counter;
-    margin-bottom:0.5em;
+    /* line height is better than margin-bottom for nested lists */
+    line-height: 1.3;
   }
 
   #slide ol li::before {
     content: "0" counter(slide-ol-counter) ".";
-    font-weight: bold;
-    font-size: 2rem;
+    /*
+    Poppins does not support  tabular-nums
+    So we are Using Roboto wght:900 instead
+    font-family: var(--heading-font-family);
+    */
+    font-weight: 900;
+    font-variant-numeric: tabular-nums; /* numbers->monospace*/
+    /* font-size: 2rem;  too big */
     margin-right: 0.5rem;
     letter-spacing:1px;
-    font-family: var(--heading-font-family);
     line-height: 1;
-    position:relative;
-    top:0.1em;
   }
 
 
   /* mine */
   #slide ul {
-    list-style-type: square;
-    margin-left: 48px;
+    /*list-style-type: square;*/
+    /*list-style-position: inside;*/
+    /* To match ol's indentation of 1.33rem+ '0x.' */
+    margin-left: 2.5rem;
   }
 
   #slide ul li {
-    margin-bottom:0.5em;
+    /* margin-bottom:0.5em; */
+    line-height: 1.3;
   }
 
   a {
