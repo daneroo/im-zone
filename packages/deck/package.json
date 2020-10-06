@@ -1,17 +1,22 @@
 {
   "name": "deck",
   "version": "1.0.7",
-  "description": "Zone Plate Generator Next.js site",
+  "description": "Zone Plate Generator Next.js MDX Deck",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
     "format": "prettier --write '**/*.{js,jsx}'",
-    "start": "next start"
+    "dev": "next",
+    "build": "next build",
+    "vercel-build": "yum install libuuid-devel libmount-devel && cp /lib64/{libuuid,libmount,libblkid}.so.1 node_modules/canvas/build/Release/ && npm run build",
+    "start": "next start",
+    "vercel:deploy": "vercel --prod && npm run vercel:clean",
+    "vercel:clean": "vercel rm --safe --yes zone-deck",
+    "vercel:preview": "vercel"
   },
   "dependencies": {
     "@mdx-js/loader": "^1.5.8",
     "@next/mdx": "^9.3.4",
+    "canvas": "^2.6.1",
     "framer-motion": "^1.10.3",
     "next": "9.3.4",
     "react": "16.13.1",

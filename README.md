@@ -1,8 +1,8 @@
 # Zone plate generation
 
-- [Deployed as a Next.js (w/Rust/WASM) site](https://zone.v.imetrical.com/)
-- Next.js - WASM - Rust - Go: `./nextjs-wasm-rust/`
-- Go version, static cli, and WASM, working, not yet integrated into next app.
+- [Deployed as a Vercel Next.js (w/Rust/WASM) site](https://zone.v.imetrical.com/)
+- [Deployed as a Vercel Next.js slide deck](https://zone-deck.v.imetrical.com/)
+- Next.js - WASM - Rust - Go: `./packages/*`
 - Static image/video generation in Go: `./static-go/`
 - Original `C++` code from CRC in `./legacy-CRC/` _circa 1996_
 - Original `Fortran` version: _lost_, but if I had it, I would dockerize it!
@@ -13,7 +13,7 @@
 
 ## TODO
 
-- [next-mdx-deck](https://github.com/whoisryosuke/next-mdx-deck)
+- Final DNS names, remove imetrical, daneroo.com daneroo.vercel?
 - npm packages
   - normalize the README
   - normalize the package.json scripts - dev build lint test

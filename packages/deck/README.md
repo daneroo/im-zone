@@ -1,6 +1,7 @@
 # Next MDX Deck
 
-Forked from <https://github.com/whoisryosuke/next-mdx-deck>
+- Deployed to <https://zone-deck.v.imetrical.com/>
+- Forked from <https://github.com/whoisryosuke/next-mdx-deck>
 
 Create presentation decks using MDX, React, and [Next.js](https://nextjs.org/).
 
@@ -9,7 +10,6 @@ Create presentation decks using MDX, React, and [Next.js](https://nextjs.org/).
 - Import/Copy View
 - Import/Copy/Clone Controls
   - Swap or adapt Styling
-- Deploy to vercel
 
 ## Usage
 
