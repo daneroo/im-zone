@@ -1,6 +1,6 @@
 {
 	"name": "site",
-	"version": "1.0.7",
+	"version": "1.0.8",
 	"private": true,
 	"description": "Zone Plate Generator Next.js site",
 	"dependencies": {
