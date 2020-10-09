@@ -13,11 +13,15 @@
 
 ## TODO
 
+- SVG with babel for zeit.svg error - <https://github.com/vercel/next.js/tree/canary/examples/svg-components>
 - Final DNS names, remove imetrical, daneroo.com daneroo.vercel?
 - npm packages
   - normalize the README
   - normalize the package.json scripts - dev build lint test
 - api route for for go/wasm
+- alternate backends
+  - netlify <https://github.com/netlify/next-on-netlify>
+  - Google Cloud Run (Docker)
 - replaced zoneplate-go wasm with rollup-plugin-base64
   - need a plugin to move to /static/wasm/...wasm
 - measure performance without/less annotations, or without impact..
