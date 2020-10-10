@@ -7,6 +7,7 @@ import Cover from './Cover'
 import SpeakerNotes from './SpeakerNotes'
 
 const mdComponents = {
+  // eslint-disable-next-line jsx-a11y/heading-has-content
   h1: (props) => <h1 {...props} />,
   pre: (props) => props.children,
   code: (props) => {
@@ -26,6 +27,6 @@ const mdComponents = {
   SpeakerNotes,
 }
 
-export default ({ children }) => (
-  <MDXProvider components={mdComponents}>{children}</MDXProvider>
-)
+export default function MyMDXProvider({ children }) {
+  return <MDXProvider components={mdComponents}>{children}</MDXProvider>
+}

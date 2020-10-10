@@ -8,8 +8,14 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     // Next includes packages like MDX using their bundle
     'import/no-extraneous-dependencies': 'off',
+    // Not yet...
+    'react/prop-types': 'off',
+    // too convenient!
+    'react/jsx-props-no-spreading': 'off',
+
     // Turn off const conversion
-    'prefer-const': 'off',
+    // .. actually keep it (from upstream)
+    // 'prefer-const': 'off',
   },
   env: {
     browser: true,

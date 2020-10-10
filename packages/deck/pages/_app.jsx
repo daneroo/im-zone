@@ -6,18 +6,20 @@ import MDXProvider from '../components/MDXProvider'
 import { ThemeProvider } from '../components/ThemeProvider'
 import TransitionPage from '../layouts/TransitionPage'
 
-export default ({ Component, pageProps }) => (
-  <ThemeProvider>
-    <MDXProvider>
-      <CurrentSlideProvider>
-        <ModeProvider>
-          <AnimatePresence exitBeforeEnter>
-            <TransitionPage>
-              <Component {...pageProps} />
-            </TransitionPage>
-          </AnimatePresence>
-        </ModeProvider>
-      </CurrentSlideProvider>
-    </MDXProvider>
-  </ThemeProvider>
-)
+export default function App({ Component, pageProps }) {
+  return (
+    <ThemeProvider>
+      <MDXProvider>
+        <CurrentSlideProvider>
+          <ModeProvider>
+            <AnimatePresence exitBeforeEnter>
+              <TransitionPage>
+                <Component {...pageProps} />
+              </TransitionPage>
+            </AnimatePresence>
+          </ModeProvider>
+        </CurrentSlideProvider>
+      </MDXProvider>
+    </ThemeProvider>
+  )
+}
