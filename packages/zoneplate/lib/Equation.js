@@ -1,5 +1,7 @@
-export function Equation ({ params }) {
-  const { cx2, cy2, cxt, cyt, ct } = params
+import React from 'react'
+
+export function Equation ({ coefs }) {
+  const { cx2, cy2, cxt, cyt, ct } = coefs
   const terms = [
     { c: cx2, monomial: <>x<sup>2</sup></> },
     { c: cy2, monomial: <>y<sup>2</sup></> },

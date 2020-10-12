@@ -7,7 +7,7 @@ import Info from './layout/icons/Info'
 
 import { Presets, FullSettings } from './ZonePlate/Controls'
 import { useParams, useSizes } from './ZonePlate/hooks'
-import Equation from './ZonePlate/Equation'
+import { Equation } from '@daneroo/zoneplate'
 import View from './ZonePlate/View'
 
 export default function ZonePlate () {
@@ -27,7 +27,7 @@ export default function ZonePlate () {
     <Flex sx={{ flexDirection: 'column', gap: 1, alignItems: 'center' }}>
       <Presets {...{ params, setParams, size, setSize, sizes, shuttle, setShuttle, renderer, setRenderer }} />
       <Box>
-        <Equation params={params} />
+        <Equation coefs={params} />
       </Box>
       <Flex sx={{
         width: sizes[size].width,
