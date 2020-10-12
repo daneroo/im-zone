@@ -1,6 +1,6 @@
-# Zone Plate -  Next.js WASM and Rust
+# Zone Plate - Next.js WASM and Rust
 
-Deployed to <https://zone.v.imetrical.com/>
+Deployed to <https://zone.v.daneroo.com/>
 
 In dev mode, this has continuous recompilation enabled, including the rust wasm.
 
@@ -8,7 +8,7 @@ However if`next.config.js::webpack.WasmPackPlugin.forceMode = 'production`, we n
 
 Sometimes need to `rm -rf .next/ target/` and restart dev server (multiple times?)
 
-*Performance*: `npx serve out` and the *vercel*-deployed version seems to be faster than `npm build && npm start`
+_Performance_: `npx serve out` and the _vercel_-deployed version seems to be faster than `npm build && npm start`
 
 ## Usage
 
@@ -59,7 +59,7 @@ _although fonts are not working_
 
 ### theme-ui
 
-- `npm i  theme-ui @theme-ui/presets`
+- `npm i theme-ui @theme-ui/presets`
 - Added `./styles/theme.js`
 - Wrapped `ThemeProvider` in `./pages/_app.js`
 

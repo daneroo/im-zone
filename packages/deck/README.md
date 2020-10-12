@@ -1,6 +1,6 @@
 # Next MDX Deck
 
-- Deployed to <https://zone-deck.v.imetrical.com/>
+- Deployed to <https://zone-deck.v.daneroo.com/>
 - Forked from <https://github.com/whoisryosuke/next-mdx-deck>
 
 Create presentation decks using MDX, React, and [Next.js](https://nextjs.org/).

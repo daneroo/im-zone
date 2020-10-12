@@ -1,7 +1,7 @@
 # Zone plate generation
 
-- [Deployed as a Vercel Next.js (w/Rust/WASM) site](https://zone.v.imetrical.com/)
-- [Deployed as a Vercel Next.js slide deck](https://zone-deck.v.imetrical.com/)
+- [Deployed as a Vercel Next.js (w/Rust/WASM) site](https://zone.v.daneroo.com/)
+- [Deployed as a Vercel Next.js slide deck](https://zone-deck.v.daneroo.com/)
 - Next.js - WASM - Rust - Go: `./packages/*`
 - Static image/video generation in Go: `./static-go/`
 - Original `C++` code from CRC in `./legacy-CRC/` _circa 1996_
@@ -13,8 +13,7 @@
 
 ## TODO
 
-- SVG with babel for zeit.svg error - <https://github.com/vercel/next.js/tree/canary/examples/svg-components>
-- Final DNS names, remove imetrical, daneroo.com daneroo.vercel?
+- externalize zoneplate loader,renderer (no controls)
 - npm packages
   - normalize the README
   - normalize the package.json scripts - dev build lint test
