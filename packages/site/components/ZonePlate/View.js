@@ -94,7 +94,7 @@ export default function View ({ width, height, params, pause, showInfo, shuttle,
     ctx.font = `${baseFontSize * 2}px monospace`
     ctx.shadowColor = 'black'
     ctx.shadowBlur = 6
-    ctx.fillStyle = rendererColor[renderer] || 'yellow'
+    ctx.fillStyle = rendererColor[renderer] || 'red'
     ctx.textAlign = 'right'
     ctx.textBaseline = 'top'
     ctx.fillText(renderer, width - padding, padding)
