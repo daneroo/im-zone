@@ -1,3 +1,5 @@
+import { Equation } from "@daneroo/zoneplate";
+
 <SlidePage>
     
 <Cover>
@@ -52,12 +54,10 @@ NextJS Conf '20
 
 ## How do you make one?
 
+<Equation coefs={{ cx2:1, cy2:1, ct:0 }} />
+<br />
 <pre>
-  z = <em>x</em>
-  <sup>2</sup> + <em>y</em>
-  <sup>2</sup>
-  <br />
-  pixel(<em>x,y</em>) = ~sin(z)
+  pixel(<em>x,y</em>) = ~cos(z)
   <br />
   &forall; <em>x,y</em> in the image
 </pre>

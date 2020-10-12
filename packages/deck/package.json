@@ -14,6 +14,7 @@
     "vercel:preview": "vercel"
   },
   "dependencies": {
+    "@daneroo/zoneplate": "^1.0.11",
     "@mdx-js/loader": "^1.5.8",
     "@next/mdx": "^9.5.4",
     "canvas": "^2.6.1",

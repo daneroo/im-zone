@@ -9,7 +9,7 @@ export function Equation ({ coefs }) {
     { c: cyt, monomial: <>yt</> },
     { c: ct, monomial: <>t</> }
   ].reduce((acc, { c, monomial }) => {
-    if (c === 0) return acc
+    if (c === 0 || c === undefined) return acc
     const absC = (Math.abs(c) === 1) ? '' : Math.abs(c)
     if (acc === '') {
       const sign = (c > 0) ? '' : '-'
