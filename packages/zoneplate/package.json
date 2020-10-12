@@ -1,0 +1,53 @@
+{
+  "name": "@daneroo/zoneplate",
+  "version": "1.0.4",
+  "description": "Zone Plate Generator components",
+  "author": "Daniel Lauzon <daniel.lauzon@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/daneroo/im-zone#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daneroo/im-zone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/daneroo/im-zone/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "source": "lib/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "lib",
+    "dist",
+    "__tests__"
+  ],
+  "scripts": {
+    "test": "jest",
+    "lint": "standard lib",
+    "dev": "microbundle watch --jsx React.createElement",
+    "build": "microbundle --jsx React.createElement"
+  },
+  "devDependencies": {
+    "jest": "^26.4.2",
+    "microbundle": "^0.12.3",
+    "standard": "^14.3.4"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 0,
+        "statements": 0
+      }
+    }
+  },
+  "standard": {
+    "env": {
+      "jest": true
+    }
+  }
+}
