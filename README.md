@@ -17,6 +17,7 @@
 - npm packages
   - normalize the README
   - normalize the package.json scripts - dev build lint test
+  - enable jest in libs (microbundle)
 - api route for for go/wasm
 - alternate backends
   - netlify <https://github.com/netlify/next-on-netlify>

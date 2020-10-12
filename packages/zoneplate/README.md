@@ -3,12 +3,13 @@
 ## TODO
 
 - Commit `dist/` ? - Yes for now
-- Jest not working yet (babel)
 
 ## Usage
 
 ```bash
-const renderJs = require('render-js');
+import { Equation } from '@daneroo/zoneplate'
 
-// TODO: DEMONSTRATE API
+...
+<Equation coefs={coefs} />
+...
 ```
