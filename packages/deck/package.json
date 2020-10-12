@@ -1,6 +1,6 @@
 {
   "name": "deck",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "description": "Zone Plate Generator Next.js MDX Deck",
   "private": true,
   "scripts": {
@@ -14,7 +14,7 @@
     "vercel:preview": "vercel"
   },
   "dependencies": {
-    "@daneroo/zoneplate": "^1.0.11",
+    "@daneroo/zoneplate": "^1.0.12",
     "@mdx-js/loader": "^1.5.8",
     "@next/mdx": "^9.5.4",
     "canvas": "^2.6.1",
