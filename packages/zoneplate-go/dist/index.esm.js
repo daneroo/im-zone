@@ -548,17 +548,20 @@ var wasmBase64Bytes = "AGFzbQEAAAAA8oCAgAAKZ28uYnVpbGRpZP8gR28gYnVpbGQgSUQ6ICJle
 
 // or  './wasm-go/tinygo.wasm'
 
-// These exported symbols are mutated once the WASM is asynchronously loaded
-let renderGo;
-
 // tinygo has memory issues...
 // const tiny = false
 // const wasmFile = `./wasm-go/${tiny ? 'tinygo' : 'main'}.wasm`
 
+// latch variable, so we don't start the runtime more than once
+let renderGo = null;
 async function importWasm () {
-  // prevent from running on server for now
-  if (typeof window !== 'undefined') {
-    console.log('imported Go is a', typeof Go);
+  // prevent from instantiating runtime more that once
+  if (renderGo) {
+    console.log('Already instantiated');
+    return { renderGo }
+  }
+  try {
+    // console.log('imported Go is a', typeof Go)
     const go = new Go();
 
     const wasm = await instantiateB64(wasmBase64Bytes, go.importObject);
@@ -567,39 +570,47 @@ async function importWasm () {
     //  run the go instance
     go.run(instance);
 
-    // This is our mutable exported symbol
-    console.log('window.DrawGo is a ', typeof window.DrawGo);
-    renderGo = window.DrawGo;
-
     console.log('imported Go WASM');
-  } else {
-    console.log('skipped importing Go WASM');
+    if (typeof window !== 'undefined') {
+      renderGo = window.DrawGo;
+    } else if (typeof global !== 'undefined') {
+      console.log('have global', global.DrawGo);
+      renderGo = global.DrawGo;
+    } else {
+      renderGo = () => {
+        console.error('Go: instantiated global object not found');
+      };
+    }
+    return { renderGo }
+  } catch (error) {
+    console.error(error);
+    console.error('skipped importing Go WASM');
   }
 }
-importWasm();
 
 async function instantiateB64 (base64Bytes, imports) {
   const bytes = Buffer.from(base64Bytes, 'base64');
-  console.log('Wasm size', { b64: base64Bytes.length, bytes: bytes.length });
-
+  // console.log('Wasm size', { b64: base64Bytes.length, bytes: bytes.length })
   return instantiate(bytes, imports)
 }
+
+/* global WebAssembly */
 async function instantiate (bytes, imports) {
   const wasm = await WebAssembly.instantiate(bytes, imports);
   return wasm
 }
 
-/* global WebAssembly fetch */
-async function instantiateStreaming () {
-  if ('instantiateStreaming' in WebAssembly) {
-    const wasm = await WebAssembly.instantiateStreaming(fetch(wasmFile), go.importObject);
-    return wasm
-  } else { // for Safari....
-    const resp = await fetch(wasmFile);
-    const bytes = await resp.arrayBuffer();
-    const wasm = await WebAssembly.instantiate(bytes, go.importObject);
-    return wasm
-  }
-}
+//* global WebAssembly fetch */
+// export async function instantiateStreaming () {
+//   if ('instantiateStreaming' in WebAssembly) {
+//     const wasm = await WebAssembly.instantiateStreaming(fetch(wasmFile), go.importObject)
+//     return wasm
+//   } else { // for Safari....
+//     const resp = await fetch(wasmFile)
+//     const bytes = await resp.arrayBuffer()
+//     const wasm = await WebAssembly.instantiate(bytes, go.importObject)
+//     return wasm
+//   }
+// }
 
-export { importWasm, instantiate, instantiateB64, instantiateStreaming, renderGo };
+export { importWasm };

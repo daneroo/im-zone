@@ -4,12 +4,12 @@ import fetch from 'node-fetch'
 // node-canvas API
 import { createCanvas, createImageData, registerFont } from 'canvas'
 
+import { renderJS } from '@daneroo/zoneplate-js'
+import { importRust, importGo } from '../../components/ZonePlate/engines'
 // mutable export
-import { renderRust } from '../../components/ZonePlate/renderRust'
+// import { renderRust } from '../../components/ZonePlate/renderRust'
 // dynamic import
 // import { importWasm } from '../../components/ZonePlate/renderRust'
-
-import { renderJS } from '@daneroo/zoneplate-js'
 
 export default async ({ query: { width = 400, height = width } } = {}, res) => {
   // validate width and height when they become query params
@@ -51,15 +51,21 @@ export default async ({ query: { width = 400, height = width } } = {}, res) => {
   data.fill(255)
 
   // select renderer - randomly
-  const renderer = ['JS', 'Rust'][Math.floor(Math.random() * 2)]
+  const renderers = ['JS', 'Rust', 'Go']
+  const renderer = renderers[Math.floor(Math.random() * renderers.length)]
 
   // dynamic loading ?
   // const renderFunc = (renderer==='Rust')?await (???) : renderJS
 
   const start = +new Date()
-  if (renderer === 'Rust' && renderRust) {
-    // const { renderRust } = await importWasm()
+  if (renderer === 'Rust') {
+    const renderRust = await importRust()
+    console.log(renderRust)
     renderRust(data, width, height, frames, t, cx2, cy2, cxt, cyt, ct)
+  } else if (renderer === 'Go') {
+    const renderGo = await importGo()
+    console.log(renderGo)
+    renderGo(data, width, height, frames, t, cx2, cy2, cxt, cyt, ct)
   } else {
     // console.log('renderJS')
     renderJS(data, width, height, frames, t, cx2, cy2, cxt, cyt, ct)

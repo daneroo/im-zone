@@ -1,14 +1,10 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useAnimationFrame } from './hooks'
-import { renderJS } from '@daneroo/zoneplate-js'
 
-// Careful: these symbols are mutable
-// Their values change from undefined to the actual function reference
-// after the async WASM has loaded
-// Care should be taken if the symbols are copied...
-import { renderRust } from './renderRust'
-import { renderGo } from '@daneroo/zoneplate-go'
+import { getEngines, importAll } from './engines'
+
+importAll()
 
 export default function View ({ width, height, params, pause, showInfo, shuttle, renderer }) {
   // When [width,height], canvasRef changes, we update the state for ctx,imageData,data
@@ -51,20 +47,17 @@ export default function View ({ width, height, params, pause, showInfo, shuttle,
     const t = (frame - frames / 2) / frames
     const { cx2, cy2, cxt, cyt, ct } = params
 
-    // default to renderJS - in case loader has not completed yet
-    const engines = {
-      JS: renderJS,
-      Rust: renderRust,
-      Go: renderGo
-    }
-
+    const engines = getEngines()
+    // console.log('draw', { renderer }, engines[renderer])
     if (!engines[renderer]) { // indicates renderer (mutable dynamic import) is not available
+      console.log('No renderer')
       const { ctx } = backing
       ctx.fillStyle = 'red'
       ctx.fillRect(0, 0, width, height)
     } else {
       const { ctx, imageData, data } = backing
-      const renderFunc = engines[renderer] || renderJS
+      // used to default to JS:renderJS - in case loader had not completed yet
+      const renderFunc = engines[renderer] || engines.JS
       renderFunc(data, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
       ctx.putImageData(imageData, 0, 0)
     }
@@ -82,12 +75,16 @@ export default function View ({ width, height, params, pause, showInfo, shuttle,
     // We need the ctx to fillText, etc..
     const { ctx } = backing
 
+    const engines = getEngines()
+
     // renderer color overlay
-    ctx.save()
-    ctx.globalCompositeOperation = 'multiply'
-    ctx.fillStyle = rendererColor[renderer] || 'red'
-    ctx.fillRect(0, 0, width, height)
-    ctx.restore()
+    if (engines[renderer]) {
+      ctx.save()
+      ctx.globalCompositeOperation = 'multiply'
+      ctx.fillStyle = rendererColor[renderer] || 'red'
+      ctx.fillRect(0, 0, width, height)
+      ctx.restore()
+    }
 
     // Renderer Name
     ctx.save()
