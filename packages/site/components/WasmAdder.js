@@ -2,12 +2,6 @@
 import { useState } from 'react'
 import { Flex, Button } from 'theme-ui'
 
-// async function - uses dynamic import
-async function importWasm () {
-  const wasm = await import('@daneroo/zoneplate-rust')
-  return wasm
-}
-
 export default function WasmAdder () {
   const [number, setNumber] = useState(42)
 
@@ -30,4 +24,10 @@ export default function WasmAdder () {
       </Flex>
     </div>
   )
+}
+
+// async function - uses dynamic import
+async function importWasm () {
+  const wasm = await import('@daneroo/zoneplate-rust')
+  return wasm
 }

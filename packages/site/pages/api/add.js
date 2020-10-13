@@ -4,7 +4,7 @@ export default async ({ query: { a = 40, b = 2 } } = {}, res) => {
   b = Number(b)
   let answerRust
 
-  const { addRust } = await importWasm()
+  const { add_rust: addRust } = await importWasm()
 
   if (typeof addRust !== 'undefined') {
     answerRust = addRust(40, 2)
@@ -15,10 +15,8 @@ export default async ({ query: { a = 40, b = 2 } } = {}, res) => {
   res.end(JSON.stringify({ answerJS, answerRust }))
 }
 
-export async function importWasm () {
-  const { add_rust: addRust } = await import('@daneroo/zoneplate-rust')
-
-  return {
-    addRust
-  }
+// async function - uses dynamic import
+async function importWasm () {
+  const wasm = await import('@daneroo/zoneplate-rust')
+  return wasm
 }
