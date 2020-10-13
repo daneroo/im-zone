@@ -32,39 +32,39 @@ import { ZonePlateGrid } from '../components/ZonePlateGrid'
 
 ---
 
-## Moarrr
+## Moarrr Zones
 
 <ZonePlateGrid
   size={150}
   pause={false}
   showInfo={true}
   randomize={true}
-  variants={[
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ]}
+  variants={Array(24).fill({})}
+/>
+
+---
+
+## API routes - `/api/zone`
+
+<ZonePlateGrid
+  size={300}
+  pause={false}
+  showInfo={true}
+  urlView={true}
+  variants={[{ renderer: 'JS' }, { renderer: 'Rust' }, { renderer: 'Go' }]}
+/>
+
+---
+
+## API routes - `/api/zone`
+
+<ZonePlateGrid
+  size={100}
+  pause={false}
+  showInfo={true}
+  randomize={true}
+  urlView={true}
+  variants={Array(48).fill({})}
 />
 
 </SlidePage>
