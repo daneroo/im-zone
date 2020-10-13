@@ -18,17 +18,17 @@ export default async ({ query: { width = 400, height = width } } = {}, res) => {
   await getAndRegisterFontOnlyOnce()
 
   // label as query param ?
-  const knownParams = {
+  const knownCoefs = {
     Spherical: { cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 },
     Hyperbolic: { cx2: 1, cy2: -1, cxt: 0, cyt: 0, ct: 1 },
     'Vertical-Temporal': { cx2: 0, cy2: 1, cxt: 1, cyt: 0, ct: 0 },
     'Horizontal-Temporal': { cx2: 1, cy2: 0, cxt: 0, cyt: 1, ct: 0 }
   }
   // pick a random label - not temporal - random could be a label
-  const labels = Object.keys(knownParams).slice(0, 2)
+  const labels = Object.keys(knownCoefs).slice(0, 2)
   const randomLabel = labels[Math.floor(Math.random() * labels.length)]
 
-  const { cx2, cy2, cxt, cyt, ct } = knownParams[randomLabel]
+  const { cx2, cy2, cxt, cyt, ct } = knownCoefs[randomLabel]
   const t = new Date().getSeconds() / 60
   const frames = 60
 

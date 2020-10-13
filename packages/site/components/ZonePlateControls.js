@@ -5,19 +5,19 @@ import IconButton from './layout/icons/IconButton'
 import SVG from './layout/icons/SVG'
 import { View } from './ZonePlate'
 
-export function Presets ({ params, setParams, size, setSize, sizes, shuttle, setShuttle, renderer, setRenderer }) {
+export function Presets ({ coefs, setCoefs, size, setSize, sizes, shuttle, setShuttle, renderer, setRenderer }) {
   return (
     <Grid sx={{
       gridTemplate: 'auto / auto auto',
       alignItems: 'center'
     }}
     >
-      {/* Presets params */}
+      {/* Presets coefs */}
       <Box sx={{ justifySelf: 'end' }}>
         <Label htmlFor='presets'>Presets</Label>
       </Box>
       <Flex sx={{ gap: 1, alignItems: 'center' }}>
-        <PresetParams {...{ setParams, setShuttle }} />
+        <PresetCoefs {...{ setCoefs, setShuttle }} />
       </Flex>
 
       {/* Presets Sizes */}
@@ -39,21 +39,21 @@ export function Presets ({ params, setParams, size, setSize, sizes, shuttle, set
 }
 
 // Return a fragment of IconButtons
-function PresetParams ({ setParams, setShuttle }) {
-  const knownParams = {
+function PresetCoefs ({ setCoefs, setShuttle }) {
+  const knownCoefs = {
     Spherical: { cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 },
     Hyperbolic: { cx2: 1, cy2: -1, cxt: 0, cyt: 0, ct: 1 },
     'Vertical-Temporal': { cx2: 0, cy2: 1, cxt: 1, cyt: 0, ct: 0 },
     'Horizontal-Temporal': { cx2: 1, cy2: 0, cxt: 0, cyt: 1, ct: 0 }
   }
-  return Object.entries(knownParams).map(([label, params]) => {
+  return Object.entries(knownCoefs).map(([label, coefs]) => {
     const size = 48
     const icon = (
       <View
         {...{
           height: size,
           width: size,
-          params: params,
+          coefs: coefs,
           pause: true,
           showInfo: false,
           shuttle: false,
@@ -68,7 +68,7 @@ function PresetParams ({ setParams, setShuttle }) {
         size={size}
         label={`${label} Preset`}
         onClick={(e) => {
-          setParams(params)
+          setCoefs(coefs)
           // pretty flaky...
           setShuttle(label.endsWith('-Temporal'))
         }}
@@ -137,17 +137,17 @@ function SizeButton ({ label, wide, ratio, onClick }) {
   )
 }
 
-export function FullSettings ({ params, setParams, sizes, size, setSize, shuttle, setShuttle }) {
-  const [showParams, setShowParams] = useState(false)
+export function FullSettings ({ coefs, setCoefs, sizes, size, setSize, shuttle, setShuttle }) {
+  const [showCoefs, setShowCoefs] = useState(false)
   return (
     <>
       <Flex sx={{ gap: 1, alignItems: 'center' }}>
-        <Button onClick={() => setShowParams(!showParams)}>Full Settings...</Button>
+        <Button onClick={() => setShowCoefs(!showCoefs)}>Full Settings...</Button>
       </Flex>
-      {showParams && (
+      {showCoefs && (
         <>
           <Grid columns={2} sx={{ gap: 3, alignItems: 'center' }}>
-            <SliderParams {...{ params, setParams }} />
+            <SliderCoefs {...{ coefs, setCoefs }} />
             <Box /> {/* placeholder for sixth slider */}
             <SizeAndShuttle {...{ sizes, size, setSize, shuttle, setShuttle }} />
           </Grid>
@@ -158,18 +158,18 @@ export function FullSettings ({ params, setParams, sizes, size, setSize, shuttle
   )
 }
 
-function SliderParams ({ params, setParams }) {
+function SliderCoefs ({ coefs, setCoefs }) {
   return ['cx2', 'cy2', 'cxt', 'cyt', 'ct'].map((k) => (
     <Label key={k} sx={{ gap: 2, alignItems: 'center' }}>
       <Box sx={{ textAlign: 'right', minWidth: '3em' }}>
-        <Term name={k} value={params[k]} />
+        <Term name={k} value={coefs[k]} />
       </Box>
       <Slider
         sx={{ minWidth: '10em' }}
         name={k}
         type='range' min='-3' max='3' step='1'
-        value={params[k]}
-        onChange={(e) => setParams({ ...params, [k]: Number(e.target.value) })}
+        value={coefs[k]}
+        onChange={(e) => setCoefs({ ...coefs, [k]: Number(e.target.value) })}
       />
     </Label>
   )

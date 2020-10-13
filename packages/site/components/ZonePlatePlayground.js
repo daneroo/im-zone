@@ -17,16 +17,16 @@ export default function ZonePlatePlayground () {
   const [showInfo, setShowInfo] = useState(true)
 
   // These control the size and coefficients od the ZonePlate
-  const [params, setParams] = useParams()
+  const [coefs, setCoefs] = useCoefs()
   const [width, height, size, sizes, setSize] = useSizes()
 
   const { theme: { colors: { text } } } = useThemeUI()
 
   return (
     <Flex sx={{ flexDirection: 'column', gap: 1, alignItems: 'center' }}>
-      <Presets {...{ params, setParams, size, setSize, sizes, shuttle, setShuttle, renderer, setRenderer }} />
+      <Presets {...{ coefs, setCoefs, size, setSize, sizes, shuttle, setShuttle, renderer, setRenderer }} />
       <Box>
-        <Equation coefs={params} />
+        <Equation coefs={coefs} />
       </Box>
       <Flex sx={{
         width: sizes[size].width,
@@ -64,9 +64,9 @@ export default function ZonePlatePlayground () {
         }}
         onClick={() => setPause(!pause)}
       >
-        <View {...{ width, height, params, pause, showInfo, shuttle, renderer }} />
+        <View {...{ width, height, coefs, pause, showInfo, shuttle, renderer }} />
       </Box>
-      <FullSettings {...{ params, setParams, sizes, size, setSize, shuttle, setShuttle }} />
+      <FullSettings {...{ coefs, setCoefs, sizes, size, setSize, shuttle, setShuttle }} />
       <ManyMore />
     </Flex>
   )
@@ -99,7 +99,7 @@ function randSettings () {
   const r = () => Math.random() * max * 2 - max
   const renderers = ['JS', 'Rust', 'Go']
   return {
-    params: {
+    coefs: {
       cx2: r(),
       cy2: r(),
       cxt: r(),
@@ -126,7 +126,7 @@ function ManyZones ({ howMany = 4 }) {
         {...{
           height: sz,
           width: sz,
-          params: settings.params,
+          coefs: settings.coefs,
           pause: settings.pause,
           showInfo: true,
           shuttle: false,
@@ -148,9 +148,9 @@ function ManyZones ({ howMany = 4 }) {
   )
 }
 
-function useParams () {
-  const [params, setParams] = useState({ cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 })
-  return [params, setParams]
+function useCoefs () {
+  const [coefs, setCoefs] = useState({ cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 })
+  return [coefs, setCoefs]
 }
 
 //  This was to accommodate varying aspect ratios...

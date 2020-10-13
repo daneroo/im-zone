@@ -5,7 +5,7 @@ import { useAnimationFrame } from './useAnimationFrame'
 import { getEngines, importAll } from './engines'
 importAll()
 
-export function View ({ width, height, params, pause, showInfo, shuttle, renderer }) {
+export function View ({ width, height, coefs, pause, showInfo, shuttle, renderer }) {
   // When [width,height], canvasRef changes, we update the state for ctx,imageData,data
   // const [canvas, setCanvas] = useState(null)
   const [backing, setBacking] = useState({ ctx: null, imageData: null, data: null })
@@ -29,7 +29,7 @@ export function View ({ width, height, params, pause, showInfo, shuttle, rendere
     }
   }, [width, height])
 
-  // Make sure we render when size/params change
+  // Make sure we render when size/coefs change
   // Not sure canvasRef should be a dependency, canvas either.. Check again
   useEffect(() => {
     if (backing.ctx !== null) {
@@ -39,13 +39,13 @@ export function View ({ width, height, params, pause, showInfo, shuttle, rendere
         annotate({ frame })
       }
     }
-  }, [backing, params, renderer, showInfo])
+  }, [backing, coefs, renderer, showInfo])
 
   // invoke the appropriate engine for rendering the zoneplate
   function draw (frame = 30, frames = 60) {
     const t = (frame - frames / 2) / frames
     const defaultCoefs = { cx2: 0, cy2: 0, cxt: 0, cyt: 0, ct: 0 }
-    const { cx2, cy2, cxt, cyt, ct } = { ...defaultCoefs, ...params }
+    const { cx2, cy2, cxt, cyt, ct } = { ...defaultCoefs, ...coefs }
 
     const engines = getEngines()
     // console.log('draw', { renderer }, engines[renderer])
