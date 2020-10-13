@@ -5,7 +5,7 @@ import fetch from 'node-fetch'
 import { createCanvas, createImageData, registerFont } from 'canvas'
 
 import { renderJS } from '@daneroo/zoneplate-js'
-import { importRust, importGo } from '../../components/ZonePlate'
+import { importRust, importGo, annotate } from '../../components/ZonePlate'
 
 export default async ({ query: { width = 400, height = width } } = {}, res) => {
   // validate width and height when they become query params
@@ -74,73 +74,13 @@ export default async ({ query: { width = 400, height = width } } = {}, res) => {
   console.log({ renderer, elapsed })
 
   // annotate - or not
-  annotate(ctx, renderer, width, height, elapsed)
+  annotate({ ctx, renderer, width, height, avgElapsed: elapsed })
 
   // const buffer = canvas.toBuffer('image/png')
   res.statusCode = 200
   res.setHeader('Content-Type', 'image/png')
   // res.end(buffer)
   canvas.createPNGStream().pipe(res)
-}
-
-// common code with View
-function annotate (ctx, renderer, width, height, elapsed) {
-  const padding = 2
-  const baseFontSize = (width < 150) ? 16 : 20
-  const fontFamily = 'monospace'
-
-  const jsYellow = '#f7df1e'
-  const gopherBlue = 'rgb(1, 173, 216)'
-  const rust = 'rgb(183,65,14)'
-  const rendererColor = { JS: jsYellow, Rust: rust, Go: gopherBlue }
-
-  // renderer color overlay
-  ctx.save()
-  ctx.globalCompositeOperation = 'multiply'
-  ctx.fillStyle = rendererColor[renderer] || 'red'
-  ctx.fillRect(0, 0, width, height)
-  ctx.restore()
-
-  // renderer name
-  ctx.font = `${baseFontSize * 2}px ${fontFamily}`
-  ctx.shadowColor = 'black'
-  ctx.shadowBlur = 6
-  ctx.fillStyle = rendererColor[renderer] || 'red'
-  ctx.textAlign = 'right'
-  ctx.textBaseline = 'top'
-  ctx.fillText(renderer, width - padding, padding)
-
-  // stamp
-  const stamp = new Date().toISOString()
-  ctx.font = `${baseFontSize}px ${fontFamily}`
-  ctx.shadowColor = 'black'
-  ctx.shadowBlur = 4
-  ctx.fillStyle = 'white'
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'bottom'
-  if (width < 300) {
-    // time portion
-    ctx.fillText(stamp.substr(11, 10), width / 2, height - padding)
-    if (width > 150) {
-      // date portion above
-      ctx.fillText(stamp.substr(0, 10), width / 2, height - baseFontSize - padding)
-    }
-  } else {
-    // show timestamp one line
-    ctx.fillText(stamp.substr(0, 22), width / 2, height - padding)
-  }
-
-  // ctx.shadowColor = 'white'
-  // ctx.fillStyle = 'black'
-  ctx.textAlign = 'left'
-  ctx.textBaseline = 'top'
-  if (elapsed || elapsed === 0) {
-    ctx.fillText(`${elapsed.toFixed(1).padStart(3, ' ')}ms`, padding, padding)
-  }
-
-  // // NextJSPath.js
-  // ctx.fillStyle = 'white'
-  // ctx.fill(NextJSPath())
 }
 
 // // requires path2d-polyfill or equivalent..
