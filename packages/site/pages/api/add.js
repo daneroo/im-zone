@@ -1,12 +1,11 @@
-import { addRust } from '../../components/ZonePlate/renderRust'
 
 export default async ({ query: { a = 40, b = 2 } } = {}, res) => {
-  // TODO add latch variable for addRust?
-  // const delay = 100
-  // await new Promise(resolve => setTimeout(resolve, delay))
   a = Number(a)
   b = Number(b)
   let answerRust
+
+  const { addRust } = await importWasm()
+
   if (typeof addRust !== 'undefined') {
     answerRust = addRust(40, 2)
   }
@@ -14,4 +13,12 @@ export default async ({ query: { a = 40, b = 2 } } = {}, res) => {
   res.statusCode = 200
   res.setHeader('Content-Type', 'application/json')
   res.end(JSON.stringify({ answerJS, answerRust }))
+}
+
+export async function importWasm () {
+  const { add_rust: addRust } = await import('@daneroo/zoneplate-rust')
+
+  return {
+    addRust
+  }
 }
