@@ -13,7 +13,6 @@ const hostid = ulid()
 
 export default async ({ query: { width = 400, height = width, r = 'random' } } = {}, res) => {
   // validate width and height when they become query params
-  console.log({ hostid, r })
   width = Number(width)
   height = Number(height)
   const canvas = createCanvas(width, height)

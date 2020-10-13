@@ -92,8 +92,7 @@ export function annotate ({
     ctx.save()
     const clr = ulidColor(hostid)
     ctx.strokeStyle = clr
-    ctx.lineWidth = 10
-    console.log({ hostid, clr })
+    ctx.lineWidth = 3
     ctx.strokeRect(0, 0, width, height)
     ctx.restore()
   }
