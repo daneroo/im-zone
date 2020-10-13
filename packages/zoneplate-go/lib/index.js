@@ -18,7 +18,6 @@ export async function importWasm () {
     return { renderGo }
   }
   try {
-    // console.log('imported Go is a', typeof Go)
     const go = new Go()
 
     const wasm = await instantiateB64(wasmBase64Bytes, go.importObject)
@@ -26,8 +25,9 @@ export async function importWasm () {
 
     //  run the go instance
     go.run(instance)
+    console.log('Running Go instance')
 
-    console.log('imported Go WASM')
+    // get the exposed Go func from appropriate context
     if (typeof window !== 'undefined') {
       renderGo = window.DrawGo
     } else if (typeof global !== 'undefined') {
