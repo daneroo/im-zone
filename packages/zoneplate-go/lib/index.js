@@ -14,7 +14,7 @@ let renderGo = null
 export async function importWasm () {
   // prevent from instantiating runtime more that once
   if (renderGo) {
-    console.log('Already instantiated')
+    // console.log('Already instantiated')
     return { renderGo }
   }
   try {
@@ -25,13 +25,14 @@ export async function importWasm () {
 
     //  run the go instance
     go.run(instance)
-    console.log('Running Go instance')
+    console.log('Running new Go instance')
 
     // get the exposed Go func from appropriate context
     if (typeof window !== 'undefined') {
+      // console.log('found window.DrawGo', window.DrawGo)
       renderGo = window.DrawGo
     } else if (typeof global !== 'undefined') {
-      console.log('have global', global.DrawGo)
+      // console.log('found global.DrawGo', global.DrawGo)
       renderGo = global.DrawGo
     } else {
       renderGo = () => {
