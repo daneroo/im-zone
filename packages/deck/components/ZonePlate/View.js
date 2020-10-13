@@ -82,7 +82,7 @@ export function View ({ width, height, coefs, pause, showInfo, shuttle, renderer
     draw(frame)
     if (showInfo) {
       const rest = { ctx: backing.ctx, engines: getEngines(), renderer, width, height }
-      annotate({ avgFps, avgElapsed, frame, ...rest, hostid })
+      annotate({ avgFps, avgElapsed, frame, ...rest })
     }
   }
   useAnimationFrame(animate, pause)
