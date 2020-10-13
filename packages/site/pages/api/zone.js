@@ -6,9 +6,11 @@ import { createCanvas, createImageData, registerFont } from 'canvas'
 
 import { renderJS } from '@daneroo/zoneplate-js'
 import { importRust, importGo, annotate } from '../../components/ZonePlate'
+import { hostname } from 'os'
 
-export default async ({ query: { width = 400, height = width } } = {}, res) => {
+export default async ({ query: { width = 400, height = width, r = 'random' } } = {}, res) => {
   // validate width and height when they become query params
+  console.log({ host: hostname(), r })
   width = Number(width)
   height = Number(height)
   const canvas = createCanvas(width, height)
@@ -46,9 +48,8 @@ export default async ({ query: { width = 400, height = width } } = {}, res) => {
   // actually set all components with typedarray.fill(value)
   data.fill(255)
 
-  // select renderer - randomly
-  const renderers = ['JS', 'Rust', 'Go']
-  const renderer = renderers[Math.floor(Math.random() * renderers.length)]
+  // validate renderer
+  const renderer = getRenderer(r)
 
   // dynamic loading ?
   // const renderFunc = (renderer==='Rust')?await (???) : renderJS
@@ -56,11 +57,9 @@ export default async ({ query: { width = 400, height = width } } = {}, res) => {
   const start = +new Date()
   if (renderer === 'Rust') {
     const renderRust = await importRust()
-    console.log(renderRust)
     renderRust(data, width, height, frames, t, cx2, cy2, cxt, cyt, ct)
   } else if (renderer === 'Go') {
     const renderGo = await importGo()
-    console.log(renderGo)
     renderGo(data, width, height, frames, t, cx2, cy2, cxt, cyt, ct)
   } else {
     // console.log('renderJS')
@@ -70,11 +69,10 @@ export default async ({ query: { width = 400, height = width } } = {}, res) => {
   // composite the image
   ctx.putImageData(imageData, 0, 0)
 
-  const elapsed = +new Date() - start
-  console.log({ renderer, elapsed })
+  const avgElapsed = +new Date() - start
 
   // annotate - or not
-  annotate({ ctx, renderer, width, height, avgElapsed: elapsed })
+  annotate({ ctx, renderer, width, height, avgElapsed })
 
   // const buffer = canvas.toBuffer('image/png')
   res.statusCode = 200
@@ -83,6 +81,18 @@ export default async ({ query: { width = 400, height = width } } = {}, res) => {
   canvas.createPNGStream().pipe(res)
 }
 
+// r is the requested renderer from query param
+function getRenderer (r) {
+  // select renderer - randomly
+  const renderers = ['JS', 'Rust', 'Go']
+  // if valid query param, return it
+  if (renderers.includes(r)) {
+    return r
+  }
+  // else return random, including if query param=='random', missing or invalid
+  const renderer = renderers[Math.floor(Math.random() * renderers.length)]
+  return renderer
+}
 // // requires path2d-polyfill or equivalent..
 // //  or translate to moveto,line...
 // function NextJSPath () {

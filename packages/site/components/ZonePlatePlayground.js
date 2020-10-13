@@ -110,18 +110,24 @@ function randSettings () {
     renderer: renderers[Math.floor(Math.random() * renderers.length)]
   }
 }
+
+function URLView ({ width = 400, height = width, renderer = 'random' }) {
+  return (
+    <img
+      {...{
+        width,
+        height,
+        src: `/api/zone?width=${width}&height=${height}&r=${renderer}&bust=${Math.random()}`
+      }}
+    />
+  )
+}
+
 function ManyZones ({ howMany = 4 }) {
   const sz = 100
   return Array.from({ length: howMany }).map((_, key) => {
     const [settings, setSettings] = useState(randSettings())
     const icon = (
-      // <img
-      //   {...{
-      //     height: sz,
-      //     width: sz,
-      //     src: `/api/zone?width=${sz}&bust=${Math.random()}`
-      //   }}
-      // />
       <View
         {...{
           height: sz,
