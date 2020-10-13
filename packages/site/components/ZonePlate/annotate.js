@@ -8,7 +8,7 @@ const allEngines = { JS: true, Rust: true, Go: true }
 export function annotate ({
   avgFps = 0, avgElapsed = 0, frame = 0,
   // the rest of the component context
-  ctx, engines = allEngines, renderer, width, height
+  ctx, engines = allEngines, renderer, width, height, hostid
 } = {}) {
   const padding = 2
   const baseFontSize = (width < 150) ? 16 : 20
@@ -88,4 +88,64 @@ export function annotate ({
     ctx.fill()
     ctx.restore()
   }
+  if (hostid) {
+    ctx.save()
+    const clr = ulidColor(hostid)
+    ctx.strokeStyle = clr
+    ctx.lineWidth = 10
+    console.log({ hostid, clr })
+    ctx.strokeRect(0, 0, width, height)
+    ctx.restore()
+  }
 }
+
+const ENCODING = '0123456789ABCDEFGHJKMNPQRSTVWXYZ' // Crockford Base32
+// return an hsl color (from the last char in the ulid)
+// hsl(<funcOfUlid>deg, 100%, 50%)
+// now return rgb()
+function ulidColor (u) {
+  if (typeof u === 'string' && u.length > 1) {
+    const charIndex = ENCODING.indexOf(u[u.length - 1])
+    if (charIndex >= 0) {
+      const deg = Math.floor(charIndex * 360 / 32)
+      // return `hsl(${deg}deg 100% 50%)`
+      const [r, g, b] = hsl2Rgb(deg, 1, 0.5)
+      return `rgb(${r},${g},${b})`
+    }
+  }
+  return 'blue'
+}
+
+// h in [0,360] s,l in [0,1]
+// -> r,g,b in [0,255]
+function hsl2Rgb (h, s, l) {
+  let r, g, b
+  h = h / 360
+
+  if (s === 0) {
+    r = g = b = l
+  } else {
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s
+    const p = 2 * l - q
+
+    r = hue(p, q, h + 1 / 3)
+    g = hue(p, q, h)
+    b = hue(p, q, h - 1 / 3)
+  }
+
+  return [
+    Math.max(0, Math.min(Math.round(r * 255), 255)),
+    Math.max(0, Math.min(Math.round(g * 255), 255)),
+    Math.max(0, Math.min(Math.round(b * 255), 255))
+  ]
+
+  function hue (p, q, t) {
+    if (t < 0) t += 1
+    if (t > 1) t -= 1
+    if (t < 1 / 6) return p + (q - p) * 6 * t
+    if (t < 1 / 2) return q
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
+
+    return p
+  }
+};

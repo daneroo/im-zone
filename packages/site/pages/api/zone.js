@@ -6,11 +6,14 @@ import { createCanvas, createImageData, registerFont } from 'canvas'
 
 import { renderJS } from '@daneroo/zoneplate-js'
 import { importRust, importGo, annotate } from '../../components/ZonePlate'
-import { hostname } from 'os'
+
+// import { hostname } from 'os'
+import { ulid } from 'ulid'
+const hostid = ulid()
 
 export default async ({ query: { width = 400, height = width, r = 'random' } } = {}, res) => {
   // validate width and height when they become query params
-  console.log({ host: hostname(), r })
+  console.log({ hostid, r })
   width = Number(width)
   height = Number(height)
   const canvas = createCanvas(width, height)
@@ -72,7 +75,7 @@ export default async ({ query: { width = 400, height = width, r = 'random' } } =
   const avgElapsed = +new Date() - start
 
   // annotate - or not
-  annotate({ ctx, renderer, width, height, avgElapsed })
+  annotate({ ctx, renderer, width, height, avgElapsed, hostid })
 
   // const buffer = canvas.toBuffer('image/png')
   res.statusCode = 200
