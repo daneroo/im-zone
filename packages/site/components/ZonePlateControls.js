@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
 import { Grid, Flex, Box, Label, Button, Checkbox, Slider, Select, useThemeUI } from 'theme-ui'
-import IconButton from '../layout/icons/IconButton'
-import SVG from '../layout/icons/SVG'
-import View from './View'
+import IconButton from './layout/icons/IconButton'
+import SVG from './layout/icons/SVG'
+import { View } from './ZonePlate'
 
 export function Presets ({ params, setParams, size, setSize, sizes, shuttle, setShuttle, renderer, setRenderer }) {
   return (

@@ -1,8 +1,8 @@
 
 import { withRouter } from 'next/router'
-import { Box, Flex } from 'theme-ui'
+import { Box } from 'theme-ui'
 
-import ZonePlate from '../components/ZonePlate'
+import ZonePlatePlayground from '../components/ZonePlatePlayground'
 
 const Page = ({ router: { query } }) => {
   return (
@@ -30,7 +30,7 @@ const Page = ({ router: { query } }) => {
 
         </div>
       </Box>
-      <ZonePlate />
+      <ZonePlatePlayground />
 
     </div>
   )

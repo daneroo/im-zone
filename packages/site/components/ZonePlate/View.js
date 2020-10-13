@@ -1,12 +1,11 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useAnimationFrame } from './hooks'
 
+import { useAnimationFrame } from './useAnimationFrame'
 import { getEngines, importAll } from './engines'
-
 importAll()
 
-export default function View ({ width, height, params, pause, showInfo, shuttle, renderer }) {
+export function View ({ width, height, params, pause, showInfo, shuttle, renderer }) {
   // When [width,height], canvasRef changes, we update the state for ctx,imageData,data
   // const [canvas, setCanvas] = useState(null)
   const [backing, setBacking] = useState({ ctx: null, imageData: null, data: null })

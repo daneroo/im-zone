@@ -5,12 +5,11 @@ import IconButton from './layout/icons/IconButton'
 import PlayPause from './layout/icons/PlayPause'
 import Info from './layout/icons/Info'
 
-import { Presets, FullSettings } from './ZonePlate/Controls'
-import { useParams, useSizes } from './ZonePlate/hooks'
+import { Presets, FullSettings } from './ZonePlateControls'
 import { Equation } from '@daneroo/zoneplate'
-import View from './ZonePlate/View'
+import { View } from './ZonePlate'
 
-export default function ZonePlate () {
+export default function ZonePlatePlayground () {
   const [shuttle, setShuttle] = useState(false)
   const [renderer, setRenderer] = useState('JS')
   // animation state
@@ -147,4 +146,24 @@ function ManyZones ({ howMany = 4 }) {
     )
   }
   )
+}
+
+function useParams () {
+  const [params, setParams] = useState({ cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 })
+  return [params, setParams]
+}
+
+//  This was to accommodate varying aspect ratios...
+export function useSizes () {
+  const sizes = {
+    100: { width: 100, height: 100 },
+    200: { width: 200, height: 200 },
+    400: { width: 400, height: 400 },
+    '480p': { width: 768, height: 480 } // or 720 or 768
+    // '720p': { width: 1280, height: 720 }
+  }
+  // size is the label(str) index into the sizes map
+  const [size, setSize] = useState('200')
+  const { width, height } = sizes[size]
+  return [width, height, size, sizes, setSize]
 }

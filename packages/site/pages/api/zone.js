@@ -5,7 +5,7 @@ import fetch from 'node-fetch'
 import { createCanvas, createImageData, registerFont } from 'canvas'
 
 import { renderJS } from '@daneroo/zoneplate-js'
-import { importRust, importGo } from '../../components/ZonePlate/engines'
+import { importRust, importGo } from '../../components/ZonePlate'
 
 export default async ({ query: { width = 400, height = width } } = {}, res) => {
   // validate width and height when they become query params
