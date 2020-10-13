@@ -25,8 +25,10 @@ export async function importRust () {
   const wasm = await import('@daneroo/zoneplate-rust')
 
   // Set our mutable variable for getEngines
+  if (!renderRust) { // just log the first time..
+    console.log('imported Rust WASM')
+  }
   renderRust = wasm.draw // renamed from the rust export
-  console.log('imported Rust WASM')
   return renderRust
 }
 // importRust()
@@ -36,8 +38,10 @@ export async function importGo () {
   const { renderGo: dynamicallyImportedRenderGo } = await importWasm()
 
   // Set our mutable variable for getEngines
+  if (!renderGo) {
+    console.log('imported Go WASM')
+  }
   renderGo = dynamicallyImportedRenderGo
-  console.log('imported Go WASM')
   return renderGo
 }
 // importGo()
