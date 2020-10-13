@@ -1,63 +1,102 @@
+import {View} from '../components/ZonePlate'
+
 <SlidePage>
 
+## ZonePlate Component
 
-# Elevate authoring with components
 
-Using MDX you can use components alongside your Markdown, like React or Web Components.
-
----
-
-<button
-  style={{
-    backgroundColor: 'transparent',
-    color: '#FFF',
-    border: '3px solid #FFF',
-    borderRadius: '6px',
-    padding: '1.5em 2em',
-    fontSize: '1em',
-  }}
->
-  Button with JSX
-</button>
+<View 
+  width={400}
+  height={400}
+  params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
+  pause={true}
+  showInfo={false}
+  shuttle={false}
+  renderer='JS' 
+/>
 
 ---
 
 ## Source of the last slide
 
 ```jsx
-<button
-  style={{
-    backgroundColor: 'transparent',
-    color: '#FFF',
-    border: '3px solid #FFF',
-    borderRadius: '6px',
-    padding: '1.5em 2em',
-    fontSize: '1em',
-  }}
->
-  Button with JSX
-</button>
+import {View} from '../components/ZonePlate'
+
+<View 
+  width={400}
+  height={400}
+  params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
+  pause={false}
+  showInfo={false}
+  shuttle={false}
+  renderer='JS' 
+/>
 ```
 
 ---
 
-Use other components by adding to `<MDXProvider>`
+## Now animate it!
 
-```jsx
-const mdComponents = {
-  h1: (props) => <Heading as="h1" {...props} />,
-}
-```
-
-[Check out the docs here](https://mdxjs.com/getting-started#mdxprovider)
+<View 
+  width={400}
+  height={400}
+  params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
+  pause={false}
+  showInfo={false}
+  shuttle={false}
+  renderer='JS' 
+/>
 
 ---
 
-## Having issues?
+## Now annotate it!
 
-- **Check your syntax.** _JSX doesn't like things like unclosed tags._
-- **Clear the cache and restart the server.** _MDX is like that sometimes._
-- **Check the MDX docs**. _It's next level stuff._
+<View 
+  width={400}
+  height={400}
+  params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
+  pause={false}
+  showInfo={true}
+  shuttle={false}
+  renderer='JS' 
+/>
+
+---
+
+## Now WebAssemble it!
+
+<div style={{
+  display:'flex',
+  justifyContent:'space-around'
+}}>
+  <View 
+    width={300}
+    height={300}
+    params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
+    pause={false}
+    showInfo={true}
+    shuttle={false}
+    renderer='JS'
+  />
+  <View 
+    width={300}
+    height={300}
+    params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
+    pause={false}
+    showInfo={true}
+    shuttle={false}
+    renderer='Rust'
+  />
+  <View 
+    width={300}
+    height={300}
+    params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
+    pause={false}
+    showInfo={true}
+    shuttle={false}
+    renderer='Go'
+  />
+</div>
 
 </SlidePage>
 
