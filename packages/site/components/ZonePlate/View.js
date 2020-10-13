@@ -44,7 +44,8 @@ export function View ({ width, height, params, pause, showInfo, shuttle, rendere
   // invoke the appropriate engine for rendering the zoneplate
   function draw (frame = 30, frames = 60) {
     const t = (frame - frames / 2) / frames
-    const { cx2, cy2, cxt, cyt, ct } = params
+    const defaultCoefs = { cx2: 0, cy2: 0, cxt: 0, cyt: 0, ct: 0 }
+    const { cx2, cy2, cxt, cyt, ct } = { ...defaultCoefs, ...params }
 
     const engines = getEngines()
     // console.log('draw', { renderer }, engines[renderer])
