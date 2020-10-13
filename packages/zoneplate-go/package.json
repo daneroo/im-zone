@@ -1,6 +1,6 @@
 {
   "name": "@daneroo/zoneplate-go",
-  "version": "1.0.15",
+  "version": "1.0.21",
   "description": "Zone Plate Generator in Go",
   "author": "Daniel Lauzon <daniel.lauzon@gmail.com>",
   "license": "MIT",

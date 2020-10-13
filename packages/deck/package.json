@@ -1,6 +1,6 @@
 {
   "name": "deck",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "Zone Plate Generator Next.js MDX Deck",
   "private": true,
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@daneroo/zoneplate": "^1.0.12",
-    "@daneroo/zoneplate-go": "^1.0.15",
+    "@daneroo/zoneplate-go": "^1.0.21",
     "@daneroo/zoneplate-js": "^1.0.4",
     "@daneroo/zoneplate-rust": "^1.0.4",
     "@mdx-js/loader": "^1.5.8",
