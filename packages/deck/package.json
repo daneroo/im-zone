@@ -1,6 +1,6 @@
 {
   "name": "deck",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Zone Plate Generator Next.js MDX Deck",
   "private": true,
   "scripts": {
