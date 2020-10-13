@@ -1,102 +1,71 @@
-import {View} from '../components/ZonePlate'
+import { ZonePlateGrid } from '../components/ZonePlateGrid'
 
 <SlidePage>
 
+
 ## ZonePlate Component
 
-
-<View 
-  width={400}
-  height={400}
-  params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
-  pause={true}
-  showInfo={false}
-  shuttle={false}
-  renderer='JS' 
-/>
-
----
-
-## Source of the last slide
-
-```jsx
-import {View} from '../components/ZonePlate'
-
-<View 
-  width={400}
-  height={400}
-  params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
-  pause={false}
-  showInfo={false}
-  shuttle={false}
-  renderer='JS' 
-/>
-```
+<ZonePlateGrid />
 
 ---
 
 ## Now animate it!
 
-<View 
-  width={400}
-  height={400}
-  params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
-  pause={false}
-  showInfo={false}
-  shuttle={false}
-  renderer='JS' 
-/>
+<ZonePlateGrid pause={false} />
 
 ---
 
 ## Now annotate it!
 
-<View 
-  width={400}
-  height={400}
-  params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
-  pause={false}
-  showInfo={true}
-  shuttle={false}
-  renderer='JS' 
-/>
+<ZonePlateGrid pause={false} showInfo={true} />
 
 ---
 
 ## Now WebAssemble it!
 
-<div style={{
-  display:'flex',
-  justifyContent:'space-around'
-}}>
-  <View 
-    width={300}
-    height={300}
-    params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
-    pause={false}
-    showInfo={true}
-    shuttle={false}
-    renderer='JS'
-  />
-  <View 
-    width={300}
-    height={300}
-    params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
-    pause={false}
-    showInfo={true}
-    shuttle={false}
-    renderer='Rust'
-  />
-  <View 
-    width={300}
-    height={300}
-    params={{cx2:1,cy2:1,cxt:0,cyt:0,ct:1}}
-    pause={false}
-    showInfo={true}
-    shuttle={false}
-    renderer='Go'
-  />
-</div>
+<ZonePlateGrid
+  size={300}
+  pause={false}
+  showInfo={true}
+  variants={[{ renderer: 'JS' }, { renderer: 'Rust' }, { renderer: 'Go' }]}
+/>
+
+---
+
+## Moarrr
+
+<ZonePlateGrid
+  size={150}
+  pause={false}
+  showInfo={true}
+  randomize={true}
+  variants={[
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+  ]}
+/>
 
 </SlidePage>
 
