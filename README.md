@@ -102,4 +102,4 @@ I later joined the group permanently.
 | :---------------------------------------------------------------------------------------------------------------: |
 |                                       Advanced Video Systems group in 1999                                        |
 
-Thanks to André, Bernard, Gilles, Phil, Tom, Mike, Jean-Pierre, Metin.
+Thanks to André, Bernard, Gilles, Phil, Tom, Mike, Jean-Pierre, Metin, Lew, James, Marc and so many more...
