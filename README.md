@@ -89,7 +89,7 @@ lerna add render-js
 
 ## History
 
-I first wrote this code as part af my first undergrad internship at CRC ~1986.
+I wrote the original zoneplate code as part af my first undergrad internship at CRC _circa 1986_.
 My task was to implement these test patterns as part of a video signal processing research group. The original implementation was written in Fortran on a DEC LSI-11 (64kB of memory).
 
 This was my first introduction to conics. The patterns generalize to conic sections or projections:
