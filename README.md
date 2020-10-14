@@ -7,9 +7,9 @@
 - Original `C++` code from CRC in `./legacy-CRC/` _circa 1996_
 - Original `Fortran` version: _lost_, but if I had it, I would dockerize it!
 
-|                             VT Zone Plate                              |                             VH Zone Plate                              |
-| :--------------------------------------------------------------------: | :--------------------------------------------------------------------: |
-| <img src="./vt-zone.gif" alt="VT zone plate" width="200" height="200"> | <img src="./vh-zone.gif" alt="VH zone plate" width="200" height="200"> |
+|                               VT Zone Plate                                |                               VH Zone Plate                                |
+| :------------------------------------------------------------------------: | :------------------------------------------------------------------------: |
+| <img src="./img/vt-zone.gif" alt="VT zone plate" width="200" height="200"> | <img src="./img/vh-zone.gif" alt="VH zone plate" width="200" height="200"> |
 
 ## TODO
 
@@ -89,13 +89,17 @@ lerna add render-js
 
 ## History
 
-I first wrote this code as part af my first undergrad internship at CRC.
+I first wrote this code as part af my first undergrad internship at CRC ~1986.
 My task was to implement these test patterns as part of a video signal processing research group. The original implementation was written in Fortran on a DEC LSI-11 (64kB of memory).
 
 This was my first introduction to conics. The patterns generalize to conic sections or projections:
 
 ![Conic Sections](conic-eqn.gif)
 
-When I joined the group,..
+I later joined the group permanently.
+
+| <img src="./img/CRC-Stage-COOP-photo-1999-04-22-page-001.jpg" alt="CRC-Advanced Video Systems-1999" width="300" > |
+| :---------------------------------------------------------------------------------------------------------------: |
+|                                       Advanced Video Systems group in 1999                                        |
 
 Thanks to André, Bernard, Gilles, Phil, Tom, Mike, Jean-Pierre, Metin.
