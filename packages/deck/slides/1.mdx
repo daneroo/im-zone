@@ -56,6 +56,8 @@ OttawaJS - Oct 15 2020
 - Fast (SSR / SSG / Incremental static regeneration)
 - File-system routing
 - API routes
+- Deploying on vercel is a great option
+  - Others are promising
 
 ---
 
@@ -399,17 +401,21 @@ export default async ({ query: { width = 400, height = width, r = 'JS' } }, res)
 
 ## Challenges
 
-- Bundling
-  - mono repo
+- Re-use
+  - Mono repo - lerna
+  - Bundling magic
+  - Static assets in api routes
 - Tooling per language
-  - Go's runtime
-  - tinygo
+  - Go's runtime / tinygo
 
 ---
 
 ## Takeaways
 
+- Next.js has been a pleasure to use and learn
 - Composition
+  - Orthogonal features  
+- WebAssembly - Definetly Useable - YMMV
 
 ---
 
