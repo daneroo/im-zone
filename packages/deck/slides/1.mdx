@@ -224,10 +224,86 @@ func renderGo(data []byte, width, height int, cx2, cy2 float64) {
 
 ---
 
+<https://zone.v.daneroo.com/>
+<iframe
+  src="https://zone.v.daneroo.com/"
+  style={{ width: '80%', height: '500px' }}
+></iframe>
+
+---
+
 ## Animation - know your hooks
 
-- requestanimationframe
+```js
+export function useAnimationFrame (callback = (delta) => {}, pause = true) {
+  // Use useRef for mutable variables that we want to persist
+  // without triggering a re-render on their change
+  const requestRef = useRef()
+  const pauseRef = useRef(pause)
+  const callbackRef = useRef(callback)
+  useEffect(() => {
+    pauseRef.current = pause
+  }, [pause])
+  useEffect(() => {
+    callbackRef.current = callback
+  }, [callback])
+  ...
+}
+```
 
+---
+
+## Animation - requestAnimationFrame
+
+```js
+export function useAnimationFrame (callback = (delta) => {}, pause = true) {
+  ...
+  const animate = time => {
+    callbackRef.current()
+    requestRef.current = requestAnimationFrame(animate)
+  }
+
+  useEffect(() => {
+    if (pauseRef.current === false) {
+      requestRef.current = requestAnimationFrame(animate)
+    }
+    return () => {
+      cancelAnimationFrame(requestRef.current)
+    }
+  }, [pause]) // Make sure the effect runs only once
+}
+```
+
+---
+
+## importing renderRust
+
+```js
+async function importRust () {
+  const wasm = await import('@daneroo/zoneplate-rust')
+  const renderRust = wasm.draw // renamed from the rust export
+  return renderRust
+}
+```
+
+---
+
+## importing renderGo
+
+```js
+import { Go } from './wasm-go/wasm_exec_fixed'
+import wasmBase64Bytes from './wasm-go/main.wasm'
+async function importGo () {
+  const go = new Go()
+  const bytes = Buffer.from(wasmBase64Bytes, 'base64')
+  const { instance } = await WebAssembly.instantiate(bytes, go.importObject)
+
+  //  run the go instance
+  go.run(instance)
+  const renderGo = window.DrawGo
+  return renderGo
+}
+```
 ---
 
 ## API routes - `/api/zone`
@@ -334,14 +410,6 @@ export default async ({ query: { width = 400, height = width, r = 'JS' } }, res)
 ## Takeaways
 
 - Composition
-
----
-
-<https://zone.v.daneroo.com/>
-<iframe
-  src="https://zone.v.daneroo.com/"
-  style={{ width: '80%', height: '500px' }}
-></iframe>
 
 ---
 
