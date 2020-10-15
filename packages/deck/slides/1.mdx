@@ -21,6 +21,18 @@ OttawaJS - Oct 15 2020
 
 ---
 
+## About me
+
+<center>
+  <figure>
+    <img width="400" src="/img/daneroo-300x300.jpg" alt="Daniel Lauzon" />
+    <figcaption>Daniel Lauzon - @daneroo</figcaption>
+  </figure>
+</center>
+
+
+---
+
 ## Outline
 
 1. Next.js
@@ -34,9 +46,16 @@ OttawaJS - Oct 15 2020
 - React Framework (by Vercel, formerly zeit/now)
 - [Great tutorial](https://nextjs.org/learn/basics/create-nextjs-app), [great examples](https://github.com/vercel/next.js/tree/canary/examples)
 - More than a static site generator
-- Zero config
-- SSR/SSG/API routes
-- Code Splitting
+- `create-next-app`
+- Great Code Splitting
+
+---
+
+## Next.js: The Good Parts (for me)
+
+- Fast (SSR / SSG / Incremental static regeneration)
+- File-system routing
+- API routes
 
 ---
 
@@ -263,7 +282,20 @@ export default async ({ query: { width = 400, height = width, r = 'JS' } }, res)
 
 <center>
   <figure>
-    <table style={{borderSpacing: '30px 0'}}><thead><tr><th align="left">Engine</th><th align="right">JS</th><th align="right">Rust</th><th align="right">Go</th></tr></thead><tbody><tr><td align="left">Chrome</td><td align="right">7.8</td><td align="right">7.3</td><td align="right">11.1</td></tr><tr><td align="left">Safari</td><td align="right">13.5</td><td align="right">15.2</td><td align="right">20.8</td></tr><tr><td align="left">Firefox</td><td align="right">13.5</td><td align="right">15.2</td><td align="right">20.8</td></tr><tr><td align="left">Chromebook</td><td align="right">6.3</td><td align="right">6.3</td><td align="right">8.1</td></tr><tr><td align="left">Chromebook/FF</td><td align="right">14.9</td><td align="right">17.0</td><td align="right">20.9</td></tr><tr><td align="left">Pixel3</td><td align="right">13.3</td><td align="right">10.3</td><td align="right">50.7</td></tr><tr><td align="left">Pixel3/FF</td><td align="right">30.2</td><td align="right">46.0</td><td align="right">49.5</td></tr></tbody></table>
+    <table style={{borderSpacing: '30px 0'}}>
+      <thead>
+        <tr><th align="left">Engine</th><th align="right">JS</th><th align="right">Rust</th><th align="right">Go</th></tr>
+      </thead>
+      <tbody>
+        <tr><td align="left">Chrome</td><td align="right">7.8</td><td align="right">7.3</td><td align="right">11.1</td></tr>
+        <tr><td align="left">Safari</td><td align="right">13.5</td><td align="right">15.2</td><td align="right">20.8</td></tr>
+        <tr><td align="left">Firefox</td><td align="right">25.0</td><td align="right">27.9</td><td align="right">30.0</td></tr>
+        <tr><td align="left">Chromebook</td><td align="right">6.3</td><td align="right">6.3</td><td align="right">8.1</td></tr>
+        <tr><td align="left">Chromebook/FF</td><td align="right">14.9</td><td align="right">17.0</td><td align="right">20.9</td></tr>
+        <tr><td align="left">Pixel3</td><td align="right">13.3</td><td align="right">10.3</td><td align="right">50.7</td></tr>
+        <tr><td align="left">Pixel3/FF</td><td align="right">30.2</td><td align="right">46.0</td><td align="right">49.5</td></tr>
+      </tbody>
+    </table>
     <figcaption>Comparing render time (<tt>ms/frame @ 720x480</tt>)</figcaption>
   </figure>
 </center>
@@ -273,7 +305,7 @@ export default async ({ query: { width = 400, height = width, r = 'JS' } }, res)
 |:----|---:|---:|---:|
 |Chrome        |  7.8 |  7.3 | 11.1 |
 |Safari        | 13.5 | 15.2 | 20.8 |
-|Firefox       | 13.5 | 15.2 | 20.8 |
+|Firefox       | 25.0 | 27.9 | 30.1 |
 |Chromebook    |  6.3 |  6.3 |  8.1 |
 |Chromebook/FF | 14.9 | 17.0 | 20.9 |
 |Pixel3        | 13.3 | 10.3 | 50.7 |
