@@ -11,9 +11,14 @@ const SlideshowPage = ({ totalSlidePages, currentSlide, filename }) => {
   return (
     <TotalPagesContext.Provider value={totalSlidePages}>
       <Head>
+        <meta charSet='utf-8' />
         <title>
           {siteConfig.name} - {siteConfig.title}
         </title>
+        <meta name='author' content='Daniel Lauzon' />
+        <meta
+          name='description' content={`${siteConfig.name} - ${siteConfig.title}`}
+        />
         <link rel="icon" href="/favicon.ico" />
         {/* Poppins Bold 800->700, Roboto w/Italic 400,700,900 */}
         <link

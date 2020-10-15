@@ -204,6 +204,12 @@ func renderGo(data []byte, width, height int, cx2, cy2 float64) {
 
 ---
 
+## Animation - know your hooks
+
+- requestanimationframe
+
+---
+
 ## API routes - `/api/zone`
 
 <ZonePlateGrid
@@ -275,6 +281,28 @@ export default async ({ query: { width = 400, height = width, r = 'JS' } }, res)
 
 ---
 
+## Crossing the WebAssembly boundary
+
+- Can be expensive to cross
+- Data types and mutability
+
+---
+
+## Challenges
+
+- Bundling
+  - mono repo
+- Tooling per language
+  - Go's runtime
+  - tinygo
+
+---
+
+## Takeaways
+
+- Composition
+
+---
 
 <https://zone.v.daneroo.com/>
 <iframe
