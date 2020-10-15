@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "format": "prettier --write '**/*.{js,jsx}'",
-    "dev": "next",
+    "dev": "next -p 3001",
     "build": "next build",
     "vercel-build": "yum install libuuid-devel libmount-devel && cp /lib64/{libuuid,libmount,libblkid}.so.1 node_modules/canvas/build/Release/ && npm run build",
     "start": "next start",
