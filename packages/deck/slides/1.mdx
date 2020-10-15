@@ -1,13 +1,16 @@
 import { Equation } from "@daneroo/zoneplate";
+import { ZonePlateGrid } from '../components/ZonePlateGrid'
 
 <SlidePage>
     
 <Cover>
 
 
-# WebAssembly Zone
+# Next.js and WebAssembly
 
-NextJS Conf '20
+A Field Report
+
+OttawaJS - Oct 15 2020
 
 </Cover>
 
@@ -18,31 +21,58 @@ NextJS Conf '20
 
 ---
 
-## Content
+## Outline
 
-1. Outline Validation
-1. Demo
-1. Code
-
----
-
-## Logistics
-
-1. Recording Software
-1. Presenter Overlay
-1. Camera/Mic Quality
-1. Dates / Devliverables / Formats
+1. Next.js
+1. WebAssembly
+1. Walk through a project with example
 
 ---
 
-## Personal project
+## Next.js
 
-1. Pick a thing you know
-1. Pick a thing to learn
+- React Framework (by Vercel, formerly zeit/now)
+- [Great tutorial](https://nextjs.org/learn/basics/create-nextjs-app)
+- Zero config
+- SSR/SSG/API routes
+- Code Splitting
 
-> In this talk, we describe an experiment that uses WebAssembly in combination with Next.js.
->
-> <cite>Me</cite>
+---
+
+## WebAssembly
+
+- Binary instruction format
+- Well defined sandbox
+- Part of the open web
+  - Evolved from experiments
+  - Supported in evergreen browsers, mobile and node.js
+- Multiple languages and runtimes
+  - Rust/C++/Go/.Net, and [dozens more](https://github.com/appcypher/awesome-wasm-langs)
+
+---
+
+> _“Any application that can be written in JavaScript, will eventually be written in JavaScript.”_
+> <cite>Jeff Atwood, 2007</cite>
+
+---
+
+## Benefits of other languages
+
+- Re-use of existing libraries
+  - think _crypto_, _game engines_, _distributed web_,...
+- Expressiveness
+- Runtime properties
+  - Go's _channels_ and _go routiines_
+  - Rust's memory safety and control
+
+---
+
+## Personal Project: _One Way to Choose_
+
+- Pick a thing you know
+  - _Zone Plate pattern generator_
+- Pick a thing to learn
+  - _WebAssembly and Next.js/React_
 
 ---
 
@@ -66,6 +96,66 @@ Which is convenient, 'cause it's a reasonable amount of simple computation
 
 ---
 
+## JavaScript
+
+```js
+export function renderJS (data, width, height, cx2, cy2) {
+  let index = 0
+  for (let j = -height / 2; j < height / 2; j++) {
+    for (let i = -width / 2; i < width / 2; i++, index += 4) {
+      const z = (cx2 * i * i / width) + (cy2 * j * j / height)
+      const c = Math.floor(Math.cos(z * Math.PI) * 126 + 127)
+      data[index + 0] = c // red
+      data[index + 1] = c // green
+      data[index + 2] = c // blue
+    }
+  }
+}
+```
+
+---
+
+## Rust
+
+```rust
+fn render_rust(data: &mut [u8], width: u32, height: u32, cx2: f64, cy2: f64) {
+    let mut index = 0;
+    for j in -(height as i32 / 2)..(height as i32 / 2) {
+        for i in -(width as i32 / 2)..(width as i32 / 2) {
+            let phi: f64 =
+                (cx2 * (i * i) as f64 / width as f64 + cy2 * (j * j) as f64 / height as f64) * PI;
+            let c = (phi.cos() * 126.0 + 127.0) as u8;
+            data[index + 0] = c;
+            data[index + 1] = c;
+            data[index + 2] = c;
+            index += 4;
+        }
+    }
+}
+```
+
+---
+
+## Go
+
+```go
+func renderGo(data []byte, width, height int, cx2, cy2 float64) {
+	index := 0
+	for j := -float64(height / 2); j < float64(height/2); j++ {
+		for i := -float64(width / 2); i < float64(width/2); i++ {
+			phi := (cx2*i*i/float64(width) + cy2*j*j/float64(height)) * math.Pi
+			c := uint8(math.Cos(phi)*126.0 + 127.0)
+			data[index+0] = c
+			data[index+1] = c
+			data[index+2] = c
+			index += 4
+		}
+	}
+}
+```
+
+---
+
 > We developed 3 implementations of the generator;
 > in JavaScript, Rust and Go, the latter two were compiled to WebAssembly.
 >
@@ -73,21 +163,124 @@ Which is convenient, 'cause it's a reasonable amount of simple computation
 
 ---
 
-> We scoped the experiment around a suitable computational problem - Visual Pattern Generation,
-> which also leverages the strengths of Next.js as a developer and deployment environment.
->
-> <cite>Me</cite>
+## ZonePlate Component
+
+<ZonePlateGrid />
 
 ---
 
+## Now animate it!
+
+<ZonePlateGrid pause={false} />
+
+---
+
+## Now annotate it!
+
+<ZonePlateGrid pause={false} showInfo={true} />
+
+---
+
+## Now WebAssemble it!
+
+<ZonePlateGrid
+  size={300}
+  pause={false}
+  showInfo={true}
+  variants={[{ renderer: 'JS' }, { renderer: 'Rust' }, { renderer: 'Go' }]}
+/>
+
+---
+
+## Moarrr Zones
+
+<ZonePlateGrid
+  size={150}
+  pause={false}
+  showInfo={true}
+  randomize={true}
+  variants={Array(24).fill({})}
+/>
+
+---
+
+## API routes - `/api/zone`
+
+<ZonePlateGrid
+  size={300}
+  pause={false}
+  showInfo={true}
+  urlView={true}
+  variants={[{ renderer: 'JS' }, { renderer: 'Rust' }, { renderer: 'Go' }]}
+/>
+
+---
+
+## Re-using the code for an API route
+
+```js
+export default async ({ query: { width = 400, height = width, r = 'JS' } }, res) => {
+  const canvas = createCanvas(width, height)
+  const ctx = canvas.getContext('2d')
+
+  // where we will render
+  const imageData = createImageData(width, height)
+  const { data } = imageData
+
+  await render(r, data, width, height)
+
+  ctx.putImageData(imageData, 0, 0)
+  res.setHeader('Content-Type', 'image/png')
+  canvas.createPNGStream().pipe(res)
+}
+```
+---
+
+## API routes - `/api/zone`
+
+<ZonePlateGrid
+  size={100}
+  pause={false}
+  showInfo={true}
+  randomize={true}
+  urlView={true}
+  variants={Array(48).fill({})}
+/>
+
+---
+
+## Performance
+
+- JavaScript engines are _Faaaast_!
+- YMMV 
+
+<center>
+  <figure>
+    <table style={{borderSpacing: '30px 0'}}><thead><tr><th align="left">Engine</th><th align="right">JS</th><th align="right">Rust</th><th align="right">Go</th></tr></thead><tbody><tr><td align="left">Chrome</td><td align="right">7.8</td><td align="right">7.3</td><td align="right">11.1</td></tr><tr><td align="left">Safari</td><td align="right">13.5</td><td align="right">15.2</td><td align="right">20.8</td></tr><tr><td align="left">Firefox</td><td align="right">13.5</td><td align="right">15.2</td><td align="right">20.8</td></tr><tr><td align="left">Chromebook</td><td align="right">6.3</td><td align="right">6.3</td><td align="right">8.1</td></tr><tr><td align="left">Chromebook/FF</td><td align="right">14.9</td><td align="right">17.0</td><td align="right">20.9</td></tr><tr><td align="left">Pixel3</td><td align="right">13.3</td><td align="right">10.3</td><td align="right">50.7</td></tr><tr><td align="left">Pixel3/FF</td><td align="right">30.2</td><td align="right">46.0</td><td align="right">49.5</td></tr></tbody></table>
+    <figcaption>Comparing render time (<tt>ms/frame @ 720x480</tt>)</figcaption>
+  </figure>
+</center>
+
+<SpeakerNotes>
+|Engine| JS | Rust | Go |
+|:----|---:|---:|---:|
+|Chrome        |  7.8 |  7.3 | 11.1 |
+|Safari        | 13.5 | 15.2 | 20.8 |
+|Firefox       | 13.5 | 15.2 | 20.8 |
+|Chromebook    |  6.3 |  6.3 |  8.1 |
+|Chromebook/FF | 14.9 | 17.0 | 20.9 |
+|Pixel3        | 13.3 | 10.3 | 50.7 |
+|Pixel3/FF     | 30.2 | 46.0 | 49.5 |
+</SpeakerNotes>
+
+---
+
+
+<https://zone.v.daneroo.com/>
 <iframe
   src="https://zone.v.daneroo.com/"
   style={{ width: '80%', height: '500px' }}
 ></iframe>
-
----
-
-# 🤫
 
 ---
 
@@ -96,7 +289,7 @@ Which is convenient, 'cause it's a reasonable amount of simple computation
 
 ## Go forth and Assemble the Web
 
-NextJS Conf '20
+OttawaJS October Meetup
 
 ## Thanks
 

@@ -5,7 +5,7 @@ export default function index() {
   const router = useRouter()
 
   useEffect(() => {
-    router.replace('/slides/2')
+    router.replace('/slides/1')
   })
   return <div />
 }
