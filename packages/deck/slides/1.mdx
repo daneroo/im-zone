@@ -1,15 +1,19 @@
-import { Equation } from "@daneroo/zoneplate";
+import { Equation } from '@daneroo/zoneplate'
 import { ZonePlateGrid } from '../components/ZonePlateGrid'
+import { NextjsConfLogo } from '../components/NextjsConfLogo.jsx'
 
 <SlidePage>
     
 <Cover>
 
-# WebAssembly Zone
 
-A Field Report
+<NextjsConfLogo />
 
-## NextJS Conf '20
+<div style={{ position: 'relative' }}>
+  <h1>WebAssembly Zone</h1>
+  <p>A Field Report</p>
+  <h2>Next.js Conf '20</h2>
+</div>
 
 </Cover>
 
@@ -28,7 +32,6 @@ A Field Report
     <figcaption>Daniel Lauzon - @daneroo</figcaption>
   </figure>
 </center>
-
 
 ---
 
@@ -73,6 +76,7 @@ A Field Report
 ---
 
 > _“Any application that can be written in JavaScript, will eventually be written in JavaScript.”_
+>
 > <cite>Jeff Atwood, 2007</cite>
 
 ---
@@ -105,7 +109,7 @@ A Field Report
 
 ## How do you make one?
 
-<Equation coefs={{ cx2:1, cy2:1, ct:0 }} />
+<Equation coefs={{ cx2: 1, cy2: 1, ct: 0 }} />
 <br />
 <pre>
   pixel(<em>x,y</em>) = ~cos(z)
@@ -226,6 +230,7 @@ func renderGo(data []byte, width, height int, cx2, cy2 float64) {
 ---
 
 <https://zone.v.daneroo.com/>
+
 <iframe
   src="https://zone.v.daneroo.com/"
   style={{ width: '80%', height: '500px' }}
@@ -305,6 +310,7 @@ async function importGo () {
   return renderGo
 }
 ```
+
 ---
 
 ## API routes - `/api/zone`
@@ -337,6 +343,7 @@ export default async ({ query: { width = 400, height = width, r = 'JS' } }, res)
   canvas.createPNGStream().pipe(res)
 }
 ```
+
 ---
 
 ## API routes - `/api/zone`
@@ -355,25 +362,67 @@ export default async ({ query: { width = 400, height = width, r = 'JS' } }, res)
 ## Performance
 
 - JavaScript engines are _Faaaast_!
-- YMMV 
+- YMMV
 
 <center>
   <figure>
-    <table style={{borderSpacing: '30px 0'}}>
+    <table style={{ borderSpacing: '30px 0' }}>
       <thead>
-        <tr><th align="left">Engine</th><th align="right">JS</th><th align="right">Rust</th><th align="right">Go</th></tr>
+        <tr>
+          <th align="left">Engine</th>
+          <th align="right">JS</th>
+          <th align="right">Rust</th>
+          <th align="right">Go</th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td align="left">Chrome</td><td align="right">7.8</td><td align="right">7.3</td><td align="right">11.1</td></tr>
-        <tr><td align="left">Safari</td><td align="right">13.5</td><td align="right">15.2</td><td align="right">20.8</td></tr>
-        <tr><td align="left">Firefox</td><td align="right">25.0</td><td align="right">27.9</td><td align="right">30.0</td></tr>
-        <tr><td align="left">Chromebook</td><td align="right">6.3</td><td align="right">6.3</td><td align="right">8.1</td></tr>
-        <tr><td align="left">Chromebook/FF</td><td align="right">14.9</td><td align="right">17.0</td><td align="right">20.9</td></tr>
-        <tr><td align="left">Pixel3</td><td align="right">13.3</td><td align="right">10.3</td><td align="right">50.7</td></tr>
-        <tr><td align="left">Pixel3/FF</td><td align="right">30.2</td><td align="right">46.0</td><td align="right">49.5</td></tr>
+        <tr>
+          <td align="left">Chrome</td>
+          <td align="right">7.8</td>
+          <td align="right">7.3</td>
+          <td align="right">11.1</td>
+        </tr>
+        <tr>
+          <td align="left">Safari</td>
+          <td align="right">13.5</td>
+          <td align="right">15.2</td>
+          <td align="right">20.8</td>
+        </tr>
+        <tr>
+          <td align="left">Firefox</td>
+          <td align="right">25.0</td>
+          <td align="right">27.9</td>
+          <td align="right">30.0</td>
+        </tr>
+        <tr>
+          <td align="left">Chromebook</td>
+          <td align="right">6.3</td>
+          <td align="right">6.3</td>
+          <td align="right">8.1</td>
+        </tr>
+        <tr>
+          <td align="left">Chromebook/FF</td>
+          <td align="right">14.9</td>
+          <td align="right">17.0</td>
+          <td align="right">20.9</td>
+        </tr>
+        <tr>
+          <td align="left">Pixel3</td>
+          <td align="right">13.3</td>
+          <td align="right">10.3</td>
+          <td align="right">50.7</td>
+        </tr>
+        <tr>
+          <td align="left">Pixel3/FF</td>
+          <td align="right">30.2</td>
+          <td align="right">46.0</td>
+          <td align="right">49.5</td>
+        </tr>
       </tbody>
     </table>
-    <figcaption>Comparing render time (<tt>ms/frame @ 720x480</tt>)</figcaption>
+    <figcaption>
+      Comparing render time (<tt>ms/frame @ 720x480</tt>)
+    </figcaption>
   </figure>
 </center>
 
@@ -413,7 +462,7 @@ export default async ({ query: { width = 400, height = width, r = 'JS' } }, res)
 
 - Next.js has been a pleasure to use and learn
 - Composition
-  - Orthogonal features  
+  - Orthogonal features
 - WebAssembly - Definetly Useable - YMMV
 
 ---
@@ -423,11 +472,12 @@ export default async ({ query: { width = 400, height = width, r = 'JS' } }, res)
 
 ## Go forth and Assemble the Web
 
-NextJS Conf '20
+Next.js Conf '20
 
 ## Thanks
 
 </Cover>
+
 
 </SlidePage>
 
