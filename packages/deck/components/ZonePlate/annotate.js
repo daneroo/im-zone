@@ -6,7 +6,7 @@ const rendererColor = { JS: jsYellow, Rust: rust, Go: gopherBlue }
 const allEngines = { JS: true, Rust: true, Go: true }
 // ctx, renderer, width, height, elapsed
 export function annotate ({
-  avgFps = 0, avgElapsed = 0, frame = 0,
+  avgFps = 0, avgElapsed = 0, frame = 0, frames = 60,
   // the rest of the component context
   ctx, engines = allEngines, renderer, width, height, hostid
 } = {}) {
@@ -80,7 +80,7 @@ export function annotate ({
     // ctx.shadowBlur = 4
 
     ctx.beginPath()
-    const x = width * frame / 60
+    const x = width * frame / frames
     const y = 0
     const radius = Math.max(4, height * 0.01)
     ctx.arc(x, y, radius, 0, 2 * Math.PI)

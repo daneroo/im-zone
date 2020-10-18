@@ -1,3 +1,6 @@
 {
-  "standard.enable": false
+  "standard.enable": false,
+  "prettier.disableLanguages": [
+    "mdx"
+  ]
 }

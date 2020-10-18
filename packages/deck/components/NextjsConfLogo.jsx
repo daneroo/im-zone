@@ -5,7 +5,8 @@ export function NextjsConfLogo() {
   const propsSphere = {
     width: size,
     height: size,
-    coefs: { cx2: 0.5, cy2: 0.5, cxt: 0, cyt: 0, ct: -0.5 },
+    coefs: { cx2: 0.5, cy2: 0.5, cxt: 0, cyt: 0, ct: -1 },
+    frames:480,
     pause: false,
     showInfo: true,
     shuttle: false,
@@ -23,13 +24,13 @@ export function NextjsConfLogo() {
   return (
     <>
       <AbsoluteCenteredFloat left={0} filter={'hue-rotate(280deg)'}>
-        <View {...propsSphere}></View>
+        <View {...propsSphere} t0={0}></View>
       </AbsoluteCenteredFloat>
       <AbsoluteCenteredFloat left={200} filter={'hue-rotate(0deg)'}>
-        <View {...propsSphere}></View>
+        <View {...propsSphere} t0={40}></View>
       </AbsoluteCenteredFloat>
       <AbsoluteCenteredFloat left={400} filter={'hue-rotate(140deg)'}>
-        <View {...propsSphere}></View>
+        <View {...propsSphere} t0={80}></View>
       </AbsoluteCenteredFloat>
       <div style={{ zIndex: 1 }}>
         <AbsoluteCenteredFloat

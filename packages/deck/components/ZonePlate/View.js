@@ -6,7 +6,11 @@ import { useAnimationFrame } from './useAnimationFrame'
 import { getEngines, importAll } from './engines'
 importAll()
 
-export function View ({ width, height, coefs, pause, showInfo, shuttle, renderer }) {
+export function View ({
+  width, height,
+  coefs, pause, showInfo, shuttle, renderer,
+  frames = 60, t0 = 0
+}) {
   // When [width,height], canvasRef changes, we update the state for ctx,imageData,data
   // const [canvas, setCanvas] = useState(null)
   const [backing, setBacking] = useState({ ctx: null, imageData: null, data: null })
@@ -34,17 +38,17 @@ export function View ({ width, height, coefs, pause, showInfo, shuttle, renderer
   // Not sure canvasRef should be a dependency, canvas either.. Check again
   useEffect(() => {
     if (backing.ctx !== null) {
-      const frame = 30
+      const frame = frames / 2 + t0
       draw(frame)
       if (showInfo) {
-        const rest = { ctx: backing.ctx, engines: getEngines(), renderer, width, height }
+        const rest = { ctx: backing.ctx, engines: getEngines(), renderer, width, height, frames }
         annotate({ frame, ...rest })
       }
     }
-  }, [backing, coefs, renderer, showInfo])
+  }, [backing, coefs, renderer, showInfo, pause, frames, t0])
 
   // invoke the appropriate engine for rendering the zoneplate
-  function draw (frame = 30, frames = 60) {
+  function draw (frame = frames / 2) {
     const t = (frame - frames / 2) / frames
     const defaultCoefs = { cx2: 0, cy2: 0, cxt: 0, cyt: 0, ct: 0 }
     const { cx2, cy2, cxt, cyt, ct } = { ...defaultCoefs, ...coefs }
@@ -60,7 +64,7 @@ export function View ({ width, height, coefs, pause, showInfo, shuttle, renderer
       const { ctx, imageData, data } = backing
       // used to default to JS:renderJS - in case loader had not completed yet
       const renderFunc = engines[renderer] || engines.JS
-      renderFunc(data, width, height, frames, t / 15, cx2, cy2, cxt, cyt, ct)
+      renderFunc(data, width, height, frames, t * 4 / frames, cx2, cy2, cxt, cyt, ct)
       ctx.putImageData(imageData, 0, 0)
     }
   }
@@ -68,20 +72,20 @@ export function View ({ width, height, coefs, pause, showInfo, shuttle, renderer
   // counter for current frame when in animation loop
   const frameRef = useRef()
   useEffect(() => {
-    frameRef.current = 0
-  }, [])
+    frameRef.current = t0
+  }, [frames, t0, pause])
 
   // update the frame counter, invoke the render, annotate
   // `animate` is called from useAnimationFrame, which injects fps/elapsed
   function animate ({ avgFps, avgElapsed }) {
-    const period = 60 // 2 x for shuttle
+    const period = frames // 2 x for shuttle
     frameRef.current = (frameRef.current + 1) % (2 * period)
     const fc = frameRef.current
-    const frame = (shuttle) ? period - Math.abs(period - fc) : fc % 60
+    const frame = (shuttle) ? period - Math.abs(period - fc) : fc % period
 
     draw(frame)
     if (showInfo) {
-      const rest = { ctx: backing.ctx, engines: getEngines(), renderer, width, height }
+      const rest = { ctx: backing.ctx, engines: getEngines(), renderer, width, height, frames }
       annotate({ avgFps, avgElapsed, frame, ...rest })
     }
   }

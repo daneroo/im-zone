@@ -13,7 +13,8 @@
 
 ## TODO
 
-- externalize zoneplate loader,renderer (no controls)
+- Update Headshot (resolution ans square crop) - Send to hank@vercel
+- externalize module for zoneplate View/engines/hook/annotate (no controls)
 - npm packages
   - normalize the README
   - normalize the package.json scripts - dev build lint test
