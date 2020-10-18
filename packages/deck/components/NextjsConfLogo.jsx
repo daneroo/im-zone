@@ -35,7 +35,7 @@ export function NextjsConfLogo() {
       <div style={{ zIndex: 1 }}>
         <AbsoluteCenteredFloat
           opacity={0.1}
-          top={200}
+          top={400}
           clipRadius={600}
           left={-400}
         >
@@ -50,17 +50,18 @@ function AbsoluteCenteredFloat({
   children,
   opacity = 0.7,
   filter = 'none',
-  left = 0,
-  top = 0,
+  left = 0, // absolute position-left
+  top = 0, // padding-top of inner div
   clipRadius = 100,
 }) {
   return (
     <div
       style={{
+        overflow:'hidden',
         position: 'absolute',
         bottom: 0,
         left,
-        top,
+        // top,
         right: 0,
         margin: 'auto',
         // width: '100px',
@@ -69,6 +70,7 @@ function AbsoluteCenteredFloat({
     >
       <div
         style={{
+          paddingTop:top,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
