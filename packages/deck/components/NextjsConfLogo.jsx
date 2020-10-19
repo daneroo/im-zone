@@ -10,30 +10,38 @@ export function NextjsConfLogoBG() {
   }
 
   const spheres = [
-    { left: 320, hueRot: 280, t0: 0, ct: -1 },
-    { left: 418, hueRot: 0, t0: 40, ct: 2 },
-    { left: 516, hueRot: 140, t0: 80, ct: -1 },
+    // gradients from the svg icons
+    // background: `linear-gradient(90deg,rgba(236,97,147,${alpha}),rgba(236,75,49,${alpha}))`, // globe
+    // background: `linear-gradient(90deg,rgba(255,188,41,${alpha}),rgba(234,223,88,${alpha}))`, // image
+    // background: `linear-gradient(90deg,rgba(87,200,79,${alpha}),rgba(83,160,236,${alpha}))`, //activity
+
+    // reverse the order: activity,image,globe
+    // hueRot no longer used
+    { left: 516, hueRot: 140, t0: 80, ct: -2, overlayColor:'#54acbe'}, // activity:in the middle of the blue-green gradient
+    { left: 418, hueRot: 0, t0: 40, ct: 2, overlayColor:'rgb(255,188,41)'}, // image:yellow (left) side of image gradient
+    { left: 320, hueRot: 280, t0: 0, ct: -2, overlayColor:'rgb(236,75,49)'}, // globe:red side of globe gradient
   ]
 
   return (
     <div>
-      {spheres.map(({ left, hueRot, t0, ct }) => {
+      {spheres.map(({ left, hueRot, t0, ct, overlayColor }) => {
         const propsSphere = {
           width: size,
           height: size,
           coefs: { cx2: 0.707, cy2: 0.707, cxt: 0, cyt: 0, ct },
           frames: 240,
           pause: false,
-          showInfo: true,
+          //showInfo: true,
           shuttle: false,
           renderer: 'JS',
+          overlayColor
         }
 
         return (
           <AbsoluteCenteredFloat
             top={320}
             left={left}
-            filter={`hue-rotate(${hueRot}deg)`}
+            // filter={`hue-rotate(${hueRot}deg)`}
           >
             <View {...propsSphere} t0={t0}></View>
           </AbsoluteCenteredFloat>

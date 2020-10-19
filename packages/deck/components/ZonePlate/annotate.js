@@ -8,7 +8,8 @@ const allEngines = { JS: true, Rust: true, Go: true }
 export function annotate ({
   avgFps = 0, avgElapsed = 0, frame = 0, frames = 60,
   // the rest of the component context
-  ctx, engines = allEngines, renderer, width, height, hostid
+  ctx, engines = allEngines, renderer, width, height, hostid,
+  overlayColor // overlay color, in lieu of showInfo
 } = {}) {
   const padding = 2
   const baseFontSize = (width < 150) ? 16 : 20
@@ -19,15 +20,24 @@ export function annotate ({
 
   // const engines = getEngines()
 
+  // overlayColor is a quick shortcut, should add annotation options
+  if (overlayColor){
+  // early return if overlayColor
+    ctx.save()
+    ctx.globalCompositeOperation = 'multiply'
+    ctx.fillStyle = overlayColor
+    ctx.fillRect(0, 0, width, height)
+    ctx.restore()
+    return
+  }
   // renderer color overlay
   if (engines[renderer]) {
     ctx.save()
     ctx.globalCompositeOperation = 'multiply'
-    ctx.fillStyle = rendererColor[renderer] || 'red'
+    ctx.fillStyle = overlayColor || rendererColor[renderer] || 'red'
     ctx.fillRect(0, 0, width, height)
     ctx.restore()
   }
-
   // Renderer Name
   ctx.save()
   ctx.font = `${baseFontSize * 2}px ${fontFamily}`
