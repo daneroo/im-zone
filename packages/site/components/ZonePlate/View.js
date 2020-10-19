@@ -9,7 +9,8 @@ importAll()
 export function View ({
   width, height,
   coefs, pause, showInfo, shuttle, renderer,
-  frames = 60, t0 = 0
+  frames = 60, t0 = 0,
+  overlayColor // overlay color, in lieu of showInfo
 }) {
   // When [width,height], canvasRef changes, we update the state for ctx,imageData,data
   // const [canvas, setCanvas] = useState(null)
@@ -40,8 +41,8 @@ export function View ({
     if (backing.ctx !== null) {
       const frame = frames / 2 + t0
       draw(frame)
-      if (showInfo) {
-        const rest = { ctx: backing.ctx, engines: getEngines(), renderer, width, height, frames }
+      if (showInfo || overlayColor) {
+        const rest = { ctx: backing.ctx, engines: getEngines(), renderer, width, height, frames, overlayColor }
         annotate({ frame, ...rest })
       }
     }
@@ -84,8 +85,8 @@ export function View ({
     const frame = (shuttle) ? period - Math.abs(period - fc) : fc % period
 
     draw(frame)
-    if (showInfo) {
-      const rest = { ctx: backing.ctx, engines: getEngines(), renderer, width, height, frames }
+    if (showInfo || overlayColor) {
+      const rest = { ctx: backing.ctx, engines: getEngines(), renderer, width, height, frames, overlayColor }
       annotate({ avgFps, avgElapsed, frame, ...rest })
     }
   }

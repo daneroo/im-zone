@@ -11,6 +11,10 @@
 | :------------------------------------------------------------------------: | :------------------------------------------------------------------------: |
 | <img src="./img/vt-zone.gif" alt="VT zone plate" width="200" height="200"> | <img src="./img/vh-zone.gif" alt="VH zone plate" width="200" height="200"> |
 
+Given as a talk at OttawaJS October '20 and fist Next.js Conference
+
+<img src="./img/NextJSConf-WebAssemblyZone.gif" alt="Next.js Conf '20" width="640" height="360"> 
+
 ## TODO
 
 - Update Headshot (resolution ans square crop) - Send to hank@vercel

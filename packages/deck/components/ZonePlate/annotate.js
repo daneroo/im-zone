@@ -21,7 +21,7 @@ export function annotate ({
   // const engines = getEngines()
 
   // overlayColor is a quick shortcut, should add annotation options
-  if (overlayColor){
+  if (overlayColor) {
   // early return if overlayColor
     ctx.save()
     ctx.globalCompositeOperation = 'multiply'
