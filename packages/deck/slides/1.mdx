@@ -28,9 +28,10 @@ import { NextjsConfLogo, NextjsConfLogoBG } from '../components/NextjsConfLogo.j
 
 <center>
   <figure>
-    <img width="400" src="/img/daneroo-300x300.jpg" alt="Daniel Lauzon" />
+    <img style={{width:'50vh'}} src="/img/daneroo-1024x1024.jpg" alt="Daniel Lauzon" />
     <figcaption>Daniel Lauzon - @daneroo</figcaption>
   </figure>
+  <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>OttawaJS - <img style={{width:'7vh'}} src="/img/OttawaJS.svg" alt="OttawaJS" /></div>
 </center>
 
 ---
@@ -39,13 +40,14 @@ import { NextjsConfLogo, NextjsConfLogoBG } from '../components/NextjsConfLogo.j
 
 1. Next.js
 1. WebAssembly
-1. Walk through a project with example
+1. Walk through our experiments
+1. Challenges and Takeaways
 
 ---
 
 ## Next.js
 
-- React Framework (by Vercel, formerly zeit/now)
+- React Framework (by Vercel, formerly Zeit/now)
 - [Great tutorial](https://nextjs.org/learn/basics/create-nextjs-app), [great examples](https://github.com/vercel/next.js/tree/canary/examples)
 - More than a static site generator
 - `create-next-app`
@@ -53,25 +55,26 @@ import { NextjsConfLogo, NextjsConfLogoBG } from '../components/NextjsConfLogo.j
 
 ---
 
-## Next.js: The Good Parts (for me)
+## Next.js: The Great Parts (for me)
 
 - Fast (SSR / SSG / Incremental static regeneration)
 - File-system routing
 - API routes
-- Deploying on vercel is a great option
-  - Others are promising
+- Deploying on _Vercel_ is a great option
+  - Others are possible and promising
 
 ---
 
 ## WebAssembly
 
 - Binary instruction format
-- Well defined sandbox
 - Part of the open web
   - Evolved from experiments
   - Supported in evergreen browsers, mobile and node.js
+  - Well defined sandbox
 - Multiple languages and runtimes
   - Rust/C++/Go/.Net, and [dozens more](https://github.com/appcypher/awesome-wasm-langs)
+- Allows for calling `JS ⇄ WebAssembly`
 
 ---
 
@@ -84,7 +87,7 @@ import { NextjsConfLogo, NextjsConfLogoBG } from '../components/NextjsConfLogo.j
 ## Benefits of other languages
 
 - Re-use of existing libraries
-  - think _crypto_, _game engines_, _distributed web_,...
+  - think _crypto_, _game engines_, _machine learning_, _distributed web_,...
 - Expressiveness
 - Runtime properties
   - Go's _channels_ and _go routines_
@@ -103,18 +106,18 @@ import { NextjsConfLogo, NextjsConfLogoBG } from '../components/NextjsConfLogo.j
 
 ## What's a Zone Plate?
 
-<img style={{ width: '400px' }} src="https://zone.v.daneroo.com/api/zone/" />
+<ZonePlateGrid pause={true} />
 
 ---
 
 ## How do you make one?
 
-<Equation coefs={{ cx2: 1, cy2: 1, ct: 0 }} />
-<br />
 <pre>
-  pixel(<em>x,y</em>) = ~cos(z)
-  <br />
-  &forall; <em>x,y</em> in the image
+  for each pixel (<em>x,y</em>) in the image <br />
+</pre>
+<Equation coefs={{ cx2: 1, cy2: 1, ct: 0 }} /> <br />
+<pre>
+    pixel(<em>x,y</em>) = ~cos(z)
 </pre>
 
 Which is convenient, 'cause it's a reasonable amount of simple computation
