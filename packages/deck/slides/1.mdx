@@ -453,7 +453,7 @@ export default async ({ query: { width = 400, height = width, r = 'JS' } }, res)
 - Re-use
   - Monorepo - lerna
   - Bundling magic
-  - Static assets in api routes
+  - Static assets in api routes (fonts/`.wasm`)
 - Tooling per language
   - Go's runtime / tinygo
 
@@ -462,7 +462,8 @@ export default async ({ query: { width = 400, height = width, r = 'JS' } }, res)
 ## Takeaways
 
 - Next.js has been a pleasure to use and learn
-- Composition
+- Composition - 🐢 all the way down!
+  - React components, hooks, getStatic{Paths|Props}, API routes, WebAssembly module exports
   - Orthogonal features
 - WebAssembly - Definetly Useable - YMMV
 
