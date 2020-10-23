@@ -17,31 +17,24 @@ Given as a talk at OttawaJS October '20 and first Next.js Conference
 
 ## TODO
 
-- Update Headshot (resolution ans square crop) - Send to hank@vercel
-- externalize module for zoneplate View/engines/hook/annotate (no controls)
+- Externalize module for zoneplate View/engines/hook/annotate (no controls)
+  - <https://github.com/ovieokeh/npm-react-typescript-template>
+  - <https://buttercms.com/blog/nextjs-storybook-and-lerna-build-a-monorepo-structure>
 - npm packages
   - normalize the README
   - normalize the package.json scripts - dev build lint test
   - enable jest in libs (microbundle)
-- api route for for go/wasm
-- alternate backends
-  - netlify <https://github.com/netlify/next-on-netlify>
+- Alternate backend
+  - Netlify <https://github.com/netlify/next-on-netlify>
   - Google Cloud Run (Docker)
-- replaced zoneplate-go wasm with rollup-plugin-base64
-  - need a plugin to move to /static/wasm/...wasm
-- measure performance without/less annotations, or without impact..
-- minimal testing (unit & integration)
+- Refactor annotations (specific props)
+- Minimal testing (unit & integration)
 - Go: try to find a zero allocation model (especially for tinyGo)
   - go still allocates the array, and the copies it into the passed Uint8ClampedArray
   - Replace wasm_exec with ... a real module
   - [webpack go loader npm](https://github.com/aaronpowell/webpack-golang-wasm-async-loader)
   - [webpack go loader blog](https://www.aaron-powell.com/posts/2019-02-12-golang-wasm-6-typescript-react/)
-- Exploit symmetry in zone
 - [Review Styling](https://www.smashingmagazine.com/2020/09/comparison-styling-methods-next-js/)
-- Content
-  - History add scans and pictures
-  - Add performance comparative benchmarks (lik in WASM Go README)
-    - pub-sub in nats?
 
 ## Usage with lerna
 
