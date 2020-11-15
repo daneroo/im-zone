@@ -13,11 +13,12 @@
 
 Given as a talk at OttawaJS October '20 and first Next.js Conference
 
-<img src="./img/NextJSConf-WebAssemblyZone.gif" alt="Next.js Conf '20" width="640" height="360"> 
+<img src="./img/NextJSConf-WebAssemblyZone.gif" alt="Next.js Conf '20" width="640" height="360">
 
 ## TODO
 
 - Externalize module for zoneplate View/engines/hook/annotate (no controls)
+  - [TSdx](https://tsdx.io/)
   - <https://github.com/ovieokeh/npm-react-typescript-template>
   - <https://buttercms.com/blog/nextjs-storybook-and-lerna-build-a-monorepo-structure>
 - npm packages

@@ -8,15 +8,15 @@
 		"@daneroo/zoneplate-go": "^1.0.21",
 		"@daneroo/zoneplate-js": "^1.0.4",
 		"@daneroo/zoneplate-rust": "^1.0.4",
-		"@mdx-js/loader": "^1.6.18",
-		"@next/mdx": "^9.5.5",
+		"@mdx-js/loader": "^1.6.21",
+		"@next/mdx": "^10.0.1",
 		"@theme-ui/presets": "^0.3.0",
 		"canvas": "^2.6.1",
-		"next": "^9.5.5",
+		"next": "^10.0.1",
 		"node-fetch": "^2.6.1",
-		"react": "^16.14.0",
-		"react-dom": "^16.14.0",
-		"theme-ui": "^0.3.1",
+		"react": "^17.0.1",
+		"react-dom": "^17.0.1",
+		"theme-ui": "^0.3.3",
 		"ulid": "^2.3.0"
 	},
 	"scripts": {
@@ -30,6 +30,6 @@
 	},
 	"license": "MIT",
 	"devDependencies": {
-		"standard": "^14.3.4"
+		"standard": "^16.0.2"
 	}
 }
