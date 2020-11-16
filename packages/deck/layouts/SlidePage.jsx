@@ -293,21 +293,27 @@ export default function SlidePage({ children }) {
 
     // Handle slide changes
     if (NEXT.indexOf(keyCode) !== -1) {
-      setSlide((prevState) => {
-        router.push(
+      router
+        .push(
           `${router.pathname}`,
-          `/slides/${router.query.slide}?mode=${mode}#${prevState + 1}`
+          `/slides/${router.query.slide}?mode=${mode}#${currentSlide + 1}`
         )
-        return prevState + 1
-      })
+        .then(() => {
+          // wait for push to complete before calling setSlide
+          // was causing render cancel errors
+          setSlide(currentSlide + 1)
+        })
     } else if (keyCode === PREV) {
-      setSlide((prevState) => {
-        router.push(
+      router
+        .push(
           `${router.pathname}`,
-          `/slides/${router.query.slide}?mode=${mode}#${prevState - 1}`
+          `/slides/${router.query.slide}?mode=${mode}#${currentSlide - 1}`
         )
-        return prevState - 1
-      })
+        .then(() => {
+          // wait for push to complete before calling setSlide
+          // was causing render cancel errors
+          setSlide(currentSlide - 1)
+        })
     }
   }
 
@@ -344,7 +350,7 @@ export default function SlidePage({ children }) {
   }
 
   const renderSlide = () => {
-    let generatedSlides = []
+    const generatedSlides = []
     let generatorCount = 0
 
     // Filter down children by only Slides

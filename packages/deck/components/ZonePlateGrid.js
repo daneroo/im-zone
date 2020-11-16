@@ -1,5 +1,8 @@
+/* eslint-disable react/jsx-filename-extension */
+import React from 'react'
 import { View } from './ZonePlate'
 
+// eslint-disable-next-line import/prefer-default-export
 export function ZonePlateGrid({
   size = 400,
   pause = true,
@@ -23,9 +26,10 @@ export function ZonePlateGrid({
       ) : (
         <></>
       )}
-      {variants.map((variant) => {
+      {variants.map((variant, index) => {
         const rCoefs = randomize ? randProps() : {}
         const props = {
+          key: index,
           width: size,
           height: size,
           coefs: { cx2: 1, cy2: 1, cxt: 0, cyt: 0, ct: 1 },
@@ -51,6 +55,7 @@ function URLView({ width = 400, height = width, renderer = 'random' }) {
   return (
     <img
       {...{
+        alt: 'zoneplate urlView',
         width,
         height,
         src: `${baseURI}/api/zone?width=${width}&height=${height}&r=${renderer}&bust=${Math.random()}`,
@@ -62,6 +67,7 @@ function URLView({ width = 400, height = width, renderer = 'random' }) {
 function RandButton({ onClick }) {
   return (
     <button
+      type="button"
       style={{
         backgroundColor: 'Transparent',
         backgroundRepeat: 'no-repeat',

@@ -17,9 +17,9 @@ export function NextjsConfLogoBG() {
 
     // reverse the order: activity,image,globe
     // hueRot no longer used
-    { left: 516, hueRot: 140, t0: 80, ct: -2, overlayColor:'#54acbe'}, // activity:in the middle of the blue-green gradient
-    { left: 418, hueRot: 0, t0: 40, ct: 2, overlayColor:'rgb(255,188,41)'}, // image:yellow (left) side of image gradient
-    { left: 320, hueRot: 280, t0: 0, ct: -2, overlayColor:'rgb(236,75,49)'}, // globe:red side of globe gradient
+    { left: 516, hueRot: 140, t0: 80, ct: -2, overlayColor: '#54acbe' }, // activity:in the middle of the blue-green gradient
+    { left: 418, hueRot: 0, t0: 40, ct: 2, overlayColor: 'rgb(255,188,41)' }, // image:yellow (left) side of image gradient
+    { left: 320, hueRot: 280, t0: 0, ct: -2, overlayColor: 'rgb(236,75,49)' }, // globe:red side of globe gradient
   ]
 
   return (
@@ -31,19 +31,20 @@ export function NextjsConfLogoBG() {
           coefs: { cx2: 0.707, cy2: 0.707, cxt: 0, cyt: 0, ct },
           frames: 240,
           pause: false,
-          //showInfo: true,
+          // showInfo: true,
           shuttle: false,
           renderer: 'JS',
-          overlayColor
+          overlayColor,
         }
 
         return (
           <AbsoluteCenteredFloat
+            key={overlayColor}
             top={320}
             left={left}
             // filter={`hue-rotate(${hueRot}deg)`}
           >
-            <View {...propsSphere} t0={t0}></View>
+            <View {...propsSphere} t0={t0} />
           </AbsoluteCenteredFloat>
         )
       })}
@@ -54,7 +55,7 @@ export function NextjsConfLogoBG() {
           clipRadius={600}
           left={-100}
         >
-          <View {...propsHyper}></View>
+          <View {...propsHyper} />
         </AbsoluteCenteredFloat>
       </div>
     </div>
@@ -63,7 +64,7 @@ export function NextjsConfLogoBG() {
 
 export function NextjsConfLogo({
   color = 'rgba(255,255,255,.35)',
-  iconColor='#fff',
+  iconColor = '#fff',
   alpha = 0.6, // of the logo itself
 }) {
   return (
