@@ -13,7 +13,7 @@
 		"@theme-ui/presets": "^0.3.0",
 		"canvas": "^2.6.1",
 		"next": "^10.0.1",
-		"node-fetch": "^2.6.1",
+		"node-fetch": "^3.1.1",
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1",
 		"theme-ui": "^0.3.3",
